@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <cmath>
+#include <map> 
 
 
 using namespace std;
@@ -18,6 +19,11 @@ bool input_is_integer(const string &s) {
 
 	//variabele die false is wanneer er non-integer char gevonden is
 	int integer = 1;
+
+	//extra check als input een lege string is
+	if (s.length() == 0) {
+		return integer = 0;
+	}
 
 	//check char per char of input van de vorm integer is
 	for (size_t i = 0; i < s.length(); i++)
@@ -63,7 +69,7 @@ int aantal_objecten() {
 	return aantal;
 }
 
-int type_integratie() {
+int type_integratie_cijfer() {
 	//vraagt input op en leest in
 	cout << "Voer type integratie in " << endl;
 	cout << "Typ 1 voor RK4" << endl;
@@ -77,7 +83,7 @@ int type_integratie() {
 
 	if (!is_int) {
 		cout << "Error, geen geldige input" << endl;
-		return type_integratie();
+		return type_integratie_cijfer();
 	}
 
 	//zet string om naar integer wanneer integer vorm heeft
@@ -88,11 +94,22 @@ int type_integratie() {
 	bool is_methode = nummer_methode == 1 || nummer_methode == 2 || nummer_methode == 3 || nummer_methode == 4;
 	if (!is_methode) {
 		cout << "Error, geen geldige input" << endl;
-		return type_integratie();
+		return type_integratie_cijfer();
 	}
 
 	//return nummer van methode
 	return nummer_methode;
+
+}
+
+std::string type_integratie_naam(int i) {
+	map <int, string> integrators;
+	integrators[1] = "RK4.";
+	integrators[2] = "ingebedde RK.";
+	integrators[3] = "Verlet.";
+	integrators[4] = "Forest-Ruth.";
+
+	return integrators[i];
 
 }
 
@@ -102,21 +119,18 @@ bool aanwezige_begincondities() {
 	cout << "Wilt u voorgeselecteerde begincondities gebruiken? J (Ja) of N (Neen): ";
 	string JaNee = lees_input();
 
-	//kijkt of de mogelijke antwoorden in de string zitten
-	bool J_N = JaNee.find('J') || JaNee.find('N');
-
-	//controleert ook extra op het wel 1 character is
-	if (!J_N || JaNee.length() != 1) {
-		cout << "Error, geen geldige input" << endl;
-		return aanwezige_begincondities();
-	}
-
-	//als alles goed, maak de return waarden aan
-	if (JaNee == "J") {
+	
+	//mogelijke ja antwoorden (rekening gehouden met dat users soms lastig kunnen doen en niet helemaal correct inputten)
+	if (JaNee == "J" || JaNee == "j" || JaNee == "Ja" || JaNee == "ja" || JaNee == "JA ") {
 		return 1;
 	}
-	else {
+	else if(JaNee == "N" || JaNee == "n" || JaNee == "nee" || JaNee == "neen" || JaNee == "Neen" || JaNee == "Nee" || JaNee == "NEE" || JaNee == "NEEN") {
 		return 0;
+	}
+	//als de input echt compleet er naast zat, error en opnieuw
+	else {
+		cout << "Error, geen geldige input" << endl;
+		return aanwezige_begincondities();
 	}
 
 }
