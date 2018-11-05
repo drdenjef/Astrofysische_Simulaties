@@ -28,4 +28,13 @@ std::vector<Vec> snelheden(int aantal_deeltjes, int beginconditie);
 //functie voor teruggeven alle massas
 std::vector<float> massas(int aantal_deeltjes, int beginconditie);
 
+//schrijft posities naar scherm
+void print_posities(std::vector<Vec> begin_posities);
+
+//schrijft snelheden naar scherm
+void print_snelheden(std::vector<Vec> begin_posities);
+
+//schrijft massas naar scherm
+void print_massas(std::vector<Vec> begin_posities);
+
 #endif

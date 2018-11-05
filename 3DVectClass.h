@@ -56,6 +56,8 @@ public:
 
 	friend Vec operator/(Vec a, double s);
 
+	friend Vec operator*(Vec a, Vec b);
+
 	//print meegegeven vector componentsgewijs af
 	friend void print(Vec a);
 

@@ -100,6 +100,9 @@ Vec operator/(Vec a, double s) {
 	return a /= s;
 }
 
+Vec operator*(Vec a, Vec b) {
+	return Vec(a.x()*b.x(), a.y()*b.y(), a.z()*b.z());
+}
 //print meegegeven vector componentsgewijs af
 void print(Vec a) {
 	std::cout << a.x() << ' ' << a.y() << ' ' << a.z() << '\n';

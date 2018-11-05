@@ -37,12 +37,17 @@ int main() {
 		vector<Vec> begin_snelheden = snelheden(aantal, optie);
 		vector<float> begin_massas = massas(aantal, optie);
 
-		//MOET HIERVOOR PRINT VOOR VECTOREN EN PRINT VOOR 3DVECT MAKEN INDIEN GEWENST
-		//cout << "Dit zijn de begin posities" << endl << begin_posities << endl << endl;
-		//cout << "Dit zijn de begin snelheden" << endl << begin_snelheden << endl << endl;
-		//cout << "Dit zijn de begin massas" << endl << begin_massas << endl << endl;
+		//schrijft beginposities uit
+		cout << "Dit zijn de startposities" << endl;
+		print_posities(begin_posities);
 
-		//de correcte begincondities worden wel geladen, al getest via debuggen
+		//schrijft beginsnelheden uit
+		cout << "Dit zijn de startsnelheden" << endl;
+		print_snelheden(begin_snelheden);
+
+		//schrijft beginmassas uit
+		cout << "Dit zijn de startmassas" << endl;
+		print_massas(begin_massas);
 
 	}
 	else {
