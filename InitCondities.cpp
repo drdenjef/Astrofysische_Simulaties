@@ -290,7 +290,7 @@ std::vector<float> massas(int aantal_deeltjes, int beginconditie) {
 
 
 void print_posities(std::vector<Vec> begin_posities) {
-	for (vector<Vec>::const_iterator i = begin_posities.begin(); i != begin_posities.end(); ++i) {
+	for (vector<Vec>::const_iterator i = begin_posities.begin(); i != begin_posities.end(); i++) {
 		print(*i);
 	}
 	cout << endl;
@@ -298,7 +298,7 @@ void print_posities(std::vector<Vec> begin_posities) {
 
 
 void print_snelheden(std::vector<Vec> begin_snelheden) {
-	for (vector<Vec>::const_iterator j = begin_snelheden.begin(); j != begin_snelheden.end(); ++j) {
+	for (vector<Vec>::const_iterator j = begin_snelheden.begin(); j != begin_snelheden.end(); j++) {
 		print(*j);
 	}
 	cout << endl;
@@ -306,7 +306,7 @@ void print_snelheden(std::vector<Vec> begin_snelheden) {
 
 
 void print_massas(std::vector<float> begin_massas) {
-	for (vector<float>::const_iterator k = begin_massas.begin(); k != begin_massas.end(); ++k) {
+	for (vector<float>::const_iterator k = begin_massas.begin(); k != begin_massas.end(); k++) {
 		cout << *k << endl;
 	}
 	cout << endl;
