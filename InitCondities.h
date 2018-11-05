@@ -32,9 +32,9 @@ std::vector<float> massas(int aantal_deeltjes, int beginconditie);
 void print_posities(std::vector<Vec> begin_posities);
 
 //schrijft snelheden naar scherm
-void print_snelheden(std::vector<Vec> begin_posities);
+void print_snelheden(std::vector<Vec> begin_snelheden);
 
 //schrijft massas naar scherm
-void print_massas(std::vector<Vec> begin_posities);
+void print_massas(std::vector<float> begin_massas);
 
 #endif
