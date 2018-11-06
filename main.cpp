@@ -17,7 +17,11 @@ int main() {
 	//zeg gebruiker wat hij/zij/het gekozen heeft
 	cout << type_integratie_naam(integratie) << endl << endl;
 
-
+	//vraagt tijdstap aan gebruiker
+	float h = tijdstap_opvraag();
+	//zeg gebruiker wat hij/zij/het gekozen heeft van h
+	cout << endl << "De gekozen tijdstap is " << h << ' ' << endl;
+	
 	//vraag de gebruiker of hij/zij/het initiele begincondities wilt gebruiken (of er zelf in wilt voeren)
 	bool load_init_cond = aanwezige_begincondities();
 	//maakt duidelijk wat de keuze was

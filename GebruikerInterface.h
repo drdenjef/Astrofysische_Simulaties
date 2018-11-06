@@ -13,6 +13,8 @@ bool input_is_integer(const std::string &s);
 
 int aantal_objecten();
 
+float tijdstap_opvraag();
+
 int type_integratie_cijfer();
 
 std::string type_integratie_naam(int i);

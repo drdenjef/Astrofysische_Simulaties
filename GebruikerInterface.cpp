@@ -5,6 +5,7 @@
 #include <map> 
 
 
+
 using namespace std;
 
 std::string lees_input() {
@@ -67,6 +68,56 @@ int aantal_objecten() {
 	
 	//geef aantal deeltjes terug
 	return aantal;
+}
+
+float tijdstap_opvraag() {
+	//vraagt input op en leest in
+	cout << "Voer gewenste tijdstap in: ";
+	string input = lees_input();
+
+	//controleren of dit effectief een float is, dus allemaal digits en 1 punt
+	//variabele die false is wanneer er non-integer char gevonden is
+	int integer = 1;
+	//houdt aantal punten bij
+	int punten = 0;
+
+	//extra check als input een lege string is of als h = 0 opgegeven was
+	if (input.length() == 0 || input =="0") {
+		cout << "Geen nietnegatieve float, probeer opnieuw." << endl;
+		return tijdstap_opvraag();
+	}
+
+	//check char per char of input van de vorm integer is
+	for (size_t i = 0; i < input.length(); i++)
+	{
+		
+		if (input[i] == '.') {
+			punten += 1;
+		}
+		else if (!isdigit(input[i]))
+		{
+			integer = 0;
+			break;
+		}
+		//er mag ook niet meer dan 1 punt zijn
+		if (punten > 1) {
+			integer = 0;
+			break;
+		}
+	}
+
+	//kijkt dus of de functie succesvol was
+	if (!integer) {
+		cout << "Geen nietnegatieve float, probeer opnieuw." << endl;
+		return tijdstap_opvraag();
+	}
+
+	//maakt van de string een float
+	std::string::size_type sz;     // alias of size_t
+	float h = std::stof(input, &sz);
+
+	//geef float terug
+	return h;	
 }
 
 int type_integratie_cijfer() {
