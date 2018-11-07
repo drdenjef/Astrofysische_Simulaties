@@ -13,7 +13,7 @@
 Vec a(std::vector<float> m, std::vector<Vec> r, int i, int N);
 
 // functie RKF45 die posities van deeltjes teruggeeft
-std::vector<std::vector<Vec>> RKF45(std::vector<float> m, std::vector<Vec> r, std::vector<Vec> v, int N, int iteraties, float h);
+std::vector<std::vector<std::vector<Vec>>> RKF45(std::vector<float> m, std::vector<Vec> r, std::vector<Vec> v, int N, int iteraties, float h);
 
 
 

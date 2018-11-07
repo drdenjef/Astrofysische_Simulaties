@@ -25,28 +25,38 @@ Vec a(std::vector<float> m, std::vector<Vec> r, int i, int N) {
 
 	for (int j = 0; j < N; j++) {
 		if (j != i) {
-			a += m[j] * (r[i] - r[j]) / (r[i] - r[j]).norm3();
+			a += m[j] * (r[j] - r[i]) / (r[i] - r[j]).norm3();
 		}
 		
 	}
-	return -1.*a;
+	return a;
 }
 
-// functie RKF45 die posities van deeltjes teruggeeft
-std::vector<std::vector<Vec>> RKF45(std::vector<float> m, std::vector<Vec> r, std::vector<Vec> v, int N, int iteraties, float h) {
 
-	// maak een lijst aan waaraan de lijsten komen die de posities bevatten van de deeltjes voor elke iteratie
-	// de lengte van deze lijst komt overeen met het aantal iteraties
-	// deze lijst zal uiteindelijk teruggegeven worden
-	std::vector<std::vector<Vec>> posities;
+// functie RKF45 die posities van deeltjes teruggeeft
+std::vector<std::vector<std::vector<Vec>>> RKF45(std::vector<float> m, std::vector<Vec> r, std::vector<Vec> v, int N, int iteraties, float h) {
+
+	// maak lijst aan met op positie 0 de posities en op positie 1 de snelheden
+	std::vector<std::vector<std::vector<Vec>>> possnel;
+
+	// maak een lijst aan waaraan voor elke iteratie de positie van de deeltjes wordt meegegeven
+		// de lengte van deze lijst komt overeen met het aantal deeltjes
+	std::vector<std::vector<Vec>> posities_per_iteratie;
+	// beginpositie meegeven
+	posities_per_iteratie.push_back(r);
+
+	// analoog voor snelheden
+	std::vector<std::vector<Vec>> snelheden_per_iteratie;
+	// beginsnelheid meegeven
+	snelheden_per_iteratie.push_back(v);
+
 
 	// begint te itereren over het aantal iteraties die je wilt uitvoeren
 	// kan meegegeven worden aan de functie RKF45
 	for (int i = 0; i <= iteraties; i++) {
 
-		// maak een lijst aan waaraan voor elke iteratie de positie van de deeltjes wordt meegegeven
-		// de lengte van deze lijst komt overeen met het aantal deeltjes
-		std::vector<Vec> posities_per_deeltje;
+		
+
 
 		// begint te itereren over alle deeltjes
 		for (int j = 0; j < N; j++) {
@@ -80,19 +90,22 @@ std::vector<std::vector<Vec>> RKF45(std::vector<float> m, std::vector<Vec> r, st
 			// bereken r_n+1 en v_n+1 en onthoud deze woorden voor volgende iteraties
 			r[j] = r[j] + h * ((25 / 216)*kr1 + (1408 / 2565)*kr3 + (2197 / 4101)*kr4 - .2*kr5);
 			v[j] = v[j] + h * ((25 / 216)*kv1 + (1408 / 2565)*kv3 + (2197 / 4101)*kv4 - .2*kv5);
-
-
-			// voeg de positie van het deeltje toe aan de lijst
-			posities_per_deeltje.push_back(r[j]);
+			
 		}
 
-		// voeg de lijst van de posities van de deeltjes toe aan de lijst waarin alle posities worden bijgehouden
-		posities.push_back(posities_per_deeltje);
+		// voeg de positie en snelheid van het deeltje toe aan de lijst 
+		posities_per_iteratie.push_back(r);
+		snelheden_per_iteratie.push_back(v);
+
+		
 	
 	}
 
+	possnel.push_back(posities_per_iteratie);
+	possnel.push_back(snelheden_per_iteratie);
+
 	// geef de totale lijst met alle posities terug
-	return posities;
+	return possnel;
 }
 
 
