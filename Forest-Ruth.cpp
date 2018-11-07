@@ -27,9 +27,10 @@ Vec a(vector<float> m, vector<Vec> r, int i, int N) {
 	return -1.*a;
 }
 
-vector<vector<Vec>> ForestRuth(vector<Vec> pos, vector<Vec> snel, vector<float> mass, int h, int aantal) {
+vector<vector<vector<Vec>>> ForestRuth(vector<Vec> pos, vector<Vec> snel, vector<float> mass, int h, int aantal) {
 	
 	vector<vector<Vec>> finale_pos;
+	vector<vector<Vec>> finale_snelh;
 	float theta = 1 / (2 - pow(2, 1 / 3));
 	
 	// iteratie over het aantal deeltjes
@@ -59,8 +60,14 @@ vector<vector<Vec>> ForestRuth(vector<Vec> pos, vector<Vec> snel, vector<float> 
 			snel[i] = snel[i] + theta * h*acc[i];
 			pos[i] = pos[i] + 0.5*theta*h*snel[i];
 		}
+		//Toevoegen snelh en pos aan lijst
 		finale_pos.push_back(pos);
+		finale_snelh.push_back(snel);
 	}
-
-	return finale_pos;
+	
+	// output maken van finale posities en snelheden
+	vector<vector<vector<Vec>>> output;
+	output.push_back(finale_pos);
+	output.push_back(finale_snelh);
+	return output;
 }
