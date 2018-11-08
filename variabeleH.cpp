@@ -19,20 +19,20 @@ float variabele_h(float h, vector<Vec> posities) {
 		for (int j = (posities.size() -1); j >i; j--) {
 
 			//bekijk x afstand 
-			float x_afst_kwadr = posities[i].x()*posities[i].x() - posities[j].x()*posities[j].x();
+			float x_afst_kwadr = abs(posities[i].x()*posities[i].x() - posities[j].x()*posities[j].x());
 			//moeten geen wortel nemen, is extra berekening en als het nu al groter of gelijk is aan 1, gaat wortel niks wijzigen
 			if (x_afst_kwadr >= 1) {
 				break;
 			}
 
-			float y_afst_kwadr = posities[i].y()*posities[i].y() - posities[j].y()*posities[j].y();
+			float y_afst_kwadr = abs(posities[i].y()*posities[i].y() - posities[j].y()*posities[j].y());
 
 			//weer zelfde opmerking over wortel
 			if ((x_afst_kwadr + y_afst_kwadr) >= 1) {
 				break;
 			}
 
-			float z_afst_kwadr = posities[i].z()*posities[i].z() - posities[j].z()*posities[j].z();
+			float z_afst_kwadr = abs(posities[i].z()*posities[i].z() - posities[j].z()*posities[j].z());
 
 			//zelfde uitleg voor waarom hier geen wortel
 			if (( x_afst_kwadr+ y_afst_kwadr + z_afst_kwadr) >= 1) {
