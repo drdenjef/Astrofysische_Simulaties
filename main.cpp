@@ -18,9 +18,14 @@ int main() {
 	cout << type_integratie_naam(integratie) << endl << endl;
 
 	//vraagt tijdstap aan gebruiker
-	float h = tijdstap_opvraag();
+	double h = tijdstap_opvraag();
 	//zeg gebruiker wat hij/zij/het gekozen heeft van h
 	cout << endl << "De gekozen tijdstap is " << h << ' ' << endl;
+
+	//vraagt aantal iteraties aan gebruiker;
+	int iteraties = iteraties_opvraag();
+	//zeg gebruiker wat hij/zij/het gekozen heeft van iteraties;
+	cout << endl << "De gekozen aantal iteraties is " << iteraties << ' ' << endl;
 	
 	//vraag de gebruiker of hij/zij/het initiele begincondities wilt gebruiken (of er zelf in wilt voeren)
 	bool load_init_cond = aanwezige_begincondities();
@@ -39,7 +44,7 @@ int main() {
 		//vraag de gewenste begin condities op
 		vector<Vec> begin_posities = posities(aantal, optie);
 		vector<Vec> begin_snelheden = snelheden(aantal, optie);
-		vector<float> begin_massas = massas(aantal, optie);
+		vector<double> begin_massas = massas(aantal, optie);
 
 		//schrijft beginposities uit
 		cout << "Dit zijn de startposities" << endl;
@@ -53,10 +58,30 @@ int main() {
 		cout << "Dit zijn de startmassas" << endl;
 		print_massas(begin_massas);
 
+		//vraagt naam bestand voor wegschrijven op
+		cout << "Geef naam naar waar de posities weggeschreven wordt op: ";
+		string bestand_naam = lees_input();
+		cout << '\n' << "De gekozen naam is: " << bestand_naam << endl;
+
+		//nu derigeren naar juiste methode, dit geeft een vector van vector van Vec's terug, eerste lengte is aantal iteraties, tweede is aantal deeltjes, derde zijn de posities
+		//dit komt achteraf buiten deze if, maar moet nu nog binnen
+		vector<vector<Vec>> alle_geïntegreerde_posities = alle_posities(begin_massas, begin_posities, begin_snelheden, aantal, iteraties, h, optie);
+
+		//even test printen
+		for (int i = 0; i < alle_geïntegreerde_posities.size(); i++) {
+
+			for (int j = 0; j < alle_geïntegreerde_posities[i].size(); j++) {
+				print(alle_geïntegreerde_posities[i][j]);
+			}
+		}
 	}
 	else {
 		cout << "Neen gekozen." << endl << endl;
 	}
+	
+
+	
+
 
 
 	getchar(); 

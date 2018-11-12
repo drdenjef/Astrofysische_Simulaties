@@ -3,6 +3,9 @@
 #include <string>
 #include <cmath>
 #include <map> 
+#include <vector>
+#include "3DVectClass.h"
+#include "Embedded_RK.h"
 
 
 
@@ -70,12 +73,12 @@ int aantal_objecten() {
 	return aantal;
 }
 
-float tijdstap_opvraag() {
+double tijdstap_opvraag() {
 	//vraagt input op en leest in
 	cout << "Voer gewenste tijdstap in: ";
 	string input = lees_input();
 
-	//controleren of dit effectief een float is, dus allemaal digits en 1 punt
+	//controleren of dit effectief een double is, dus allemaal digits en 1 punt
 	//variabele die false is wanneer er non-integer char gevonden is
 	int integer = 1;
 	//houdt aantal punten bij
@@ -83,11 +86,11 @@ float tijdstap_opvraag() {
 
 	//extra check als input een lege string is of als h = 0 opgegeven was
 	if (input.length() == 0 || input =="0") {
-		cout << "Geen nietnegatieve float, probeer opnieuw." << endl;
+		cout << "Geen nietnegatieve double, probeer opnieuw." << endl;
 		return tijdstap_opvraag();
 	}
 
-	//check char per char of input van de vorm integer is
+	//check char per char of input van de vorm double is
 	for (size_t i = 0; i < input.length(); i++)
 	{
 		
@@ -108,16 +111,37 @@ float tijdstap_opvraag() {
 
 	//kijkt dus of de functie succesvol was
 	if (!integer) {
-		cout << "Geen nietnegatieve float, probeer opnieuw." << endl;
+		cout << "Geen nietnegatieve double, probeer opnieuw." << endl;
 		return tijdstap_opvraag();
 	}
 
-	//maakt van de string een float
+	//maakt van de string een double
 	std::string::size_type sz;     // alias of size_t
-	float h = std::stof(input, &sz);
+	double h = std::stof(input, &sz);
 
-	//geef float terug
+	//geef double terug
 	return h;	
+}
+
+int iteraties_opvraag() {
+	//vraagt input op en leest in
+	cout << "Voer gewenste aantal iteraties in: ";
+	string input = lees_input();
+
+	//check als input van de vorm integer is
+	int integer = input_is_integer(input);
+
+	//herbegin functie wanneer integer check gefaald is
+	if (!integer) {
+		cout << "Error, dit is geen nietnegatief geheel getal" << endl;
+		return iteraties_opvraag();
+	}
+
+	//zet string om naar integer wanneer integer vorm heeft
+	std::string::size_type sz;   // alias of size_t
+	int aantal = std::stoi(input, &sz);
+
+	return aantal;
 }
 
 int type_integratie_cijfer() {
@@ -184,5 +208,32 @@ bool aanwezige_begincondities() {
 		return aanwezige_begincondities();
 	}
 
+}
+
+vector<vector<Vec>> alle_posities(vector<double> m, vector<Vec>r, vector<Vec> v, int N, int iter, double h, int methode) {
+	//nu derigeren naar correcte methode
+	vector<vector<Vec>> alle_geintegreerde_posities;
+
+	//RK4
+	if (methode == 1) {
+
+	}
+
+	//ingebedde RK
+	if (methode == 2) {
+		alle_geintegreerde_posities = RKF45(m, r, v, N, iter, h);
+	}
+
+	//Verlet
+	if (methode == 3) {
+
+	}
+
+	//Forest-Ruth
+	if (methode == 4) {
+
+	}
+
+	return alle_geintegreerde_posities;
 }
 	

@@ -11,10 +11,10 @@
 #include "3DVectClass.h"
 
 //functie voor berekenen kleinere h indien nodig (2 objecten dicht bij elkaar)
-float variabele_h(float h, std::vector<Vec> posities);
+double variabele_h(double h, std::vector<Vec> posities);
 
 // m = massa	r = positie		N = # deeltjes		i = beschouwde deeltje
-Vec a(std::vector<float> m, std::vector<Vec> r, int i, int N);
+Vec a(std::vector<double> m, std::vector<Vec> r, int i, int N);
 
 //functie voor berekenen totale energie systeem
 double Energie(std::vector<Vec> poslist, std::vector<Vec> velolist, std::vector<double> masslist);

@@ -25,8 +25,8 @@ std::vector<Vec> posities(int aantal_deeltjes, int beginconditie);
 //functie voor teruggeven alle startsnelheden
 std::vector<Vec> snelheden(int aantal_deeltjes, int beginconditie);
 
-//functie voor teruggeven alle massas
-std::vector<float> massas(int aantal_deeltjes, int beginconditie);
+//functie voor teruggeven alle massas, al genormeerd
+std::vector<double> massas(int aantal_deeltjes, int beginconditie);
 
 //schrijft posities naar scherm
 void print_posities(std::vector<Vec> begin_posities);
@@ -35,6 +35,6 @@ void print_posities(std::vector<Vec> begin_posities);
 void print_snelheden(std::vector<Vec> begin_snelheden);
 
 //schrijft massas naar scherm
-void print_massas(std::vector<float> begin_massas);
+void print_massas(std::vector<double> begin_massas);
 
 #endif

@@ -169,6 +169,8 @@ std::vector<std::vector<std::vector<std::string>>> lijst_begincond() {
 
 int nummer_beginconditie(int aantal) {
 
+	//min twee want slechts begincondities vanaf 2 deeltjes
+	aantal -= 2;
 	//geeft user de mogelijke opties
 	cout << "Voor " << lijst_begincond_namen()[aantal][1] << ", kies 1." << endl;
 	cout << "Voor " << lijst_begincond_namen()[aantal][2] << ", kies 2." << endl;
@@ -213,9 +215,9 @@ std::vector<Vec> posities(int aantal_deeltjes, int beginconditie) {
 	std::fstream myfile(positie, std::ios_base::in);
 
 	//maak variabele voor inlezen klaar
-	float pos_x;
-	float pos_y;
-	float pos_z;
+	double pos_x;
+	double pos_y;
+	double pos_z;
 
 	//lees ze in en steek ze in vector, wel per 3 in for loop want 3D posities
 	while (myfile >> pos_x >> pos_y >> pos_z)
@@ -245,9 +247,9 @@ std::vector<Vec> snelheden(int aantal_deeltjes, int beginconditie) {
 	std::fstream myfile(snelheid, std::ios_base::in);
 
 	//maak variabele voor inlezen klaar
-	float snel_x;
-	float snel_y;
-	float snel_z;
+	double snel_x;
+	double snel_y;
+	double snel_z;
 
 	//lees ze in en steek ze in vector, wel per 3 in for loop want 3D posities
 	while (myfile >> snel_x >> snel_y >> snel_z)
@@ -262,10 +264,10 @@ std::vector<Vec> snelheden(int aantal_deeltjes, int beginconditie) {
 
 }
 
-std::vector<float> massas(int aantal_deeltjes, int beginconditie) {
+std::vector<double> massas(int aantal_deeltjes, int beginconditie) {
 
 	//aanmaken vector van massas
-	vector<float> massas;
+	vector<double> massas;
 
 	//opzoeken gewenste begin condities
 	//-2 wegens maar info vanaf 2 deeltjes
@@ -276,15 +278,21 @@ std::vector<float> massas(int aantal_deeltjes, int beginconditie) {
 	std::fstream myfile(massa, std::ios_base::in);
 
 	//maak variabele voor inlezen klaar
-	float ind_massa;
+	double ind_massa;
+	//maakt variabele voor som van alle massas
+	double som = 0;
 
 	//lees ze in en steek ze in vector
 	while (myfile >> ind_massa)
 	{
 		massas.push_back(ind_massa);
+		som += ind_massa;
 	}
-
-	//return vector met massas
+	//normeren van de massa
+	for (int i = 0; i < massas.size(); i++) {
+		massas[i] /= som;
+	}
+	//return vector met genormeerde massas
 	return massas;
 }
 
@@ -305,8 +313,8 @@ void print_snelheden(std::vector<Vec> begin_snelheden) {
 }
 
 
-void print_massas(std::vector<float> begin_massas) {
-	for (vector<float>::const_iterator k = begin_massas.begin(); k != begin_massas.end(); k++) {
+void print_massas(std::vector<double> begin_massas) {
+	for (vector<double>::const_iterator k = begin_massas.begin(); k != begin_massas.end(); k++) {
 		cout << *k << endl;
 	}
 	cout << endl;
