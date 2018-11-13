@@ -29,8 +29,9 @@ double Energy(vector<Vec> poslist, vector<Vec> velolist, vector<double> masslist
 vector<vector<vector<Vec>>> RK4(vector<Vec> position, vector<Vec> velocity, vector<double> mass, const float h) {
 	const int N = position.size();
 	double Energy_initial = Energy(position, velocity, mass);
-	vector<vector<Vec>> total_pos;
-	vector<vector<Vec>> total_vel;
+	vector<vector<Vec>> total_pos {position};
+	vector<vector<Vec>> total_vel {velocity};
+	vector<double> total_energy {Energy_initial};
 	for (double k = h; k <= 2500.; k += h) {
 		vector<Vec> position_new;
 		vector<Vec> velocity_new;
@@ -86,6 +87,7 @@ vector<vector<vector<Vec>>> RK4(vector<Vec> position, vector<Vec> velocity, vect
 			position_new.push_back(p);
 			velocity_new.push_back(v);
 		};
+		total_energy.push_back(Energy(position_new,velocity_new,mass));
 		total_pos.push_back(position_new);
 		total_vel.push_back(velocity_new);
 	};
