@@ -5,7 +5,10 @@
 #include <map> 
 #include <vector>
 #include "3DVectClass.h"
-#include "Embedded_RK.h"
+#include "RKF45.H"
+#include "Forest-Ruth.h"
+#include "RK4.h"
+#include "Verlet.h"
 
 
 
@@ -210,30 +213,27 @@ bool aanwezige_begincondities() {
 
 }
 
-vector<vector<Vec>> alle_posities(vector<double> m, vector<Vec>r, vector<Vec> v, int N, int iter, double h, int methode) {
-	//nu derigeren naar correcte methode
-	vector<vector<Vec>> alle_geintegreerde_posities;
+void alle_posities(vector<double> m, vector<Vec>r, vector<Vec> v, int N, int iter, double h, int methode, string naam) {
 
 	//RK4
 	if (methode == 1) {
-
+		RK4(m, r, v, N, iter, h, naam);
 	}
 
 	//ingebedde RK
 	if (methode == 2) {
-		alle_geintegreerde_posities = RKF45(m, r, v, N, iter, h);
+		RKF45(m, r, v, N, iter, h, naam);
 	}
 
 	//Verlet
 	if (methode == 3) {
-
+		Verlet(m, r, v, N, iter, h, naam);
 	}
 
 	//Forest-Ruth
 	if (methode == 4) {
-
+		ForestRuth(m, r, v, N, iter, h, naam);
 	}
 
-	return alle_geintegreerde_posities;
 }
 	

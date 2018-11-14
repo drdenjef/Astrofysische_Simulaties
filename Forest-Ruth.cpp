@@ -16,7 +16,7 @@ using namespace std;
 *										 *
 *****************************************/
 
-void ForestRuth(vector<Vec> r, vector<Vec> v, vector<double> m, double h, int iteraties, int N, string naam) {
+void ForestRuth(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, int iteraties, double h, std::string naam) {
 
 	// maak een file aan waar de posities van de deeltjes wordt bijgehouden
 	std::ofstream outfile1(naam +".txt");

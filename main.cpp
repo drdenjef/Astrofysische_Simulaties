@@ -1,6 +1,9 @@
 #include "3DVectClass.h"
 #include "GebruikerInterface.h"
 #include "InitCondities.h"
+#include <time.h>
+#include <string>
+
 
 
 //de main function
@@ -65,15 +68,12 @@ int main() {
 
 		//nu derigeren naar juiste methode, dit geeft een vector van vector van Vec's terug, eerste lengte is aantal iteraties, tweede is aantal deeltjes, derde zijn de posities
 		//dit komt achteraf buiten deze if, maar moet nu nog binnen
-		vector<vector<Vec>> alle_geïntegreerde_posities = alle_posities(begin_massas, begin_posities, begin_snelheden, aantal, iteraties, h, optie);
 
-		//even test printen
-		for (int i = 0; i < alle_geïntegreerde_posities.size(); i++) {
+		//berekent tijd hoe lang dit duurde
+		clock_t tStart = clock();
+		alle_posities(begin_massas, begin_posities, begin_snelheden, aantal, iteraties, h, optie, bestand_naam);
+		printf("Time taken: %.2fs\n", (double)(clock() - tStart) / CLOCKS_PER_SEC);
 
-			for (int j = 0; j < alle_geïntegreerde_posities[i].size(); j++) {
-				print(alle_geïntegreerde_posities[i][j]);
-			}
-		}
 	}
 	else {
 		cout << "Neen gekozen." << endl << endl;

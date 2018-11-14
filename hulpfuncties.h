@@ -22,7 +22,4 @@ double Energie(std::vector<Vec> poslist, std::vector<Vec> velolist, std::vector<
 //functie voor berekenen fout op energie
 double error_energie(std::vector<Vec> poslist, std::vector<Vec> velolist, std::vector<double> masslist, double start_energie);
 
-//functie voor wegschrijven alle posities of snelhedennaar een tekstbestand
-void wegschrijven(std::vector<std::vector<Vec>> coords, std::string naamn, int deeltjes);
-
 #endif

@@ -25,7 +25,7 @@ std::string type_integratie_naam(int i);
 
 bool aanwezige_begincondities();
 
-std::vector<std::vector<Vec>> alle_posities(std::vector<double> m, std::vector<Vec>r, std::vector<Vec> v, int N, int iter, double h, int methode);
+void alle_posities(std::vector<double> m, std::vector<Vec>r, std::vector<Vec> v, int N, int iter, double h, int methode, std::string naam);
 
 #endif
 
