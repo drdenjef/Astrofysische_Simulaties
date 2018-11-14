@@ -87,17 +87,16 @@ void RKF45(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 			
 		}
 		outfile1 << std::endl;
-
-
-
 		outfile2 << Energie(r, v, m) << std::endl;
 		outfile3 << error_energie(r, v, m, start_energie) << std::endl;
 	}
 
-	std::cout << "Posities werden bijgehouden in bestand RKF45.txt" << std::endl;
-	std::cout << "Energie werd bijgehouden in bestand RKF45_E.txt" << std::endl;
-	std::cout << "Relatieve energiefouten werden bijgehouden in bestand RKF45_E_err.txt" << std::endl;
+	std::cout << "Posities werden bijgehouden in bestand " << naam << ".txt" << std::endl;
+	std::cout << "Energie werd bijgehouden in bestand " << naam << ".txt" << std::endl;
+	std::cout << "Relatieve energiefouten werden bijgehouden in bestand " << naam << ".txt" << std::endl;
+	outfile1.close();
 	outfile2.close();
+	outfile3.close();
 
 	
 }
