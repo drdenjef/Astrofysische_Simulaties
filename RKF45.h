@@ -14,8 +14,4 @@
 void RKF45(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, int iteraties, double h);
 
 
-
-
-
-
 #endif
