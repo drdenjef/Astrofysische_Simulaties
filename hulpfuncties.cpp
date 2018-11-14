@@ -17,23 +17,23 @@ double variabele_h(double h, vector<Vec> posities) {
 	for (int i = 0; i < posities.size(); i++) {
 
 		//overloop alle vectoren die na de eerste vector komt
-		for (int j = (posities.size() - 1); j >i; j--) {
+		for (int j = (posities.size() - 1); j > i; j--) {
 
 			//bekijk x afstand 
-			double x_afst_kwadr = abs(posities[i].x()*posities[i].x() - posities[j].x()*posities[j].x());
+			double x_afst_kwadr = pow(posities[i].x() - posities[j].x(), 2);
 			//moeten geen wortel nemen, is extra berekening en als het nu al groter of gelijk is aan 1, gaat wortel niks wijzigen
 			if (x_afst_kwadr >= 1) {
 				break;
 			}
 
-			double y_afst_kwadr = abs(posities[i].y()*posities[i].y() - posities[j].y()*posities[j].y());
+			double y_afst_kwadr = pow(posities[i].y() - posities[j].y(), 2);
 
 			//weer zelfde opmerking over wortel
 			if ((x_afst_kwadr + y_afst_kwadr) >= 1) {
 				break;
 			}
 
-			double z_afst_kwadr = abs(posities[i].z()*posities[i].z() - posities[j].z()*posities[j].z());
+			double z_afst_kwadr = pow(posities[i].z() - posities[j].z(), 2);
 
 			//zelfde uitleg voor waarom hier geen wortel
 			if ((x_afst_kwadr + y_afst_kwadr + z_afst_kwadr) >= 1) {
@@ -90,28 +90,4 @@ double error_energie(std::vector<Vec> poslist, std::vector<Vec> velolist, std::v
 	//geef ze terug
 	return error_energie;
 
-}
-
-void wegschrijven(vector<vector<Vec>> coords, string naam, int deeltjes) {
-	//maak outstream object aan
-	ofstream file;
-	//formateer naam naar txt type
-	naam += ".txt";
-	//open het bestand
-	file.open(naam);
-	//itereer over alle deeltjes, zo staan alle posities van zelfde deeltje bij elkaar, makkelijker voor kleuren en labels
-	for (int i = 0; i < coords.size(); i++) {
-
-		//itereer over alle integraties
-		for (int j = 0; j < deeltjes; j++) {
-
-			//schrijf op zelfde lijn de x, y en z coord
-			file << coords[i][j].x() << ' ' << coords[i][j].y() << ' ' << coords[i][j].z() << "\t";
-
-		}
-		file << '\n';
-	}
-
-	//sluiten
-	file.close();
 }
