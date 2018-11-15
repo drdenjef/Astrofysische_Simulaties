@@ -48,43 +48,55 @@ void RKF45(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 
 		double h_var = variabele_h(h, r);
 
-		// begint te itereren over alle deeltjes
+		std::vector<Vec> kr1;
+		std::vector<Vec> kv1;
+		std::vector<Vec> kr2;
+		std::vector<Vec> kv2;
+		std::vector<Vec> kr3;
+		std::vector<Vec> kv3;
+		std::vector<Vec> kr4;
+		std::vector<Vec> kv4;
+		std::vector<Vec> kr5;
+		std::vector<Vec> kv5;
+		std::vector<Vec> kr6;
+		std::vector<Vec> kv6;
+
 		for (int j = 0; j < N; j++) {
-			
-			//voor elk deeltje, maak alle nodige k's aan
+			kr1.push_back(v[j]);
+			kv1.push_back(a(m, r, j, N));
+		}
 
-			Vec kr1 = v[j];
-			//r[j] = r[j]
-			Vec kv1 = -1*a(m, r, j, N);
+		for (int j = 0; j < N; j++) {
+			kr2.push_back(v[j] + .25*h_var*kv1[j]);
+			kv2.push_back(a(m, r + .25*h_var*kr1, j, N));
+		}
 
-			Vec kr2 = v[j] + .25*h_var*kv1;
-			r[j] = r[j] + .25*h_var*kr1;
-			Vec kv2 = -1*a(m, r, j, N);
+		for (int j = 0; j < N; j++) {
+			kr3.push_back(v[j] + (3 / 8)*h_var*kv2[j]);
+			kv3.push_back(a(m, r + (3 / 8)*h_var*kr2, j, N));
+		}
 
-			Vec kr3 = v[j] + (3 / 8)*h_var*kv2;
-			r[j] = r[j] + (3 / 8)*h_var*kr2;
-			Vec kv3 = -1*a(m, r, j, N);
+		for (int j = 0; j < N; j++) {
+			kr4.push_back(v[j] + (12 / 13)*h_var*kv3[j]);
+			kv4.push_back(a(m, r + (12 / 13)*h_var*kr3, j, N));
+		}
 
-			Vec kr4 = v[j] + (12 / 13)*h_var*kv3;
-			r[j] = r[j] + (12 / 13)*h_var*kr3;
-			Vec kv4 = -1*a(m, r, j, N);
+		for (int j = 0; j < N; j++) {
+			kr5.push_back(v[j] + h_var * kv4[j]);
+			kv5.push_back(a(m, r + h_var * kr4, j, N));
+		}
 
-			Vec kr5 = v[j] + h_var * kv4;
-			r[j] = r[j] + h_var * kr4;
-			Vec kv5 = -1*a(m, r, j, N);
+		for (int j = 0; j < N; j++) {
+			kr6.push_back(v[j] + .5*h_var*kv5[j]);
+			kv6.push_back(a(m, r + .5*h_var*kr5, j, N));
+		}
 
-			Vec kr6 = v[j] + .5*h_var*kv5;
-			r[j] = r[j] + .5*h_var*kr5;
-			Vec kv6 = -1*a(m, r, j, N);
+		// bereken r_n+1 en v_n+1 en onthoud deze woorden voor volgende iteraties
+		r = r + h_var * ((25 / 216)*kr1 + (1408 / 2565)*kr3 + (2197 / 4104)*kr4 - .2*kr5);
+		v = v + h_var * ((25 / 216)*kv1 + (1408 / 2565)*kv3 + (2197 / 4104)*kv4 - .2*kv5);
 
-			// bereken r_n+1 en v_n+1 en onthoud deze woorden voor volgende iteraties
-			r[j] = r[j] + h_var * ((25 / 216)*kr1 + (1408 / 2565)*kr3 + (2197 / 4104)*kr4 - .2*kr5);
-			v[j] = v[j] + h_var * ((25 / 216)*kv1 + (1408 / 2565)*kv3 + (2197 / 4104)*kv4 - .2*kv5);
-
-			
+		for (int j = 0; j < N; j++) {
 			outfile1 << r[j].x() << ' ' << r[j].y() << ' ' << r[j].z() << '\t';
-
-			
 		}
 		outfile1 << std::endl;
 		outfile2 << Energie(r, v, m) << std::endl;

@@ -45,42 +45,50 @@ void RK4(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, i
 	// begint te itereren over het aantal iteraties die je wilt uitvoeren
 	// kan meegegeven worden aan de functie RKF45
 	for (int i = 0; i < iteraties; i++) {
-
+		
 		double h_var = variabele_h(h, r);
 
-		// begint te itereren over alle deeltjes
+		std::vector<Vec> kr1;
+		std::vector<Vec> kv1;
+		std::vector<Vec> kr2;
+		std::vector<Vec> kv2;
+		std::vector<Vec> kr3;
+		std::vector<Vec> kv3;
+		std::vector<Vec> kr4;
+		std::vector<Vec> kv4;
+
 		for (int j = 0; j < N; j++) {
+			kr1.push_back(v[j]);
+			kv1.push_back(a(m, r, j, N));
+		}
 
-			//voor elk deeltje, maak alle nodige k's aan
+		for (int j = 0; j < N; j++) {
+			kr2.push_back(v[j] + .5*h_var*kv1[j]);
+			kv2.push_back(a(m, r + .5*h_var*kr1, j, N));
+		}
 
-			Vec kr1 = v[j];
-			//r[j] = r[j]
-			Vec kv1 = a(m, r, j, N);
+		for (int j = 0; j < N; j++) {
+			kr3.push_back(v[j] + .5*h_var*kv2[j]);
+			kv3.push_back(a(m, r + .5*h_var*kr2, j, N));
+		}
 
-			Vec kr2 = v[j] + .5*h_var*kv1;
-			r[j] = r[j] + .5*h_var*kr1;
-			Vec kv2 = a(m, r, j, N);
+		for (int j = 0; j < N; j++) {
+			kr4.push_back(v[j] + h_var * kv3[j]);
+			kv4.push_back(a(m, r + h_var * kr3, j, N));
+		}
+		
 
-			Vec kr3 = v[j] + .5*h_var*kv2;
-			r[j] = r[j] + .5*h_var*kr2;
-			Vec kv3 = a(m, r, j, N);
-
-			Vec kr4 = v[j] + h_var*kv3;
-			r[j] = r[j] + h_var*kr3;
-			Vec kv4 = a(m, r, j, N);
-
-			// bereken r_n+1 en v_n+1 en onthoud deze woorden voor volgende iteraties
-			r[j] = r[j] + (h_var / 6) * (kr1 + 2 * kr2 + 2 * kr3 + kr4);
-			v[j] = v[j] + (h_var / 6) * (kv1 + 2 * kv2 + 2 * kv3 + kv4);
+		r = r + (h_var / 6) * (kr1 + 2 * kr2 + 2 * kr3 + kr4);
+		v = v + (h_var / 6) * (kv1 + 2 * kv2 + 2 * kv3 + kv4);
 
 
+		for (int j = 0; j < N; j++) {
 			outfile1 << r[j].x() << ' ' << r[j].y() << ' ' << r[j].z() << '\t';
-
-
 		}
 		outfile1 << std::endl;
 		outfile2 << Energie(r, v, m) << std::endl;
 		outfile3 << error_energie(r, v, m, start_energie) << std::endl;
+		
 	}
 
 	std::cout << "Posities werden bijgehouden in bestand " << naam << ".txt" << std::endl;
@@ -89,6 +97,6 @@ void RK4(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, i
 	outfile1.close();
 	outfile2.close();
 	outfile3.close();
-
+	
 
 }
