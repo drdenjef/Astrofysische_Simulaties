@@ -1,16 +1,17 @@
 #include "3DVectClass.h"
+#include <vector>
 
 Vec::Vec() {
 	// standaardgegevens als er niets wordt meegegeven aan Vec
 	_x = 0;
-	_y = 0; 
+	_y = 0;
 	_z = 0;
-} 
+}
 
-Vec::Vec(double x, double y, double z) { 
+Vec::Vec(double x, double y, double z) {
 	// vector aanmaken met meegegeven variabelen
-	_x = x; 
-	_y = y; 
+	_x = x;
+	_y = y;
 	_z = z;
 }
 
@@ -51,12 +52,12 @@ Vec& Vec::operator/=(double s) {
 }
 
 // getters: x,y,z elementen van vectorobject opvragen
-double Vec::x() { 
-	return _x; 
+double Vec::x() {
+	return _x;
 }
 
-double Vec::y() { 
-	return _y; 
+double Vec::y() {
+	return _y;
 }
 
 double Vec::z() {
@@ -75,7 +76,7 @@ double Vec::norm2() const {
 
 double Vec::norm3() const {
 	//geeft derdemacht van norm terug
-	double r = sqrt(_x * _x + _y * _y + _z * _z); 
+	double r = sqrt(_x * _x + _y * _y + _z * _z);
 	return r * r*r;
 }
 
@@ -103,6 +104,32 @@ Vec operator/(Vec a, double s) {
 Vec operator*(Vec a, Vec b) {
 	return Vec(a.x()*b.x(), a.y()*b.y(), a.z()*b.z());
 }
+
+std::vector<Vec> operator+(std::vector<Vec> a, std::vector<Vec> b) {
+	std::vector<Vec> result;
+	for (int i = 0; i < a.size(); i++) {
+		result.push_back(a[i] + b[i]);
+	}
+	return result;
+}
+
+std::vector<Vec> operator-(std::vector<Vec> a, std::vector<Vec> b) {
+	std::vector<Vec> result;
+	for (int i = 0; i < a.size(); i++) {
+		result.push_back(a[i] - b[i]);
+	}
+	return result;
+}
+
+std::vector<Vec> operator*(double a, std::vector<Vec> b) {
+	std::vector<Vec> result;
+	for (int i = 0; i < b.size(); i++) {
+		result.push_back(a * b[i]);
+	}
+	return result;
+}
+
+
 //print meegegeven vector componentsgewijs af
 void print(Vec a) {
 	std::cout << a.x() << ' ' << a.y() << ' ' << a.z() << '\n';
