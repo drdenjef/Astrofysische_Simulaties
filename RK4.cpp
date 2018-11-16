@@ -5,15 +5,17 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <numeric> 
+#include <time.h>
 #include "3DVectClass.h"
 #include "hulpfuncties.h"
 
 
-/*****************************************
-*										 *
-*  Runge-Kutta Method (RK4)   *
-*										 *
-*****************************************/
+/******************************
+*							  *
+*  Runge-Kutta Method (RK4)	  *
+*							  *
+******************************/
 
 
 
@@ -29,8 +31,6 @@ void RK4(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, i
 	}
 	outfile1 << std::endl;
 
-
-
 	// maak een file aan waar de energieën worden bijgehouden
 	std::ofstream outfile2(naam + "_E.txt");
 	outfile2 << std::setprecision(15);
@@ -42,9 +42,15 @@ void RK4(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, i
 	// hou de startenergie van het systeem bij
 	double start_energie = Energie(r, v, m);
 
+	std::vector<double> tijd_iteratie;
+
 	// begint te itereren over het aantal iteraties die je wilt uitvoeren
-	// kan meegegeven worden aan de functie RKF45
+	
+	
+
 	for (int i = 0; i < iteraties; i++) {
+
+		clock_t sstart = clock();
 		
 		double h_var = variabele_h(h, r);
 
@@ -81,6 +87,7 @@ void RK4(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, i
 		r = r + (h_var / 6) * (kr1 + 2 * kr2 + 2 * kr3 + kr4);
 		v = v + (h_var / 6) * (kv1 + 2 * kv2 + 2 * kv3 + kv4);
 
+		tijd_iteratie.push_back((clock() - sstart) / (CLOCKS_PER_SEC/1000));
 
 		for (int j = 0; j < N; j++) {
 			outfile1 << r[j].x() << ' ' << r[j].y() << ' ' << r[j].z() << '\t';
@@ -92,11 +99,14 @@ void RK4(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, i
 	}
 
 	std::cout << "Posities werden bijgehouden in bestand " << naam << ".txt" << std::endl;
-	std::cout << "Energie werd bijgehouden in bestand " << naam << ".txt" << std::endl;
-	std::cout << "Relatieve energiefouten werden bijgehouden in bestand " << naam << ".txt" << std::endl;
+	std::cout << "Energie werd bijgehouden in bestand " << naam << "_E.txt" << std::endl;
+	std::cout << "Relatieve energiefouten werden bijgehouden in bestand " << naam << "_E_err.txt" << std::endl;
 	outfile1.close();
 	outfile2.close();
 	outfile3.close();
-	
 
+	double tijd_gemiddelde;
+	tijd_gemiddelde = accumulate(tijd_iteratie.begin(), tijd_iteratie.end(), 0.0) / tijd_iteratie.size();
+
+	std::cout << tijd_gemiddelde << ' ' << "milliseconden per iteratie" << std::endl;
 }

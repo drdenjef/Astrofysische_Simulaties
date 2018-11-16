@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <numeric> 
 #include "3DVectClass.h"
 #include "hulpfuncties.h"
 
@@ -29,8 +30,6 @@ void RKF45(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 	}
 	outfile1 << std::endl;
 
-
-
 	// maak een file aan waar de energieën worden bijgehouden
 	std::ofstream outfile2(naam + "_E.txt");
 	outfile2 << std::setprecision(15);
@@ -42,9 +41,13 @@ void RKF45(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 	// hou de startenergie van het systeem bij
 	double start_energie = Energie(r, v, m);
 
+	std::vector<double> tijd_iteratie;
+
 	// begint te itereren over het aantal iteraties die je wilt uitvoeren
 	// kan meegegeven worden aan de functie RKF45
 	for (int i = 0; i < iteraties; i++) {
+
+		clock_t sstart = clock();
 
 		double h_var = variabele_h(h, r);
 
@@ -82,8 +85,8 @@ void RKF45(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 		}
 
 		for (int j = 0; j < N; j++) {
-			kr5.push_back(v[j] + h_var * kv4[j]);
-			kv5.push_back(a(m, r + h_var * kr4, j, N));
+			kr5.push_back(v[j] + h_var*kv4[j]);
+			kv5.push_back(a(m, r + h_var*kr4, j, N));
 		}
 
 		for (int j = 0; j < N; j++) {
@@ -92,25 +95,29 @@ void RKF45(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 		}
 
 		// bereken r_n+1 en v_n+1 en onthoud deze woorden voor volgende iteraties
-		r = r + h_var * ((25 / 216)*kr1 + (1408 / 2565)*kr3 + (2197 / 4104)*kr4 - .2*kr5);
-		v = v + h_var * ((25 / 216)*kv1 + (1408 / 2565)*kv3 + (2197 / 4104)*kv4 - .2*kv5);
+		r = r + h_var * ( (25 / 216)*kr1 + (1408 / 2565)*kr3 + (2197 / 4104)*kr4 - .2*kr5 );
+		v = v + h_var * ( (25 / 216)*kv1 + (1408 / 2565)*kv3 + (2197 / 4104)*kv4 - .2*kv5 );
+
+		tijd_iteratie.push_back((clock() - sstart) / (CLOCKS_PER_SEC / 1000));
 
 		for (int j = 0; j < N; j++) {
 			outfile1 << r[j].x() << ' ' << r[j].y() << ' ' << r[j].z() << '\t';
 		}
+
 		outfile1 << std::endl;
 		outfile2 << Energie(r, v, m) << std::endl;
 		outfile3 << error_energie(r, v, m, start_energie) << std::endl;
 	}
 
 	std::cout << "Posities werden bijgehouden in bestand " << naam << ".txt" << std::endl;
-	std::cout << "Energie werd bijgehouden in bestand " << naam << ".txt" << std::endl;
-	std::cout << "Relatieve energiefouten werden bijgehouden in bestand " << naam << ".txt" << std::endl;
+	std::cout << "Energie werd bijgehouden in bestand " << naam << "_E.txt" << std::endl;
+	std::cout << "Relatieve energiefouten werden bijgehouden in bestand " << naam << "_E_err.txt" << std::endl;
 	outfile1.close();
 	outfile2.close();
-	outfile3.close();
+	outfile3.close();	
 
-	
+	double tijd_gemiddelde;
+	tijd_gemiddelde = accumulate(tijd_iteratie.begin(), tijd_iteratie.end(), 0.0) / tijd_iteratie.size();
+
+	std::cout << tijd_gemiddelde << ' ' << "milliseconden per iteratie" << std::endl;
 }
-
-

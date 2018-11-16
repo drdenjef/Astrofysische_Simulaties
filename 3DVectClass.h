@@ -63,7 +63,11 @@ public:
 
 	friend std::vector<Vec> operator-(std::vector<Vec> a, std::vector<Vec> b);
 
+	friend std::vector<Vec> operator+(std::vector<Vec> a, Vec b);
+
 	friend std::vector<Vec> operator*(double a, std::vector<Vec> b);
+
+	friend std::vector<Vec> operator/(std::vector<Vec> b, double a);
 
 	//print meegegeven vector componentsgewijs af
 	friend void print(Vec a);
