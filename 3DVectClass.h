@@ -4,6 +4,7 @@
 #include <cmath>
 #include <fstream>
 #include <iomanip>
+#include <vector>
 #include <iostream>
 
 class Vec {
@@ -57,6 +58,12 @@ public:
 	friend Vec operator/(Vec a, double s);
 
 	friend Vec operator*(Vec a, Vec b);
+
+	friend std::vector<Vec> operator+(std::vector<Vec> a, std::vector<Vec> b);
+
+	friend std::vector<Vec> operator-(std::vector<Vec> a, std::vector<Vec> b);
+
+	friend std::vector<Vec> operator*(double a, std::vector<Vec> b);
 
 	//print meegegeven vector componentsgewijs af
 	friend void print(Vec a);
