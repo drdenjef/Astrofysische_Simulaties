@@ -53,35 +53,42 @@ void RK4(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, i
 		clock_t sstart = clock();
 		
 		double h_var = variabele_h(h, r);
+		std::vector<Vec> kr1;
 		std::vector<Vec> kv1;
+		std::vector<Vec> kr2;
 		std::vector<Vec> kv2;
+		std::vector<Vec> kr3;
 		std::vector<Vec> kv3;
 		std::vector<Vec> kr4;
 		std::vector<Vec> kv4;
 
-		std::vector<Vec> kr1 = v[j];
-		for (int j = 0; j < N; j++) {	
+
+		for (int j = 0; j < N; j++) {
+			kr1.push_back(v[j]);
 			kv1.push_back(a(m, r, j, N));
 		}
 		
-		std::vector<Vec> kr2 = v[j] + .5*h_var*kv1[j];
+
 		for (int j = 0; j < N; j++) {
+			kr2.push_back(v[j] + .5*h_var*kv1[j]);
 			kv2.push_back(a(m, r + .5*h_var*kr1, j, N));
 		}
 
-		std::vector<Vec> kr3 = v[j] + .5*h_var*kv2[j];
+
 		for (int j = 0; j < N; j++) {
+			kr3.push_back(v[j] + .5*h_var*kv2[j]);
 			kv3.push_back(a(m, r + .5*h_var*kr2, j, N));
 		}
 
-		std::vector<Vec> kr4 = v[j] + h_var * kv3[j];
-		for (int j = 0; j < N; j++) {	
+
+		for (int j = 0; j < N; j++) {
+			kr4.push_back(v[j] + h_var * kv3[j]);
 			kv4.push_back(a(m, r + h_var * kr3, j, N));
 		}
 		
 
-		r += (h_var / 6) * (kr1 + 2 * kr2 + 2 * kr3 + kr4);
-		v += (h_var / 6) * (kv1 + 2 * kv2 + 2 * kv3 + kv4);
+		r = r + (h_var / 6) * (kr1 + 2 * kr2 + 2 * kr3 + kr4);
+		v = v + (h_var / 6) * (kv1 + 2 * kv2 + 2 * kv3 + kv4);
 
 		tijd_iteratie.push_back((clock() - sstart) / (CLOCKS_PER_SEC/1000));
 
