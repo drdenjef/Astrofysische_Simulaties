@@ -71,7 +71,7 @@ int main() {
 
 		//berekent tijd hoe lang dit duurde
 		clock_t tStart = clock();
-		alle_posities(begin_massas, begin_posities, begin_snelheden, aantal, iteraties, h, optie, bestand_naam);
+		alle_posities(begin_massas, begin_posities, begin_snelheden, aantal, iteraties, h, integratie, bestand_naam);
 		printf("Time taken: %.2fs\n", (double)(clock() - tStart) / CLOCKS_PER_SEC);
 
 	}
