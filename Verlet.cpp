@@ -51,9 +51,9 @@ void Verlet(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N
 		outfile3 << error_energie(r, v, m, start_energie) << std::endl;
 	}
 
-	std::cout << "Posities werden bijgehouden in bestand " << naam << ".txt" << std::endl;
-	std::cout << "Energie werd bijgehouden in bestand " << naam << ".txt" << std::endl;
-	std::cout << "Relatieve energiefouten werden bijgehouden in bestand " << naam << ".txt" << std::endl;
+	std::cout << "Posities werden bijgehouden in bestand " << naam << "_V.txt" << std::endl;
+	std::cout << "Energie werd bijgehouden in bestand " << naam << "_V_E.txt" << std::endl;
+	std::cout << "Relatieve energiefouten werden bijgehouden in bestand " << naam << "_V_E_err.txt" << std::endl;
 	outfile1.close();
 	outfile2.close();
 	outfile3.close();

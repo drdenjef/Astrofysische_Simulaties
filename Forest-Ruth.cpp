@@ -86,8 +86,8 @@ void ForestRuth(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, i
 	outfile1.close();
 	outfile2.close();
 	outfile3.close();
-	std::cout << "Posities werden bijgehouden in bestand " << naam <<  ".txt" << std::endl;
-	std::cout << "Energie werd bijgehouden in bestand " << naam << "_E.txt" << std::endl;
-	std::cout << "Relatieve energiefouten werden bijgehouden in bestand " << naam << "_E_err.txt" << std::endl;
+	std::cout << "Posities werden bijgehouden in bestand " << naam <<  "_FR.txt" << std::endl;
+	std::cout << "Energie werd bijgehouden in bestand " << naam << "_FR_E.txt" << std::endl;
+	std::cout << "Relatieve energiefouten werden bijgehouden in bestand " << naam << "_FR_E_err.txt" << std::endl;
 	
 }

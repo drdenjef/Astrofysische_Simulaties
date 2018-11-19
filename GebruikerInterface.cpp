@@ -154,6 +154,7 @@ int type_integratie_cijfer() {
 	cout << "Typ 2 voor ingebedde RK" << endl;
 	cout << "Typ 3 voor Verlet" << endl;
 	cout << "Typ 4 voor Forest-Ruth" << endl;
+	cout << "Typ 5 voor alle methodes" << endl;
 	string methode = lees_input();
 
 	//kijkt of input een integer is
@@ -169,7 +170,7 @@ int type_integratie_cijfer() {
 	int nummer_methode = std::stoi(methode, &sz);
 
 	//kijkt of de methode bestaat
-	bool is_methode = nummer_methode == 1 || nummer_methode == 2 || nummer_methode == 3 || nummer_methode == 4;
+	bool is_methode = nummer_methode == 1 || nummer_methode == 2 || nummer_methode == 3 || nummer_methode == 4 || nummer_methode == 5;
 	if (!is_methode) {
 		cout << "Error, geen geldige input" << endl;
 		return type_integratie_cijfer();
@@ -186,6 +187,7 @@ std::string type_integratie_naam(int i) {
 	integrators[2] = "ingebedde RK.";
 	integrators[3] = "Verlet.";
 	integrators[4] = "Forest-Ruth.";
+	integrators[5] = "Alles.";
 
 	return integrators[i];
 
@@ -232,6 +234,13 @@ void alle_posities(vector<double> m, vector<Vec>r, vector<Vec> v, int N, int ite
 
 	//Forest-Ruth
 	if (methode == 4) {
+		ForestRuth(m, r, v, N, iter, h, naam);
+	}
+
+	if (methode == 5) {
+		RK4(m, r, v, N, iter, h, naam);
+		RKF45(m, r, v, N, iter, h, naam);
+		Verlet(m, r, v, N, iter, h, naam);
 		ForestRuth(m, r, v, N, iter, h, naam);
 	}
 
