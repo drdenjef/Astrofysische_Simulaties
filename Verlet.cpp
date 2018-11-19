@@ -13,7 +13,7 @@ using namespace std;
 void Verlet(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, int iteraties, double h, std::string naam) {
 
 	// maak een file aan waar de posities van de deeltjes wordt bijgehouden
-	std::ofstream outfile1(naam + ".txt");
+	std::ofstream outfile1(naam + "_V.txt");
 	outfile1 << std::setprecision(15);
 
 	// beginposities meegeven
@@ -23,11 +23,11 @@ void Verlet(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N
 	outfile1 << std::endl;
 
 	// maak een file aan waar de energieën worden bijgehouden
-	std::ofstream outfile2(naam + "_E.txt");
+	std::ofstream outfile2(naam + "_V_E.txt");
 	outfile2 << std::setprecision(15);
 
 	// maak een file aan waar de relatieve fouten van de energieën worden bijgehouden
-	std::ofstream outfile3(naam + "_E_err.txt");
+	std::ofstream outfile3(naam + "_V_E_err.txt");
 	outfile3 << std::setprecision(15);
 
 	// hou de startenergie van het systeem bij
