@@ -28,11 +28,11 @@ void ForestRuth(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, i
 	}
 	outfile1 << std::endl;
 
-	// maak een file aan waar de energieën worden bijgehouden
+	// maak een file aan waar de energieÃ«n worden bijgehouden
 	std::ofstream outfile2(naam +"_FR_E.txt");
 	outfile2 << std::setprecision(15);
 
-	// maak een file aan waar de relatieve fouten van de energieën worden bijgehouden
+	// maak een file aan waar de relatieve fouten van de energieÃ«n worden bijgehouden
 	std::ofstream outfile3(naam +"_FR_E_err.txt");
 	outfile3 << std::setprecision(15);
 
@@ -42,42 +42,51 @@ void ForestRuth(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, i
 
 	double theta = 1 / (2 - pow(2, 1 / 3));
 
+	std::vector<Vec> acc;
 	// iteratie over aantal integraties
 	for (int k = 0; k < iteraties; k++) {
 
 		//check of variabele h nodig is
-		double h_var = variabele_h(h, r);
+		double h_var = h;
 
 		//iteratie over aantal deeltjes
 		for (int i = 0; i < N; i++) {
 			// substep 1
-			
 			r[i] = r[i] + (0.5*theta*h_var)*v[i];
-
+		}
+		for (int i = 0; i < N; i++) {
 			// berekenen van de versnelling
-			Vec acc = a(m, r, i, N);
-
+			acc.push_back(a(m, r, i, N));
+		}
+		for (int i = 0; i < N; i++) {
 			// substeps 2 & 3
-			v[i] = v[i] + theta * h_var*acc;
+			v[i] = v[i] + theta * h_var*acc[i];
 			r[i] = r[i] + 0.5*(1 - theta)*h_var*v[i];
+		}
+		for (int i = 0; i < N; i++) {
 			// berekenen van de versnelling
-			acc = a(m, r, i, N);
-
+			acc[i] = a(m, r, i, N);
+		}
+		for (int i = 0; i < N; i++) {
 			//substeps 4 & 5
-			v[i] = v[i] + ((1 - 2 * theta) * h_var) * acc;
+			v[i] = v[i] + ((1 - 2 * theta) * h_var) * acc[i];
 			r[i] = r[i] + 0.5*(1 - theta)*h_var*v[i];
-
+		}
+		for (int i = 0; i < N; i++) {
 			// berekenen van de versnelling
-			acc = a(m, r, i, N);
-
-			// substeps 6 & 7
-			v[i] = v[i] + theta * h_var*acc;
+			acc[i] = a(m, r, i, N);
+		}
+		for (int i = 0; i < N; i++) {
+				// substeps 6 & 7
+			v[i] = v[i] + theta * h_var*acc[i];
 			r[i] = r[i] + 0.5*theta*h_var*v[i];
 
 			//uitschrijven naar file
 			outfile1 << r[i].x() << ' ' << r[i].y() << ' ' << r[i].z() << '\t';
 		}
 		outfile1 << std::endl;
+
+
 
 		//uitschrijven van energie en error_energie
 		outfile2 << Energie(r, v, m) << std::endl;
