@@ -34,6 +34,11 @@ int main() {
 	bool load_init_cond = aanwezige_begincondities();
 	//maakt duidelijk wat de keuze was
 	cout << endl << "U heeft ";
+
+	//maak alle objecten aan, zodat ze na de ifelse nog gebruikt kunnen worden
+	vector<Vec> begin_posities;
+	vector<Vec> begin_snelheden;
+	vector<double> begin_massas;
 	if (load_init_cond == 1) {
 		cout << "Ja gekozen." << endl;
 
@@ -45,43 +50,45 @@ int main() {
 		cout << endl << "U heeft " << lijst_begincond_namen()[aantal-2][optie] << " gekozen." << endl;
 
 		//vraag de gewenste begin condities op
-		vector<Vec> begin_posities = posities(aantal, optie);
-		vector<Vec> begin_snelheden = snelheden(aantal, optie);
-		vector<double> begin_massas = massas(aantal, optie);
+		begin_posities = posities(aantal, optie);
+		begin_snelheden = snelheden(aantal, optie);
+		begin_massas = massas(aantal, optie);
 
-		//schrijft beginposities uit
-		cout << "Dit zijn de startposities" << endl;
-		print_posities(begin_posities);
-
-		//schrijft beginsnelheden uit
-		cout << "Dit zijn de startsnelheden" << endl;
-		print_snelheden(begin_snelheden);
-
-		//schrijft beginmassas uit
-		cout << "Dit zijn de startmassas" << endl;
-		print_massas(begin_massas);
-
-		//vraagt naam bestand voor wegschrijven op
-		cout << "Geef naam naar waar de posities weggeschreven wordt op: ";
-		string bestand_naam = lees_input();
-		cout << '\n' << "De gekozen naam is: " << bestand_naam << endl;
-
-		//nu derigeren naar juiste methode, dit geeft een vector van vector van Vec's terug, eerste lengte is aantal iteraties, tweede is aantal deeltjes, derde zijn de posities
-		//dit komt achteraf buiten deze if, maar moet nu nog binnen
-
-		//berekent tijd hoe lang dit duurde
-		clock_t tStart = clock();
-		alle_posities(begin_massas, begin_posities, begin_snelheden, aantal, iteraties, h, integratie, bestand_naam);
-		printf("Time taken: %.2fs\n", (double)(clock() - tStart) / CLOCKS_PER_SEC);
-
+	
 	}
 	else {
-		cout << "Neen gekozen." << endl << endl;
+		cout << "Neen gekozen." << endl;
+
+		//vraag de gewenste begin condities op
+		begin_posities = vraag_posities(aantal);
+		begin_snelheden = vraag_snelheden(aantal);
+		begin_massas = vraag_massas(aantal);
 	}
 	
+	//schrijft beginposities uit
+	cout << "Dit zijn de startposities" << endl;
+	print_posities(begin_posities);
 
-	
+	//schrijft beginsnelheden uit
+	cout << "Dit zijn de startsnelheden" << endl;
+	print_snelheden(begin_snelheden);
 
+	//schrijft beginmassas uit
+	cout << "Dit zijn de startmassas" << endl;
+	print_massas(begin_massas);
+
+	//vraagt naam bestand voor wegschrijven op
+	cout << "Geef naam naar waar de posities weggeschreven wordt op: ";
+	string bestand_naam = lees_input();
+	cout << '\n' << "De gekozen naam is: " << bestand_naam << endl;
+
+	//nu derigeren naar juiste methode, dit geeft een vector van vector van Vec's terug, eerste lengte is aantal iteraties, tweede is aantal deeltjes, derde zijn de posities
+	//dit komt achteraf buiten deze if, maar moet nu nog binnen
+
+	//berekent tijd hoe lang dit duurde
+	clock_t tStart = clock();
+	alle_posities(begin_massas, begin_posities, begin_snelheden, aantal, iteraties, h, integratie, bestand_naam);
+	printf("Time taken: %.2fs\n", (double)(clock() - tStart) / CLOCKS_PER_SEC);
 
 
 	getchar(); 
