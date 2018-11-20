@@ -21,13 +21,14 @@ std::vector<std::map<int, std::string>> lijst_begincond_namen() {
 	std::map<int, std::string> map7;
 
 	//voor elke dimentie, definieer wat namen voor initiele begincondities
-	map2[1] = "2deeltjes_1";
-	map2[2] = "2deeltjes_2";
+	map2[1] = "dubbelster";
+	map2[2] = "zon_aarde";
 	map2[3] = "2deeltjes_3";
 
-	map3[1] = "3deeltjes_1";
-	map3[2] = "3deeltjes_2";
-	map3[3] = "3deeltjes_3";
+	map3[1] = "Burraus_probleem";
+	map3[2] = "Sitnikov_probleem";
+	map3[3] = "3B_A";
+	//map[3] = "3deeltjes_3.txt";
 
 	map4[1] = "4deeltjes_1";
 	map4[2] = "4deeltjes_2";
@@ -91,29 +92,33 @@ std::vector<std::vector<std::vector<std::string>>> lijst_begincond() {
 	}
 
 	//nu alle posities zijn aangemaakt, de echte namen erin steken (doe expliciet voor modaliteit namen)
-	bestanden_beginposities[0][0][0] = "2_1_pos.txt";
-	bestanden_beginposities[0][0][1] = "2_1_snel.txt";
-	bestanden_beginposities[0][0][2] = "2_1_mas.txt";
+	bestanden_beginposities[0][0][0] = "dubbelster_pos.txt";
+	bestanden_beginposities[0][0][1] = "dubbelster_snel.txt";
+	bestanden_beginposities[0][0][2] = "dubbelster_mas.txt";
 
-	bestanden_beginposities[0][1][0] = "2_2_pos.txt";
-	bestanden_beginposities[0][1][1] = "2_2_snel.txt";
-	bestanden_beginposities[0][1][2] = "2_2_mas.txt";
+	bestanden_beginposities[0][1][0] = "zon_aarde_pos.txt";
+	bestanden_beginposities[0][1][1] = "zon_aarde_snel.txt";
+	bestanden_beginposities[0][1][2] = "zon_aarde_mas.txt";
 
 	bestanden_beginposities[0][2][0] = "2_3_pos.txt";
 	bestanden_beginposities[0][2][1] = "2_3_snel.txt";
 	bestanden_beginposities[0][2][2] = "2_3_mas.txt";
 
-	bestanden_beginposities[1][0][0] = "3_1_pos.txt";
-	bestanden_beginposities[1][0][1] = "3_1_snel.txt";
-	bestanden_beginposities[1][0][2] = "3_1_mas.txt";
+	bestanden_beginposities[1][0][0] = "Burraus_probleem_pos.txt";
+	bestanden_beginposities[1][0][1] = "Burraus_probleem_snel.txt";
+	bestanden_beginposities[1][0][2] = "Burraus_probleem_mas.txt";
 
-	bestanden_beginposities[1][1][0] = "3_2_pos.txt";
-	bestanden_beginposities[1][1][1] = "3_2_snel.txt";
-	bestanden_beginposities[1][1][2] = "3_2_mas.txt";
+	bestanden_beginposities[1][1][0] = "sitnikov_pos.txt";
+	bestanden_beginposities[1][1][1] = "sitnikov_snel.txt";
+	bestanden_beginposities[1][1][2] = "sitnikov_mas.txt";
 
-	bestanden_beginposities[1][2][0] = "3_3_pos.txt";
-	bestanden_beginposities[1][2][1] = "3_3_snel.txt";
-	bestanden_beginposities[1][2][2] = "3_3_mas.txt";
+	bestanden_beginposities[1][2][0] = "3B_A_pos.txt";
+	bestanden_beginposities[1][2][1] = "3B_A_snel.txt";
+	bestanden_beginposities[1][2][2] = "3B_A_mas.txt";
+	
+	//bestanden_beginposities[1][2][0] = "deeltjes_3_pos.txt";
+	//bestanden_beginposities[1][2][1] = "deeltjes_3_snel.txt";
+	//bestanden_beginposities[1][2][2] = "deeltjes_3_mas.txt";
 
 	bestanden_beginposities[2][0][0] = "4_1_pos.txt";
 	bestanden_beginposities[2][0][1] = "4_1_snel.txt";
@@ -178,7 +183,7 @@ int nummer_beginconditie(int aantal) {
 
 	//leest input in
 	string keuze = lees_input();
-	
+
 	//controleert of input een integer is
 	if (!input_is_integer(keuze)) {
 		cout << "Error, dit is geen van bovenstaande opties." << endl;
@@ -209,7 +214,7 @@ std::vector<Vec> posities(int aantal_deeltjes, int beginconditie) {
 	//opzoeken gewenste begin condities
 	//-2 wegens maar info vanaf 2 deeltjes
 	//zelfde voor optie (vraag vanaf 1 maar index vanaf 0)
-	string positie = lijst_begincond()[aantal_deeltjes-2][beginconditie-1][0];
+	string positie = lijst_begincond()[aantal_deeltjes - 2][beginconditie - 1][0];
 
 	//maak de stream klaar
 	std::fstream myfile(positie, std::ios_base::in);
@@ -224,7 +229,7 @@ std::vector<Vec> posities(int aantal_deeltjes, int beginconditie) {
 	{
 		//steek ze dan in vectorlijst met alle posities
 		posities.push_back(Vec(pos_x, pos_y, pos_z));
-		
+
 	}
 
 	//geef lijst met posities terug
@@ -241,7 +246,7 @@ std::vector<Vec> snelheden(int aantal_deeltjes, int beginconditie) {
 	//opzoeken gewenste begin condities
 	//-2 wegens maar info vanaf 2 deeltjes
 	//zelfde voor optie (vraag vanaf 1 maar index vanaf 0)
-	string snelheid = lijst_begincond()[aantal_deeltjes-2][beginconditie-1][1];
+	string snelheid = lijst_begincond()[aantal_deeltjes - 2][beginconditie - 1][1];
 
 	//maak de stream klaar
 	std::fstream myfile(snelheid, std::ios_base::in);
@@ -272,7 +277,7 @@ std::vector<double> massas(int aantal_deeltjes, int beginconditie) {
 	//opzoeken gewenste begin condities
 	//-2 wegens maar info vanaf 2 deeltjes
 	//zelfde voor optie (vraag vanaf 1 maar index vanaf 0)
-	string massa = lijst_begincond()[aantal_deeltjes-2][beginconditie-1][2];
+	string massa = lijst_begincond()[aantal_deeltjes - 2][beginconditie - 1][2];
 
 	//maak de stream klaar
 	std::fstream myfile(massa, std::ios_base::in);
@@ -319,4 +324,3 @@ void print_massas(std::vector<double> begin_massas) {
 	}
 	cout << endl;
 }
-
