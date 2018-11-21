@@ -43,6 +43,33 @@ void RKF45(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 
 	std::vector<double> tijd_iteratie;
 
+	// constanten definieren
+
+	double a21 = .25;
+
+	double a31 = 3. / 32.;
+	double a32 = 9. / 32.;
+
+	double a41 = 1932. / 2197.;
+	double a42 = -7200. / 2197.;
+	double a43 = 7296. / 2197.;
+
+	double a51 = 439. / 216.;
+	double a52 = -8.;
+	double a53 = 3680. / 513.;
+	double a54 = -845. / 4104.;
+
+	double a61 = -8. / 27.;
+	double a62 = 2.;
+	double a63 = -3544. / 2565.;
+	double a64 = 1859. / 4104.;
+	double a65 = -11. / 40.;
+
+	double b1 = 25. / 216.;
+	double b3 = 1408. / 2565.;
+	double b4 = 2197. / 4104.;
+	double b5 = -0.2;
+
 	// begint te itereren over het aantal iteraties die je wilt uitvoeren
 	// kan meegegeven worden aan de functie RKF45
 	for (int i = 0; i < iteraties; i++) {
@@ -52,16 +79,17 @@ void RKF45(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 		clock_t sstart = clock();
 
 		std::vector<Vec> kr1;
-		std::vector<Vec> kv1;
 		std::vector<Vec> kr2;
-		std::vector<Vec> kv2;
 		std::vector<Vec> kr3;
-		std::vector<Vec> kv3;
 		std::vector<Vec> kr4;
-		std::vector<Vec> kv4;
 		std::vector<Vec> kr5;
-		std::vector<Vec> kv5;
 		std::vector<Vec> kr6;
+
+		std::vector<Vec> kv1;
+		std::vector<Vec> kv2;
+		std::vector<Vec> kv3;
+		std::vector<Vec> kv4;
+		std::vector<Vec> kv5;
 		std::vector<Vec> kv6;
 
 		for (int j = 0; j < N; j++) {
@@ -71,32 +99,32 @@ void RKF45(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 
 		for (int j = 0; j < N; j++) {
 			kr2.push_back(h_var*(v[j] + .25*kv1[j]));
-			kv2.push_back(h_var*a(m, r + .25*kr1, j, N));
+			kv2.push_back(h_var*a(m, r + a21*kr1, j, N));
 		}
 
 		for (int j = 0; j < N; j++) {
-			kr3.push_back(h_var*(v[j] + (3. / 32.)*kv1[j] + (3. / 8.)*kv2[j]));
-			kv3.push_back(h_var*a(m, r + (3./32.)*kr1 + (3. / 8.)*kr2, j, N));
+			kr3.push_back(h_var*(v[j] + a31*kv1[j] + a32*kv2[j]));
+			kv3.push_back(h_var*a(m, r + a31*kr1 + a32*kr2, j, N));
 		}
 
 		for (int j = 0; j < N; j++) {
-			kr4.push_back(h_var*(v[j] + (1932./2197.)*kv1[j] - ( 7200./2197.)*kv2[j] + (7296./2197.)*kv3[j]));
-			kv4.push_back(h_var*a(m, r + (1932. / 2197.)*kr1 - (7200. / 2197.)*kr2 + (7296. / 2197.)*kr3, j, N));
+			kr4.push_back(h_var*(v[j] + a41*kv1[j] + a42*kv2[j] + a43*kv3[j]));
+			kv4.push_back(h_var*a(m, r + a41*kr1 + a42*kr2 + a43*kr3, j, N));
 		}
 
 		for (int j = 0; j < N; j++) {
-			kr5.push_back(h_var*(v[j] + (439./216.)*kv1[j] - 8.*kv2[j] + (3680./513.)*kv3[j] - (845./4104.)*kv4[j]));
-			kv5.push_back(h_var*a(m, r + (439. / 216.)*kr1 - 8.*kr2 + (3680. / 513.)*kr3 - (845. / 4104.)*kr4, j, N));
+			kr5.push_back(h_var*(v[j] + a51*kv1[j] + a52*kv2[j] + a53*kv3[j] + a54*kv4[j]));
+			kv5.push_back(h_var*a(m, r + a51*kr1 + a52*kr2 + a53*kr3 + a54*kr4, j, N));
 		}
 
 		for (int j = 0; j < N; j++) {
-			kr6.push_back(h_var*(v[j] - (8./27.)*kv1[j] + 2.*kv2[j] - (3544./2565.)*kv3[j] + (1859./4104.)*kv4[j] - (11./40.)*kv5[j]));
-			kv6.push_back(h_var*a(m, r - (8. / 27.)*kr1 + 2.*kr2 - (3544. / 2565.)*kr3 + (1859. / 4104.)*kr4 - (11. / 40.)*kr5, j, N));
+			kr6.push_back(h_var*(v[j] + a61*kv1[j] + a62*kv2[j] + a63*kv3[j] + a64*kv4[j] + a65*kv5[j]));
+			kv6.push_back(h_var*a(m, r + a61*kr1 + a62*kr2 + a63*kr3 + a64*kr4 + a65*kr5, j, N));
 		}
 
 		// bereken r_n+1 en v_n+1 en onthoud deze woorden voor volgende iteraties
-		r = r +  (25. / 216.)*kr1 + (1408. / 2565.)*kr3 + (2197. / 4104.)*kr4 - .2*kr5 ;
-		v = v +  (25. / 216.)*kv1 + (1408. / 2565.)*kv3 + (2197. / 4104.)*kv4 - .2*kv5 ;
+		r = r +  b1*kr1 + b3*kr3 + b4*kr4 - b5*kr5 ;
+		v = v +  b1*kv1 + b3*kv3 + b4*kv4 - b5*kv5 ;
 
 		tijd_iteratie.push_back((clock() - sstart) / (CLOCKS_PER_SEC / 1000));
 
