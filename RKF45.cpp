@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <numeric> 
 #include "3DVectClass.h"
 #include "hulpfuncties.h"
 
@@ -29,8 +30,6 @@ void RKF45(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 	}
 	outfile1 << std::endl;
 
-
-
 	// maak een file aan waar de energieën worden bijgehouden
 	std::ofstream outfile2(naam + "_RKF45_E.txt");
 	outfile2 << std::setprecision(15);
@@ -42,11 +41,15 @@ void RKF45(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 	// hou de startenergie van het systeem bij
 	double start_energie = Energie(r, v, m);
 
+	std::vector<double> tijd_iteratie;
+
 	// begint te itereren over het aantal iteraties die je wilt uitvoeren
 	// kan meegegeven worden aan de functie RKF45
 	for (int i = 0; i < iteraties; i++) {
 
 		double h_var = variabele_h(h, r);
+
+		clock_t sstart = clock();
 
 		std::vector<Vec> kr1;
 		std::vector<Vec> kv1;
@@ -62,42 +65,46 @@ void RKF45(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 		std::vector<Vec> kv6;
 
 		for (int j = 0; j < N; j++) {
-			kr1.push_back(v[j]);
-			kv1.push_back(a(m, r, j, N));
+			kr1.push_back(h_var*v[j]);
+			kv1.push_back(h_var*a(m, r, j, N));
 		}
 
 		for (int j = 0; j < N; j++) {
-			kr2.push_back(v[j] + .25*h_var*kv1[j]);
-			kv2.push_back(a(m, r + .25*h_var*kr1, j, N));
+			kr2.push_back(h_var*(v[j] + .25*kv1[j]));
+			kv2.push_back(h_var*a(m, r + .25*kr1, j, N));
 		}
 
 		for (int j = 0; j < N; j++) {
-			kr3.push_back(v[j] + (3 / 8)*h_var*kv2[j]);
-			kv3.push_back(a(m, r + (3 / 8)*h_var*kr2, j, N));
+			kr3.push_back(h_var*(v[j] + (3. / 32.)*kv1[j] + (3. / 8.)*kv2[j]));
+			kv3.push_back(h_var*a(m, r + (3./32.)*kr1 + (3. / 8.)*kr2, j, N));
 		}
 
 		for (int j = 0; j < N; j++) {
-			kr4.push_back(v[j] + (12 / 13)*h_var*kv3[j]);
-			kv4.push_back(a(m, r + (12 / 13)*h_var*kr3, j, N));
+			kr4.push_back(h_var*(v[j] + (1932./2197.)*kv1[j] - ( 7200./2197.)*kv2[j] + (7296./2197.)*kv3[j]));
+			kv4.push_back(h_var*a(m, r + (1932. / 2197.)*kr1 - (7200. / 2197.)*kr2 + (7296. / 2197.)*kr3, j, N));
 		}
 
 		for (int j = 0; j < N; j++) {
-			kr5.push_back(v[j] + h_var * kv4[j]);
-			kv5.push_back(a(m, r + h_var * kr4, j, N));
+			kr5.push_back(h_var*(v[j] + (439./216.)*kv1[j] - 8.*kv2[j] + (3680./513.)*kv3[j] - (845./4104.)*kv4[j]));
+			kv5.push_back(h_var*a(m, r + (439. / 216.)*kr1 - 8.*kr2 + (3680. / 513.)*kr3 - (845. / 4104.)*kr4, j, N));
 		}
 
 		for (int j = 0; j < N; j++) {
-			kr6.push_back(v[j] + .5*h_var*kv5[j]);
-			kv6.push_back(a(m, r + .5*h_var*kr5, j, N));
+			kr6.push_back(h_var*(v[j] - (8./27.)*kv1[j] + 2.*kv2[j] - (3544./2565.)*kv3[j] + (1859./4104.)*kv4[j] - (11./40.)*kv5[j]));
+			kv6.push_back(h_var*a(m, r - (8. / 27.)*kr1 + 2.*kr2 - (3544. / 2565.)*kr3 + (1859. / 4104.)*kr4 - (11. / 40.)*kr5, j, N));
 		}
 
 		// bereken r_n+1 en v_n+1 en onthoud deze woorden voor volgende iteraties
-		r = r + h_var * ((25 / 216)*kr1 + (1408 / 2565)*kr3 + (2197 / 4104)*kr4 - .2*kr5);
-		v = v + h_var * ((25 / 216)*kv1 + (1408 / 2565)*kv3 + (2197 / 4104)*kv4 - .2*kv5);
+		r = r +  (25. / 216.)*kr1 + (1408. / 2565.)*kr3 + (2197. / 4104.)*kr4 - .2*kr5 ;
+		v = v +  (25. / 216.)*kv1 + (1408. / 2565.)*kv3 + (2197. / 4104.)*kv4 - .2*kv5 ;
+
+		tijd_iteratie.push_back((clock() - sstart) / (CLOCKS_PER_SEC / 1000));
+
 
 		for (int j = 0; j < N; j++) {
 			outfile1 << r[j].x() << ' ' << r[j].y() << ' ' << r[j].z() << '\t';
 		}
+
 		outfile1 << std::endl;
 		outfile2 << Energie(r, v, m) << std::endl;
 		outfile3 << error_energie(r, v, m, start_energie) << std::endl;
@@ -108,7 +115,10 @@ void RKF45(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 	std::cout << "Relatieve energiefouten werden bijgehouden in bestand " << naam << "_RKF45_E_err.txt" << std::endl;
 	outfile1.close();
 	outfile2.close();
-	outfile3.close();
+	outfile3.close();	
 
+	double tijd_gemiddelde;
+	tijd_gemiddelde = accumulate(tijd_iteratie.begin(), tijd_iteratie.end(), 0.0) / tijd_iteratie.size();
 
+	std::cout << tijd_gemiddelde << ' ' << "milliseconden per iteratie" << std::endl;
 }
