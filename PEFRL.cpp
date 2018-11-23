@@ -38,8 +38,6 @@ void PEFRL(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 	// hou de startenergie van het systeem bij
 	double start_energie = Energie(r, v, m);
 
-	double theta = 1 / (2 - pow(2, 1 / 3));
-
 	double lambda = -0.2123418310626054;
 	double xi = 0.1786178958448091;
 	double chi = -0.06626458266981849;
@@ -48,13 +46,10 @@ void PEFRL(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 	// iteratie over aantal integraties
 	for (int k = 0; k < iteraties; k++) {
 
-		//check of variabele h nodig is
-		double h_var = h;
-
 		//iteratie over aantal deeltjes
 		for (int i = 0; i < N; i++) {
 			// substep 1
-			r[i] = r[i] + (xi*theta*h_var)*v[i];
+			r[i] = r[i] + (xi*h)*v[i];
 		}
 		for (int i = 0; i < N; i++) {
 			// berekenen van de versnelling
@@ -62,8 +57,8 @@ void PEFRL(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 		}
 		for (int i = 0; i < N; i++) {
 			// substeps 2 & 3
-			v[i] = v[i] + 0.5*(1 - 2 * lambda)* h_var*acc[i];
-			r[i] = r[i] + chi * h_var*v[i];
+			v[i] = v[i] + 0.5*(1. - 2. * lambda)* h*acc[i];
+			r[i] = r[i] + chi * h*v[i];
 		}
 		for (int i = 0; i < N; i++) {
 			// berekenen van de versnelling
@@ -71,8 +66,8 @@ void PEFRL(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 		}
 		for (int i = 0; i < N; i++) {
 			//substeps 4 & 5
-			v[i] = v[i] + (lambda * h_var) * acc[i];
-			r[i] = r[i] + (1 - 2 * (chi + xi))*h_var*v[i];
+			v[i] = v[i] + (lambda * h) * acc[i];
+			r[i] = r[i] + (1. - 2. * (chi + xi))*h*v[i];
 		}
 		for (int i = 0; i < N; i++) {
 			// berekenen van de versnelling
@@ -80,8 +75,8 @@ void PEFRL(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 		}
 		for (int i = 0; i < N; i++) {
 			// substeps 6 & 7
-			v[i] = v[i] + (lambda * h_var)*acc[i];
-			r[i] = r[i] + chi * h_var*v[i];
+			v[i] = v[i] + (lambda * h)*acc[i];
+			r[i] = r[i] + chi * h*v[i];
 		}
 		for (int i = 0; i < N; i++) {
 			// berekenen van de versnelling
@@ -89,8 +84,8 @@ void PEFRL(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 		}
 		for (int i = 0; i < N; i++) {
 			// substeps 8 & 9
-			v[i] = v[i] + 0.5*(1 - 2 * lambda)* h_var*acc[i];
-			r[i] = r[i] + (xi*theta*h_var)*v[i];
+			v[i] = v[i] + 0.5*(1. - 2. * lambda)* h*acc[i];
+			r[i] = r[i] + (xi*h)*v[i];
 
 			//uitschrijven naar file
 			outfile1 << r[i].x() << ' ' << r[i].y() << ' ' << r[i].z() << '\t';
