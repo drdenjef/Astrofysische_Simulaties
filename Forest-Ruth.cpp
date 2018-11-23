@@ -45,34 +45,31 @@ void ForestRuth(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, i
 	// iteratie over aantal integraties
 	for (int k = 0; k < iteraties; k++) {
 
-		//check of variabele h nodig is
-		double h_var = variabele_h(h, r);
-
 		//iteratie over aantal deeltjes
 		for (int i = 0; i < N; i++) {
 			// substep 1
 			
-			r[i] = r[i] + (0.5*theta*h_var)*v[i];
+			r[i] = r[i] + (0.5*theta*h)*v[i];
 
 			// berekenen van de versnelling
 			Vec acc = a(m, r, i, N);
 
 			// substeps 2 & 3
-			v[i] = v[i] + theta * h_var*acc;
-			r[i] = r[i] + 0.5*(1 - theta)*h_var*v[i];
+			v[i] = v[i] + theta * h*acc;
+			r[i] = r[i] + 0.5*(1. - theta)*h*v[i];
 			// berekenen van de versnelling
 			acc = a(m, r, i, N);
 
 			//substeps 4 & 5
-			v[i] = v[i] + ((1 - 2 * theta) * h_var) * acc;
-			r[i] = r[i] + 0.5*(1 - theta)*h_var*v[i];
+			v[i] = v[i] + ((1. - 2 * theta) * h) * acc;
+			r[i] = r[i] + 0.5*(1. - theta)*h*v[i];
 
 			// berekenen van de versnelling
 			acc = a(m, r, i, N);
 
 			// substeps 6 & 7
-			v[i] = v[i] + theta * h_var*acc;
-			r[i] = r[i] + 0.5*theta*h_var*v[i];
+			v[i] = v[i] + theta * h*acc;
+			r[i] = r[i] + 0.5*theta*h*v[i];
 
 			//uitschrijven naar file
 			outfile1 << r[i].x() << ' ' << r[i].y() << ' ' << r[i].z() << '\t';
