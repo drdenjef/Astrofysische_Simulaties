@@ -42,20 +42,23 @@ void Leapfrog(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int
 	outfile1 << std::endl;
 
 
-	
+
 	std::vector<double> tijd_iteratie;
-	
+
 	for (int i = 0; i < iteraties; i++) {
 
-		double h_var = h;
-
+		//voor onthouden vorige posities
+		std::vector<Vec> r_tijd;
 		clock_t sstart = clock();
-		
+
 		for (int j = 0; j < N; j++) {
 
-			v[j] = v[j] + h_var * a(m, r, j, N);
-			r[j] = r[j] + h_var * v[j];
-			
+			v[j] = v[j] + h * a(m, r, j, N);
+			//sla vorige positie op voor nieuwe berekent wordt
+			r_tijd.push_back(r[j]);
+
+			r[j] = r[j] + h * v[j];
+
 		}
 
 		tijd_iteratie.push_back((clock() - sstart) / (CLOCKS_PER_SEC / 1000));
@@ -64,25 +67,34 @@ void Leapfrog(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int
 			outfile1 << r[j].x() << ' ' << r[j].y() << ' ' << r[j].z() << '\t';
 		}
 
-
+		std::vector<Vec> gem_r;
+		//bereken gemiddelde positie vector (zit dan op zelfde "hoogte" als snelheid)
+		for (int k = 0; k < r_tijd.size(); k++) {
+			gem_r.push_back(r[k] + r_tijd[k] / 2);
+		}
 
 		outfile1 << std::endl;
-		outfile2 << Energie(r, v, m) << std::endl;
-		outfile3 << error_energie(r, v, m, start_energie) << std::endl;
+		outfile2 << Energie(gem_r, v, m) << std::endl;
+		outfile3 << error_energie(gem_r, v, m, start_energie) << std::endl;
+
+		//alle tijdelijke vectoren terug leeg flushen;
+		r_tijd.clear();
+		gem_r.clear();
 
 	}
 
+	std::cout << "De kost bedroeg " << kost_int_methode(h, iteraties, N, 5) << std::endl;
 	std::cout << "Posities werden bijgehouden in bestand " << naam << "_LF.txt" << std::endl;
 	std::cout << "Energie werd bijgehouden in bestand " << naam << "_LF_E.txt" << std::endl;
 	std::cout << "Relatieve energiefouten werden bijgehouden in bestand " << naam << "_LF_E_err.txt" << std::endl;
 	outfile1.close();
 	outfile2.close();
 	outfile3.close();
-	
+
 	double tijd_gemiddelde;
 	tijd_gemiddelde = accumulate(tijd_iteratie.begin(), tijd_iteratie.end(), 0.0) / tijd_iteratie.size();
 
 	std::cout << tijd_gemiddelde << ' ' << "milliseconden per iteratie" << std::endl;
 
-	
+
 }

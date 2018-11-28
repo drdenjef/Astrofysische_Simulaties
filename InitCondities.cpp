@@ -492,19 +492,11 @@ vector<double> vraag_massas(int aantal_deeltjes) {
 
 	//maak massas aan
 	vector<double> massas;
-	//som voor achteraf te normeren
-	double som = 0;
 
 	//overloop en vraag alle massas op
 	for (int i = 0; i < aantal_deeltjes; i++) {
 		double massa = opvraag_massa(i + 1);
 		massas.push_back(massa);
-		som += massa;
-	}
-
-	//normeren van de massa
-	for (int i = 0; i < massas.size(); i++) {
-		massas[i] /= som;
 	}
 
 	//return

@@ -27,11 +27,11 @@ void PEFRL(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 	}
 	outfile1 << std::endl;
 
-	// maak een file aan waar de energieÃ«n worden bijgehouden
+	// maak een file aan waar de energieën worden bijgehouden
 	std::ofstream outfile2(naam + "_PEFRL_E.txt");
 	outfile2 << std::setprecision(15);
 
-	// maak een file aan waar de relatieve fouten van de energieÃ«n worden bijgehouden
+	// maak een file aan waar de relatieve fouten van de energieën worden bijgehouden
 	std::ofstream outfile3(naam + "_PEFRL_E_err.txt");
 	outfile3 << std::setprecision(15);
 
@@ -42,12 +42,7 @@ void PEFRL(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 	double xi = 0.1786178958448091;
 	double chi = -0.06626458266981849;
 
-	// aanmaken acc vector
 	std::vector<Vec> acc;
-	for (int j = 0; j < N; j++) {
-		acc.push_back(Vec(0., 0., 0.));
-	}
-
 	// iteratie over aantal integraties
 	for (int k = 0; k < iteraties; k++) {
 
@@ -58,7 +53,7 @@ void PEFRL(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 		}
 		for (int i = 0; i < N; i++) {
 			// berekenen van de versnelling
-			acc[i]=a(m, r, i, N);
+			acc.push_back(a(m, r, i, N));
 		}
 		for (int i = 0; i < N; i++) {
 			// substeps 2 & 3
@@ -105,6 +100,8 @@ void PEFRL(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 	outfile1.close();
 	outfile2.close();
 	outfile3.close();
+
+	std::cout << "De kost bedroeg " << kost_int_methode(h, iteraties, N, 6) << std::endl;
 	std::cout << "Posities werden bijgehouden in bestand " << naam << "_PEFRL.txt" << std::endl;
 	std::cout << "Energie werd bijgehouden in bestand " << naam << "_PEFRL_E.txt" << std::endl;
 	std::cout << "Relatieve energiefouten werden bijgehouden in bestand " << naam << "_PEFRL_E_err.txt" << std::endl;

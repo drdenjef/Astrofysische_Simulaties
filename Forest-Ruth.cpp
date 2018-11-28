@@ -28,11 +28,11 @@ void ForestRuth(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, i
 	}
 	outfile1 << std::endl;
 
-	// maak een file aan waar de energieÃ«n worden bijgehouden
+	// maak een file aan waar de energieën worden bijgehouden
 	std::ofstream outfile2(naam +"_FR_E.txt");
 	outfile2 << std::setprecision(15);
 
-	// maak een file aan waar de relatieve fouten van de energieÃ«n worden bijgehouden
+	// maak een file aan waar de relatieve fouten van de energieën worden bijgehouden
 	std::ofstream outfile3(naam +"_FR_E_err.txt");
 	outfile3 << std::setprecision(15);
 
@@ -41,7 +41,7 @@ void ForestRuth(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, i
 
 	std::vector<Vec> acc;
 	for (int j = 0; j < N; j++) {
-		acc.push_back(Vec(0.,0.,0.));
+		acc.push_back(Vec(0., 0., 0.));
 	}
 
 	double theta = 1. / (2. - pow(2., 1. / 3.));
@@ -58,9 +58,9 @@ void ForestRuth(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, i
 
 		for (int i = 0; i < N; i++) {
 			// berekenen van de versnelling
-			acc[i]=(a(m, r, i, N)); 
+			acc[i] = (a(m, r, i, N));
 		}
-		
+
 		for (int i = 0; i < N; i++) {
 			// substeps 2 & 3
 			v[i] = v[i] + theta * h*acc[i];
@@ -103,6 +103,8 @@ void ForestRuth(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, i
 	outfile1.close();
 	outfile2.close();
 	outfile3.close();
+
+	std::cout << "De kost bedroeg " << kost_int_methode(h, iteraties, N, 4) << std::endl;
 	std::cout << "Posities werden bijgehouden in bestand " << naam <<  "_FR.txt" << std::endl;
 	std::cout << "Energie werd bijgehouden in bestand " << naam << "_FR_E.txt" << std::endl;
 	std::cout << "Relatieve energiefouten werden bijgehouden in bestand " << naam << "_FR_E_err.txt" << std::endl;

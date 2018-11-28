@@ -9,6 +9,7 @@
 #include <vector>
 #include <map>
 #include "3DVectClass.h"
+#include "kost_integratie.h"
 
 //functie voor berekenen kleinere h indien nodig (2 objecten dicht bij elkaar)
 double variabele_h(double h, std::vector<Vec> posities);

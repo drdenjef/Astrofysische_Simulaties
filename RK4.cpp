@@ -19,6 +19,9 @@
 
 void RK4(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, int iteraties, double h, std::string naam) {
 
+	//lijst voor bijhouden van alle h's
+	std::vector<double> h_lijst;
+
 	// maak een file aan waar de posities van de deeltjes wordt bijgehouden
 	std::ofstream outfile1(naam + "_RK4.txt");
 	outfile1 << std::setprecision(15);
@@ -47,6 +50,7 @@ void RK4(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, i
 	for (int i = 0; i < iteraties; i++) {
 
 		double h_var = variabele_h(h, r);
+		h_lijst.push_back(h_var);
 
 		std::vector<Vec> kr1;
 		std::vector<Vec> kv1;
@@ -91,6 +95,7 @@ void RK4(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, i
 
 	}
 
+	std::cout << "De kost bedroeg " << kost_int_methode_varh(h_lijst, N, 1) << std::endl;
 	std::cout << "Posities werden bijgehouden in bestand " << naam << "_RK4.txt" << std::endl;
 	std::cout << "Energie werd bijgehouden in bestand " << naam << "_RK4_E.txt" << std::endl;
 	std::cout << "Relatieve energiefouten werden bijgehouden in bestand " << naam << "_RK4_E_err.txt" << std::endl;
