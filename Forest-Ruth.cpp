@@ -28,17 +28,21 @@ void ForestRuth(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, i
 	}
 	outfile1 << std::endl;
 
-	// maak een file aan waar de energieën worden bijgehouden
+	// maak een file aan waar de energieÃ«n worden bijgehouden
 	std::ofstream outfile2(naam +"_FR_E.txt");
 	outfile2 << std::setprecision(15);
 
-	// maak een file aan waar de relatieve fouten van de energieën worden bijgehouden
+	// maak een file aan waar de relatieve fouten van de energieÃ«n worden bijgehouden
 	std::ofstream outfile3(naam +"_FR_E_err.txt");
 	outfile3 << std::setprecision(15);
 
 	// hou de startenergie van het systeem bij
 	double start_energie = Energie(r, v, m);
 
+	std::vector<Vec> acc;
+	for (int j = 0; j < N; j++) {
+		acc.push_back(Vec(0.,0.,0.));
+	}
 
 	double theta = 1. / (2. - pow(2., 1. / 3.));
 
@@ -48,27 +52,43 @@ void ForestRuth(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, i
 		//iteratie over aantal deeltjes
 		for (int i = 0; i < N; i++) {
 			// substep 1
-			
+
 			r[i] = r[i] + (0.5*theta*h)*v[i];
+		}
 
+		for (int i = 0; i < N; i++) {
 			// berekenen van de versnelling
-			Vec acc = a(m, r, i, N);
-
+			acc[i]=(a(m, r, i, N)); 
+		}
+		
+		for (int i = 0; i < N; i++) {
 			// substeps 2 & 3
-			v[i] = v[i] + theta * h*acc;
+			v[i] = v[i] + theta * h*acc[i];
 			r[i] = r[i] + 0.5*(1. - theta)*h*v[i];
+		}
+
+		for (int i = 0; i < N; i++) {
 			// berekenen van de versnelling
-			acc = a(m, r, i, N);
+			acc[i] = a(m, r, i, N);
+		}
+
+		for (int i = 0; i < N; i++) {
 
 			//substeps 4 & 5
-			v[i] = v[i] + ((1. - 2 * theta) * h) * acc;
+			v[i] = v[i] + ((1. - 2 * theta) * h) * acc[i];
 			r[i] = r[i] + 0.5*(1. - theta)*h*v[i];
 
-			// berekenen van de versnelling
-			acc = a(m, r, i, N);
+		}
 
+		for (int i = 0; i < N; i++) {
+			// berekenen van de versnelling
+			acc[i] = a(m, r, i, N);
+
+		}
+
+		for (int i = 0; i < N; i++) {
 			// substeps 6 & 7
-			v[i] = v[i] + theta * h*acc;
+			v[i] = v[i] + theta * h*acc[i];
 			r[i] = r[i] + 0.5*theta*h*v[i];
 
 			//uitschrijven naar file
