@@ -8,6 +8,7 @@
 #include <numeric> 
 #include "3DVectClass.h"
 #include "hulpfuncties.h"
+#include "kost_integratie.h"
 
 void Leapfrog(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, int iteraties, double h, std::string naam) {
 
@@ -75,7 +76,7 @@ void Leapfrog(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int
 
 		outfile1 << std::endl;
 		outfile2 << Energie(gem_r, v, m) << std::endl;
-		outfile3 << error_energie(gem_r, v, m, start_energie) << std::endl;
+		outfile3 << error_energie(r, v, m, start_energie) << '\t' << dichtste_afstand(r) << std::endl;
 
 		//alle tijdelijke vectoren terug leeg flushen;
 		r_tijd.clear();
@@ -86,7 +87,7 @@ void Leapfrog(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int
 	std::cout << "De kost bedroeg " << kost_int_methode(h, iteraties, N, 5) << std::endl;
 	std::cout << "Posities werden bijgehouden in bestand " << naam << "_LF.txt" << std::endl;
 	std::cout << "Energie werd bijgehouden in bestand " << naam << "_LF_E.txt" << std::endl;
-	std::cout << "Relatieve energiefouten werden bijgehouden in bestand " << naam << "_LF_E_err.txt" << std::endl;
+	std::cout << "Relatieve energiefouten en dichtste afstanden werden bijgehouden in bestand " << naam << "_LF_E_err.txt" << std::endl;
 	outfile1.close();
 	outfile2.close();
 	outfile3.close();

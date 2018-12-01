@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <numeric>
 #include "3DVectClass.h"
 #include "hulpfuncties.h"
 using namespace std;
@@ -33,31 +34,44 @@ void Verlet(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N
 	// hou de startenergie van het systeem bij
 	double start_energie = Energie(r, v, m);
 
+	std::vector<double> tijd_iteratie;
+
 	// begint te itereren over het aantal iteraties die je wilt uitvoeren
 	// kan meegegeven worden aan de functie RKF45
 
 	for (int j = 0; j < iteraties; j++) {
+
+		clock_t sstart = clock();
+
 		for (int i = 0; i < N; i++) {
 			v[i] = v[i] + 0.5 * h * a(m, r, i, N);
 			r[i] = r[i] + h * v[i];
 			v[i] = v[i] + 0.5 * h * a(m, r, i, N);
 
-			//wegschrijven naar file
+		}
+
+		tijd_iteratie.push_back((clock() - sstart) / (CLOCKS_PER_SEC / 1000));
+
+		for (int i = 0; i < N; i++) {
 			outfile1 << r[i].x() << ' ' << r[i].y() << ' ' << r[i].z() << '\t';
 		}
 
+
 		outfile1 << std::endl;
 		outfile2 << Energie(r, v, m) << std::endl;
-		outfile3 << error_energie(r, v, m, start_energie) << std::endl;
+		outfile3 << error_energie(r, v, m, start_energie) << '\t' << dichtste_afstand(r) << std::endl;
 	}
 
-	std::cout << "De kost bedroeg " << kost_int_methode(h, iteraties, N, 3) << std::endl;
 	std::cout << "Posities werden bijgehouden in bestand " << naam << "_V.txt" << std::endl;
 	std::cout << "Energie werd bijgehouden in bestand " << naam << "_V_E.txt" << std::endl;
-	std::cout << "Relatieve energiefouten werden bijgehouden in bestand " << naam << "_V_E_err.txt" << std::endl;
+	std::cout << "Relatieve energiefouten en dichtste afstanden werden bijgehouden in bestand " << naam << "_V_E_err.txt" << std::endl;
 	outfile1.close();
 	outfile2.close();
 	outfile3.close();
 
-}
+	double tijd_gemiddelde;
+	tijd_gemiddelde = accumulate(tijd_iteratie.begin(), tijd_iteratie.end(), 0.0) / tijd_iteratie.size();
 
+	std::cout << tijd_gemiddelde << ' ' << "milliseconden per iteratie" << std::endl;
+
+}

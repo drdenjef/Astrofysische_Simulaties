@@ -6,6 +6,7 @@
 #include <vector>
 #include "3DVectClass.h"
 #include "hulpfuncties.h"
+#include "kost_integratie.h"
 
 using namespace std;
 
@@ -45,6 +46,7 @@ void PEFRL(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 	std::vector<Vec> acc;
 	// iteratie over aantal integraties
 	for (int k = 0; k < iteraties; k++) {
+
 
 		//iteratie over aantal deeltjes
 		for (int i = 0; i < N; i++) {
@@ -95,7 +97,7 @@ void PEFRL(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 
 		//uitschrijven van energie en error_energie
 		outfile2 << Energie(r, v, m) << std::endl;
-		outfile3 << error_energie(r, v, m, start_energie) << std::endl;
+		outfile3 << error_energie(r, v, m, start_energie) << '\t' << dichtste_afstand(r) << std::endl;
 	}
 	outfile1.close();
 	outfile2.close();
@@ -104,6 +106,6 @@ void PEFRL(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 	std::cout << "De kost bedroeg " << kost_int_methode(h, iteraties, N, 6) << std::endl;
 	std::cout << "Posities werden bijgehouden in bestand " << naam << "_PEFRL.txt" << std::endl;
 	std::cout << "Energie werd bijgehouden in bestand " << naam << "_PEFRL_E.txt" << std::endl;
-	std::cout << "Relatieve energiefouten werden bijgehouden in bestand " << naam << "_PEFRL_E_err.txt" << std::endl;
+	std::cout << "Relatieve energiefouten en dichtste afstanden werden bijgehouden in bestand " << naam << "_PEFRL_E_err.txt" << std::endl;
 
 }
