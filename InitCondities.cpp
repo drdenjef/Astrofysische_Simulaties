@@ -324,19 +324,13 @@ std::vector<double> massas(int aantal_deeltjes, int beginconditie) {
 
 	//maak variabele voor inlezen klaar
 	double ind_massa;
-	//maakt variabele voor som van alle massas
-	double som = 0;
 
 	//lees ze in en steek ze in vector
 	while (myfile >> ind_massa)
 	{
 		massas.push_back(ind_massa);
-		som += ind_massa;
 	}
-	//normeren van de massa
-	for (int i = 0; i < massas.size(); i++) {
-		massas[i] /= som;
-	}
+
 	//return vector met genormeerde massas
 	return massas;
 }
