@@ -91,3 +91,38 @@ double error_energie(std::vector<Vec> poslist, std::vector<Vec> velolist, std::v
 	return error_energie;
 
 }
+
+double afstand(Vec a, Vec b) {
+	return sqrt(pow(a.x() - b.x(), 2) + pow(a.y() - b.y(), 2) + pow(a.z() - b.z(), 2));
+}
+
+// functie die toelaat de dichtste afstand van 2 deeltjes te berekenen
+double dichtste_afstand(std::vector<Vec> poslist) {
+
+	double dichtste_nadering;
+	int const N = poslist.size();
+	if (N == 2) {
+		return afstand(poslist[0], poslist[1]);
+	}
+
+
+	else {
+		
+		dichtste_nadering = 1e15;
+		for (int i = 0; i < N; i++) {
+			for (int j = 1; j < N; j++) {
+
+				if (i < j) {
+					double check_afstand = afstand(poslist[i], poslist[j]);
+					if (check_afstand < dichtste_nadering) {
+						dichtste_nadering = check_afstand;
+					}
+				}
+			}
+		}
+		return dichtste_nadering;
+	}
+
+	
+	
+}
