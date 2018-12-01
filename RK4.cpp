@@ -61,24 +61,33 @@ void RK4(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, i
 		std::vector<Vec> kr4;
 		std::vector<Vec> kv4;
 
+		Vec r_temp;
+		std::vector<Vec> r_temp2;
+
 		for (int j = 0; j < N; j++) {
 			kr1.push_back(v[j]);
 			kv1.push_back(a(m, r, j, N));
 		}
 
 		for (int j = 0; j < N; j++) {
-			kr2.push_back(v[j] + .5*h_var*kv1[j]);
-			kv2.push_back(a(m, r + .5*h_var*kr1, j, N));
+			r_temp = v[j] + .5*h_var*kv1[j];
+			kr2.push_back(r_temp);
+			r_temp2 = r + .5*h_var*kr1;
+			kv2.push_back(a(m, r_temp2, j, N));
 		}
 
 		for (int j = 0; j < N; j++) {
-			kr3.push_back(v[j] + .5*h_var*kv2[j]);
-			kv3.push_back(a(m, r + .5*h_var*kr2, j, N));
+			r_temp = v[j] + .5*h_var*kv2[j];
+			kr3.push_back(r_temp);
+			r_temp2 = r + .5*h_var*kr2;
+			kv3.push_back(a(m, r_temp2, j, N));
 		}
 
 		for (int j = 0; j < N; j++) {
-			kr4.push_back(v[j] + h_var * kv3[j]);
-			kv4.push_back(a(m, r + h_var * kr3, j, N));
+			r_temp = v[j] + h_var * kv3[j];
+			kr4.push_back(r_temp);
+			r_temp2 = r + h_var * kr3;
+			kv4.push_back(a(m, r_temp2, j, N));
 		}
 
 
