@@ -9,9 +9,13 @@
 #include <vector>
 #include <map>
 #include "3DVectClass.h"
+#include "kost_integratie.h"
 
 //functie voor berekenen kleinere h indien nodig (2 objecten dicht bij elkaar)
 double variabele_h(double h, std::vector<Vec> posities);
+
+//functie voor berekenen kleinere h, zou trager zijn want berekent expliciet alle afstanden
+double variabele_h_traag(double h, std::vector<Vec> posities);
 
 // m = massa	r = positie		N = # deeltjes		i = beschouwde deeltje
 Vec a(std::vector<double> m, std::vector<Vec> r, int i, int N);

@@ -49,7 +49,26 @@ double variabele_h(double h, vector<Vec> posities) {
 		}
 	}
 	//return dus de echte h maal de wegingsfactor, voor zo kleinere h
-	return (variabele_h_weger * h);
+	double nieuwe_h = variabele_h_weger * h;;
+	return nieuwe_h;
+}
+
+double variabele_h_traag(double h, vector<Vec> posities) {
+
+	double variabele_h_weger = 1;
+	//overloop alle vectoren
+	for (int i = 0; i < posities.size(); i++) {
+
+		//overloop alle vectoren die na de eerste vector komt
+		for (int j = (posities.size() - 1); j > i; j--) {
+			double afstand = (posities[i] - posities[j]).norm();
+			if (variabele_h_weger > afstand) {
+				variabele_h_weger = afstand;
+			}
+		}
+	}
+	double nieuwe_h = variabele_h_weger * h;
+	return nieuwe_h;
 }
 
 Vec a(std::vector<double> m, std::vector<Vec> r, int i, int N) {
@@ -95,23 +114,18 @@ double error_energie(std::vector<Vec> poslist, std::vector<Vec> velolist, std::v
 double afstand(Vec a, Vec b) {
 	return sqrt(pow(a.x() - b.x(), 2) + pow(a.y() - b.y(), 2) + pow(a.z() - b.z(), 2));
 }
-
 // functie die toelaat de dichtste afstand van 2 deeltjes te berekenen
 double dichtste_afstand(std::vector<Vec> poslist) {
-
 	double dichtste_nadering;
 	int const N = poslist.size();
 	if (N == 2) {
 		return afstand(poslist[0], poslist[1]);
 	}
-
-
 	else {
-		
+
 		dichtste_nadering = 1e15;
 		for (int i = 0; i < N; i++) {
 			for (int j = 1; j < N; j++) {
-
 				if (i < j) {
 					double check_afstand = afstand(poslist[i], poslist[j]);
 					if (check_afstand < dichtste_nadering) {
@@ -123,6 +137,5 @@ double dichtste_afstand(std::vector<Vec> poslist) {
 		return dichtste_nadering;
 	}
 
-	
-	
+
 }
