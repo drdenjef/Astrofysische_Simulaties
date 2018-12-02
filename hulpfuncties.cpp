@@ -124,13 +124,13 @@ double dichtste_afstand(std::vector<Vec> poslist) {
 	else {
 
 		dichtste_nadering = 1e15;
-		for (int i = 0; i < N; i++) {
-			for (int j = 1; j < N; j++) {
-				if (i < j) {
-					double check_afstand = afstand(poslist[i], poslist[j]);
-					if (check_afstand < dichtste_nadering) {
-						dichtste_nadering = check_afstand;
-					}
+		for (int i = 0; i < poslist.size(); i++) {
+			for (int j = (poslist.size() - 1); j > i; j--) {
+
+				double check_afstand = afstand(poslist[i], poslist[j]);
+				if (check_afstand < dichtste_nadering) {
+					dichtste_nadering = check_afstand;
+					
 				}
 			}
 		}
