@@ -27,6 +27,8 @@ std::string type_integratie_naam(int i);
 
 bool aanwezige_begincondities();
 
+bool random_genereren();
+
 void alle_posities(std::vector<double> m, std::vector<Vec>r, std::vector<Vec> v, int N, int iter, double h, int methode, std::string naam, bool gebruiken_var_h);
 
 #endif

@@ -243,6 +243,27 @@ bool aanwezige_begincondities() {
 
 }
 
+bool random_genereren() {
+	//vraagt input op en leest in
+	cout << "Wilt u random gebonden toestand genereren (anders moet u er zelf invoeren)? J (Ja) of N (Neen): ";
+	string JaNee = lees_input();
+
+
+	//mogelijke ja antwoorden (rekening gehouden met dat users soms lastig kunnen doen en niet helemaal correct inputten)
+	if (JaNee == "J" || JaNee == "j" || JaNee == "Ja" || JaNee == "ja" || JaNee == "JA ") {
+		return 1;
+	}
+	else if (JaNee == "N" || JaNee == "n" || JaNee == "nee" || JaNee == "neen" || JaNee == "Neen" || JaNee == "Nee" || JaNee == "NEE" || JaNee == "NEEN") {
+		return 0;
+	}
+	//als de input echt compleet er naast zat, error en opnieuw
+	else {
+		cout << "Error, geen geldige input" << endl;
+		return random_genereren();
+	}
+
+}
+
 void alle_posities(vector<double> m, vector<Vec>r, vector<Vec> v, int N, int iter, double h, int methode, string naam, bool gebruiken_var_h) {
 
 	//RK4
