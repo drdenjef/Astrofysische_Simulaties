@@ -11,7 +11,7 @@
 
 
 
-void Leapfrog(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, int iteraties, double h, std::string naam);
+void Leapfrog(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, int iteraties, double h, std::string naam, double gebruiken_var_h);
 
 
 #endif

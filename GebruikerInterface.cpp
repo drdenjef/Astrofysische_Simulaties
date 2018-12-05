@@ -128,6 +128,28 @@ double tijdstap_opvraag() {
 	return h;	
 }
 
+bool gebruik_var_h() {
+
+	//vraagt input op en leest in
+	cout << "Wilt u een variabele tijdstap gebruiken? J (Ja) of N (Neen). Opgelet, bij gebruik hiervan is simpliciteit niet te garanderen: ";
+	string JaNee = lees_input();
+
+
+	//mogelijke ja antwoorden (rekening gehouden met dat users soms lastig kunnen doen en niet helemaal correct inputten)
+	if (JaNee == "J" || JaNee == "j" || JaNee == "Ja" || JaNee == "ja" || JaNee == "JA ") {
+		return 1;
+	}
+	else if (JaNee == "N" || JaNee == "n" || JaNee == "nee" || JaNee == "neen" || JaNee == "Neen" || JaNee == "Nee" || JaNee == "NEE" || JaNee == "NEEN") {
+		return 0;
+	}
+	//als de input echt compleet er naast zat, error en opnieuw
+	else {
+		cout << "Error, geen geldige input" << endl;
+		return gebruik_var_h();
+	}
+
+}
+
 int iteraties_opvraag() {
 	//vraagt input op en leest in
 	cout << "Voer gewenste aantal iteraties in: ";
@@ -221,46 +243,46 @@ bool aanwezige_begincondities() {
 
 }
 
-void alle_posities(vector<double> m, vector<Vec>r, vector<Vec> v, int N, int iter, double h, int methode, string naam) {
+void alle_posities(vector<double> m, vector<Vec>r, vector<Vec> v, int N, int iter, double h, int methode, string naam, bool gebruiken_var_h) {
 
 	//RK4
 	if (methode == 1) {
-		RK4(m, r, v, N, iter, h, naam);
+		RK4(m, r, v, N, iter, h, naam, gebruiken_var_h);
 	}
 
 	//ingebedde RK
 	if (methode == 2) {
-		RKF45(m, r, v, N, iter, h, naam);
+		RKF45(m, r, v, N, iter, h, naam, gebruiken_var_h);
 	}
 
 	//Verlet
 	if (methode == 3) {
-		Verlet(m, r, v, N, iter, h, naam);
+		Verlet(m, r, v, N, iter, h, naam, gebruiken_var_h);
 	}
 
 	//Forest-Ruth
 	if (methode == 4) {
-		ForestRuth(m, r, v, N, iter, h, naam);
+		ForestRuth(m, r, v, N, iter, h, naam, gebruiken_var_h);
 	}
 
 	//Leapfrog
 	if (methode == 5) {
-		Leapfrog(m, r, v, N, iter, h, naam);
+		Leapfrog(m, r, v, N, iter, h, naam, gebruiken_var_h);
 	}
 
 	//PEFRL
 	if (methode == 6) {
-		PEFRL(m, r, v, N, iter, h, naam);
+		PEFRL(m, r, v, N, iter, h, naam, gebruiken_var_h);
 	}
 
 	//alles
 	if (methode == 7) {
-		RK4(m, r, v, N, iter, h, naam);
-		RKF45(m, r, v, N, iter, h, naam);
-		Verlet(m, r, v, N, iter, h, naam);
-		ForestRuth(m, r, v, N, iter, h, naam);
-		Leapfrog(m, r, v, N, iter, h, naam);
-		PEFRL(m, r, v, N, iter, h, naam);
+		RK4(m, r, v, N, iter, h, naam, gebruiken_var_h);
+		RKF45(m, r, v, N, iter, h, naam, gebruiken_var_h);
+		Verlet(m, r, v, N, iter, h, naam, gebruiken_var_h);
+		ForestRuth(m, r, v, N, iter, h, naam, gebruiken_var_h);
+		Leapfrog(m, r, v, N, iter, h, naam, gebruiken_var_h);
+		PEFRL(m, r, v, N, iter, h, naam, gebruiken_var_h);
 	}
 
 }

@@ -19,7 +19,7 @@
 
 
 
-void RK4(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, int iteraties, double h, std::string naam) {
+void RK4(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, int iteraties, double h, std::string naam, double gebruiken_var_h) {
 
 	// maak een file aan waar de posities van de deeltjes wordt bijgehouden
 	std::ofstream outfile1(naam + "_RK4.txt");
@@ -45,12 +45,14 @@ void RK4(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, i
 	std::vector<double> tijd_iteratie;
 
 	// begint te itereren over het aantal iteraties die je wilt uitvoeren
-	
-	
+
+
 
 	for (int i = 0; i < iteraties; i++) {
-		
-		double h_var = variabele_h(h, r);
+
+		double h_var = h;
+		if (gebruiken_var_h)
+			double h_var = variabele_h(h, r);
 
 		std::vector<Vec> kr1;
 		std::vector<Vec> kv1;
@@ -82,21 +84,21 @@ void RK4(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, i
 			kr4.push_back(v[j] + h_var * kv3[j]);
 			kv4.push_back(a(m, r + h_var * kr3, j, N));
 		}
-		
+
 
 		r = r + (h_var / 6) * (kr1 + 2 * kr2 + 2 * kr3 + kr4);
 		v = v + (h_var / 6) * (kv1 + 2 * kv2 + 2 * kv3 + kv4);
 
-		tijd_iteratie.push_back((clock() - sstart) / (CLOCKS_PER_SEC/1000));
+		tijd_iteratie.push_back((clock() - sstart) / (CLOCKS_PER_SEC / 1000));
 
 		for (int j = 0; j < N; j++) {
 			outfile1 << r[j].x() << ' ' << r[j].y() << ' ' << r[j].z() << '\t';
 		}
-		
+
 		outfile1 << std::endl;
 		outfile2 << Energie(r, v, m) << std::endl;
 		outfile3 << error_energie(r, v, m, start_energie) << '\t' << dichtste_afstand(r) << std::endl;
-		
+
 	}
 
 	std::cout << "Posities werden bijgehouden in bestand " << naam << "_RK4.txt" << std::endl;

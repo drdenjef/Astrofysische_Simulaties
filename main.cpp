@@ -25,6 +25,15 @@ int main() {
 	//zeg gebruiker wat hij/zij/het gekozen heeft van h
 	cout << endl << "De gekozen tijdstap is " << h << ' ' << endl;
 
+	//vraagt of gebruiker een variabele tijdstap wilt
+	bool gebruiken_var_h = gebruik_var_h();
+	//confirmeer keuze aan gebruiker
+	cout << endl << "U heeft ";
+	if (gebruiken_var_h)
+		cout << "ja gekozen" << endl;
+	else
+		cout << "neen gekozen" << endl;
+
 	//vraagt aantal iteraties aan gebruiker;
 	int iteraties = iteraties_opvraag();
 	//zeg gebruiker wat hij/zij/het gekozen heeft van iteraties;
@@ -40,7 +49,7 @@ int main() {
 	vector<Vec> begin_snelheden;
 	vector<double> begin_massas;
 	if (load_init_cond == 1) {
-		cout << "Ja gekozen." << endl;
+		cout << "ja gekozen." << endl;
 
 		//vraagt naam (nummer) van voorgecodeerde begincondities op
 		int optie = nummer_beginconditie(aantal);
@@ -57,7 +66,7 @@ int main() {
 	
 	}
 	else {
-		cout << "Neen gekozen." << endl;
+		cout << "neen gekozen." << endl;
 
 		//vraag de gewenste begin condities op
 		begin_posities = vraag_posities(aantal);
@@ -87,7 +96,7 @@ int main() {
 
 	//berekent tijd hoe lang dit duurde
 	clock_t tStart = clock();
-	alle_posities(begin_massas, begin_posities, begin_snelheden, aantal, iteraties, h, integratie, bestand_naam);
+	alle_posities(begin_massas, begin_posities, begin_snelheden, aantal, iteraties, h, integratie, bestand_naam, gebruiken_var_h);
 	printf("Time taken: %.2fs\n", (double)(clock() - tStart) / CLOCKS_PER_SEC);
 
 

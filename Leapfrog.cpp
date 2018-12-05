@@ -10,7 +10,7 @@
 #include "hulpfuncties.h"
 #include "kost_integratie.h"
 
-void Leapfrog(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, int iteraties, double h, std::string naam) {
+void Leapfrog(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, int iteraties, double h, std::string naam, double gebruiken_var_h) {
 
 	// maak een file aan waar de posities van de deeltjes wordt bijgehouden
 	std::ofstream outfile1(naam + "_LF.txt");
@@ -48,17 +48,21 @@ void Leapfrog(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int
 
 	for (int i = 0; i < iteraties; i++) {
 
+		double h_var = h;
+		if (gebruiken_var_h)
+			double h_var = variabele_h(h, r);
+
 		//voor onthouden vorige posities
 		std::vector<Vec> r_tijd;
 		clock_t sstart = clock();
 
 		for (int j = 0; j < N; j++) {
 
-			v[j] = v[j] + h * a(m, r, j, N);
+			v[j] = v[j] + h_var * a(m, r, j, N);
 			//sla vorige positie op voor nieuwe berekent wordt
 			r_tijd.push_back(r[j]);
 
-			r[j] = r[j] + h * v[j];
+			r[j] = r[j] + h_var * v[j];
 
 		}
 

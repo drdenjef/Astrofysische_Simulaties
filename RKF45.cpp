@@ -18,7 +18,7 @@
 
 
 
-void RKF45(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, int iteraties, double h, std::string naam) {
+void RKF45(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, int iteraties, double h, std::string naam, double gebruiken_var_h) {
 
 	// maak een file aan waar de posities van de deeltjes wordt bijgehouden
 	std::ofstream outfile1(naam + "_RKF45.txt");
@@ -74,7 +74,9 @@ void RKF45(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 	// kan meegegeven worden aan de functie RKF45
 	for (int i = 0; i < iteraties; i++) {
 
-		double h_var = variabele_h(h, r);
+		double h_var = h;
+		if (gebruiken_var_h)
+			double h_var = variabele_h(h, r);
 
 		clock_t sstart = clock();
 
@@ -99,32 +101,32 @@ void RKF45(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 
 		for (int j = 0; j < N; j++) {
 			kr2.push_back(h_var*(v[j] + .25*kv1[j]));
-			kv2.push_back(h_var*a(m, r + a21*kr1, j, N));
+			kv2.push_back(h_var*a(m, r + a21 * kr1, j, N));
 		}
 
 		for (int j = 0; j < N; j++) {
-			kr3.push_back(h_var*(v[j] + a31*kv1[j] + a32*kv2[j]));
-			kv3.push_back(h_var*a(m, r + a31*kr1 + a32*kr2, j, N));
+			kr3.push_back(h_var*(v[j] + a31 * kv1[j] + a32 * kv2[j]));
+			kv3.push_back(h_var*a(m, r + a31 * kr1 + a32 * kr2, j, N));
 		}
 
 		for (int j = 0; j < N; j++) {
-			kr4.push_back(h_var*(v[j] + a41*kv1[j] + a42*kv2[j] + a43*kv3[j]));
-			kv4.push_back(h_var*a(m, r + a41*kr1 + a42*kr2 + a43*kr3, j, N));
+			kr4.push_back(h_var*(v[j] + a41 * kv1[j] + a42 * kv2[j] + a43 * kv3[j]));
+			kv4.push_back(h_var*a(m, r + a41 * kr1 + a42 * kr2 + a43 * kr3, j, N));
 		}
 
 		for (int j = 0; j < N; j++) {
-			kr5.push_back(h_var*(v[j] + a51*kv1[j] + a52*kv2[j] + a53*kv3[j] + a54*kv4[j]));
-			kv5.push_back(h_var*a(m, r + a51*kr1 + a52*kr2 + a53*kr3 + a54*kr4, j, N));
+			kr5.push_back(h_var*(v[j] + a51 * kv1[j] + a52 * kv2[j] + a53 * kv3[j] + a54 * kv4[j]));
+			kv5.push_back(h_var*a(m, r + a51 * kr1 + a52 * kr2 + a53 * kr3 + a54 * kr4, j, N));
 		}
 
 		for (int j = 0; j < N; j++) {
-			kr6.push_back(h_var*(v[j] + a61*kv1[j] + a62*kv2[j] + a63*kv3[j] + a64*kv4[j] + a65*kv5[j]));
-			kv6.push_back(h_var*a(m, r + a61*kr1 + a62*kr2 + a63*kr3 + a64*kr4 + a65*kr5, j, N));
+			kr6.push_back(h_var*(v[j] + a61 * kv1[j] + a62 * kv2[j] + a63 * kv3[j] + a64 * kv4[j] + a65 * kv5[j]));
+			kv6.push_back(h_var*a(m, r + a61 * kr1 + a62 * kr2 + a63 * kr3 + a64 * kr4 + a65 * kr5, j, N));
 		}
 
 		// bereken r_n+1 en v_n+1 en onthoud deze woorden voor volgende iteraties
-		r = r +  b1*kr1 + b3*kr3 + b4*kr4 - b5*kr5 ;
-		v = v +  b1*kv1 + b3*kv3 + b4*kv4 - b5*kv5 ;
+		r = r + b1 * kr1 + b3 * kr3 + b4 * kr4 + b5 * kr5;
+		v = v + b1 * kv1 + b3 * kv3 + b4 * kv4 + b5 * kv5;
 
 		tijd_iteratie.push_back((clock() - sstart) / (CLOCKS_PER_SEC / 1000));
 
@@ -143,7 +145,7 @@ void RKF45(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 	std::cout << "Relatieve energiefouten en dichtste afstanden werden bijgehouden in bestand " << naam << "_RKF45_E_err.txt" << std::endl;
 	outfile1.close();
 	outfile2.close();
-	outfile3.close();	
+	outfile3.close();
 
 	double tijd_gemiddelde;
 	tijd_gemiddelde = accumulate(tijd_iteratie.begin(), tijd_iteratie.end(), 0.0) / tijd_iteratie.size();

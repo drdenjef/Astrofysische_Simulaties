@@ -11,7 +11,7 @@
 using namespace std;
 
 
-void Verlet(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, int iteraties, double h, std::string naam) {
+void Verlet(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, int iteraties, double h, std::string naam, double gebruiken_var_h) {
 
 	// maak een file aan waar de posities van de deeltjes wordt bijgehouden
 	std::ofstream outfile1(naam + "_V.txt");
@@ -41,12 +41,16 @@ void Verlet(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N
 
 	for (int j = 0; j < iteraties; j++) {
 
+		double h_var = h;
+		if (gebruiken_var_h)
+			double h_var = variabele_h(h, r);
+
 		clock_t sstart = clock();
 
 		for (int i = 0; i < N; i++) {
-			v[i] = v[i] + 0.5 * h * a(m, r, i, N);
-			r[i] = r[i] + h * v[i];
-			v[i] = v[i] + 0.5 * h * a(m, r, i, N);
+			v[i] = v[i] + 0.5 * h_var * a(m, r, i, N);
+			r[i] = r[i] + h_var * v[i];
+			v[i] = v[i] + 0.5 * h_var * a(m, r, i, N);
 
 		}
 
