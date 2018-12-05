@@ -3,13 +3,15 @@
 #include "InitCondities.h"
 #include <time.h>
 #include <string>
+#include <random>
+#include "random_init.h"
 
 
 
 //de main function
 int main() {
 	using namespace std;
-
+	
 	//vraag aantal objecten aan gebruiker
 	int aantal = aantal_objecten();
 	cout << endl <<"Aantal deeltjes is " << aantal << "." << endl << endl;
@@ -68,10 +70,29 @@ int main() {
 	else {
 		cout << "neen gekozen." << endl;
 
-		//vraag de gewenste begin condities op
-		begin_posities = vraag_posities(aantal);
-		begin_snelheden = vraag_snelheden(aantal);
-		begin_massas = vraag_massas(aantal);
+		//vraagt of gebruiker random wilt genereren
+		bool random = random_genereren();
+		//maakt duidelijk wat de keuze was
+		cout << endl << "U heeft ";
+
+		if (random) {
+			cout << " ja gekozen." << endl;
+
+			//laat random gebonden toestand genereren
+			begin_massas = massrescaling(randommass(aantal));
+			begin_posities = posrescaling(begin_massas, randomVec(aantal));
+			begin_snelheden = velrescaling(begin_massas, randomVec(aantal));
+
+		}
+
+		else {
+
+			cout << " neen gekozen." << endl;
+			//vraag de gewenste begin condities op
+			begin_posities = vraag_posities(aantal);
+			begin_snelheden = vraag_snelheden(aantal);
+			begin_massas = vraag_massas(aantal);
+		}
 	}
 	
 	//schrijft beginposities uit
