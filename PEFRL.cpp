@@ -4,6 +4,8 @@
 #include <iomanip>
 #include <iostream>
 #include <vector>
+#include <string>
+#include <numeric> 
 #include "3DVectClass.h"
 #include "hulpfuncties.h"
 #include "kost_integratie.h"
@@ -44,6 +46,8 @@ void PEFRL(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 	double chi = -0.06626458266981849;
 
 	std::vector<Vec> acc;
+	std::vector<double> tijd_iteratie;
+
 	for (int j = 0; j < N; j++) {
 		acc.push_back(Vec(0., 0., 0.));
 	}
@@ -52,7 +56,9 @@ void PEFRL(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 
 		double h_var = h;
 		if (gebruiken_var_h)
-			double h_var = variabele_h(h, r);
+			double h_var = variabele_h(h, r);;
+
+		clock_t sstart = clock();
 
 		//iteratie over aantal deeltjes
 		for (int i = 0; i < N; i++) {
@@ -94,6 +100,10 @@ void PEFRL(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 			// substeps 8 & 9
 			v[i] = v[i] + 0.5*(1. - 2. * lambda)* h_var*acc[i];
 			r[i] = r[i] + (xi*h_var)*v[i];
+		}
+			
+		tijd_iteratie.push_back((clock() - sstart) / (CLOCKS_PER_SEC / 1000));
+		for (int i = 0; i < N; i++) {
 
 			//uitschrijven naar file
 			outfile1 << r[i].x() << ' ' << r[i].y() << ' ' << r[i].z() << '\t';
@@ -113,5 +123,10 @@ void PEFRL(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 	std::cout << "Posities werden bijgehouden in bestand " << naam << "_PEFRL.txt" << std::endl;
 	std::cout << "Energie werd bijgehouden in bestand " << naam << "_PEFRL_E.txt" << std::endl;
 	std::cout << "Relatieve energiefouten en dichtste afstanden werden bijgehouden in bestand " << naam << "_PEFRL_E_err.txt" << std::endl;
+
+	double tijd_gemiddelde;
+	tijd_gemiddelde = accumulate(tijd_iteratie.begin(), tijd_iteratie.end(), 0.0) / tijd_iteratie.size();
+
+	std::cout << tijd_gemiddelde << ' ' << "milliseconden per iteratie" << std::endl;
 
 }

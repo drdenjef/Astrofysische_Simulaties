@@ -4,6 +4,8 @@
 #include <iomanip>
 #include <iostream>
 #include <vector>
+#include <string>
+#include <numeric> 
 #include "3DVectClass.h"
 #include "hulpfuncties.h"
 #include "kost_integratie.h"
@@ -46,6 +48,8 @@ void ForestRuth(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, i
 
 	double theta = 1. / (2. - pow(2., 1. / 3.));
 
+	std::vector<double> tijd_iteratie;
+
 	// iteratie over aantal integraties
 	for (int k = 0; k < iteraties; k++) {
 
@@ -53,6 +57,7 @@ void ForestRuth(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, i
 		if (gebruiken_var_h)
 			double h_var = variabele_h(h, r);
 
+		clock_t sstart = clock();
 		//iteratie over aantal deeltjes
 		for (int i = 0; i < N; i++) {
 			// substep 1
@@ -94,11 +99,17 @@ void ForestRuth(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, i
 			// substeps 6 & 7
 			v[i] = v[i] + theta * h_var*acc[i];
 			r[i] = r[i] + 0.5*theta*h_var*v[i];
+		}
 
+		tijd_iteratie.push_back((clock() - sstart) / (CLOCKS_PER_SEC / 1000));
+
+		for (int i = 0; i < N; i++) {
 			//uitschrijven naar file
 			outfile1 << r[i].x() << ' ' << r[i].y() << ' ' << r[i].z() << '\t';
 		}
 		outfile1 << std::endl;
+
+		
 
 		//uitschrijven van energie en error_energie
 		outfile2 << Energie(r, v, m) << std::endl;
@@ -112,5 +123,10 @@ void ForestRuth(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, i
 	std::cout << "Posities werden bijgehouden in bestand " << naam << "_FR.txt" << std::endl;
 	std::cout << "Energie werd bijgehouden in bestand " << naam << "_FR_E.txt" << std::endl;
 	std::cout << "Relatieve energiefouten en dichtste afstanden werden bijgehouden in bestand " << naam << "_FR_E_err.txt" << std::endl;
+
+	double tijd_gemiddelde;
+	tijd_gemiddelde = accumulate(tijd_iteratie.begin(), tijd_iteratie.end(), 0.0) / tijd_iteratie.size();
+
+	std::cout << tijd_gemiddelde << ' ' << "milliseconden per iteratie" << std::endl;
 
 }
