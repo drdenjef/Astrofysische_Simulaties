@@ -19,11 +19,15 @@
 
 
 
-void RK4(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, int iteraties, double h, std::string naam, double gebruiken_var_h) {
+void RK4(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, double integratietijd, double h, std::string naam, double gebruiken_var_h) {
 
 	// maak een file aan waar de posities van de deeltjes wordt bijgehouden
 	std::ofstream outfile1(naam + "_RK4.txt");
 	outfile1 << std::setprecision(15);
+
+	//lijst voor bijhouden van alle h's
+	std::vector<double> h_lijst;
+
 
 	// beginposities meegeven
 	for (int j = 0; j < N; j++) {
@@ -48,11 +52,15 @@ void RK4(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, i
 
 
 
-	for (int i = 0; i < iteraties; i++) {
+	double verstreken_tijd = 0;
+	while (verstreken_tijd < integratietijd) {
 
 		double h_var = h;
 		if (gebruiken_var_h)
 			double h_var = variabele_h(h, r);
+		verstreken_tijd += h_var;
+		h_lijst.push_back(h_var);
+
 
 		std::vector<Vec> kr1;
 		std::vector<Vec> kv1;
@@ -101,6 +109,7 @@ void RK4(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, i
 
 	}
 
+	std::cout << "De kost bedroeg " << kost_int_methode_varh(h_lijst, N, 1) << std::endl;
 	std::cout << "Posities werden bijgehouden in bestand " << naam << "_RK4.txt" << std::endl;
 	std::cout << "Energie werd bijgehouden in bestand " << naam << "_RK4_E.txt" << std::endl;
 	std::cout << "Relatieve energiefouten en dichtste afstanden werden bijgehouden in bestand " << naam << "_RK4_E_err.txt" << std::endl;

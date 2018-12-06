@@ -37,9 +37,9 @@ int main() {
 		cout << "neen gekozen" << endl;
 
 	//vraagt aantal iteraties aan gebruiker;
-	int iteraties = iteraties_opvraag();
+	double integratietijd = tijd_opvraag(h);
 	//zeg gebruiker wat hij/zij/het gekozen heeft van iteraties;
-	cout << endl << "De gekozen aantal iteraties is " << iteraties << ' ' << endl;
+	cout << endl << "De gekozen integratietijd is " << integratietijd << ' ' << endl;
 	
 	//vraag de gebruiker of hij/zij/het initiele begincondities wilt gebruiken (of er zelf in wilt voeren)
 	bool load_init_cond = aanwezige_begincondities();
@@ -117,7 +117,7 @@ int main() {
 
 	//berekent tijd hoe lang dit duurde
 	clock_t tStart = clock();
-	alle_posities(begin_massas, begin_posities, begin_snelheden, aantal, iteraties, h, integratie, bestand_naam, gebruiken_var_h);
+	alle_posities(begin_massas, begin_posities, begin_snelheden, aantal, integratietijd, h, integratie, bestand_naam, gebruiken_var_h);
 	printf("Time taken: %.2fs\n", (double)(clock() - tStart) / CLOCKS_PER_SEC);
 
 

@@ -124,6 +124,12 @@ double tijdstap_opvraag() {
 	std::string::size_type sz;     // alias of size_t
 	double h = std::stof(input, &sz);
 
+	//extra check op 0.00 bvb
+	if (!h) {
+		cout << "Geen nietnegatieve double, probeer opnieuw." << endl;
+		return tijdstap_opvraag();
+	}
+
 	//geef double terug
 	return h;	
 }
@@ -150,25 +156,65 @@ bool gebruik_var_h() {
 
 }
 
-int iteraties_opvraag() {
+int tijd_opvraag(double h) {
 	//vraagt input op en leest in
-	cout << "Voer gewenste aantal iteraties in: ";
+	cout << "Voer gewenste integratietijd in: ";
 	string input = lees_input();
 
-	//check als input van de vorm integer is
-	int integer = input_is_integer(input);
+	//controleren of dit effectief een double is, dus allemaal digits en 1 punt
+	//variabele die false is wanneer er non-integer char gevonden is
+	int integer = 1;
+	//houdt aantal punten bij
+	int punten = 0;
 
-	//herbegin functie wanneer integer check gefaald is
-	if (!integer) {
-		cout << "Error, dit is geen nietnegatief geheel getal" << endl;
-		return iteraties_opvraag();
+	//extra check als input een lege string is of als tijd = 0 opgegeven was
+	if (input.length() == 0 || input == "0") {
+		cout << "Geen positieve double, probeer opnieuw." << endl;
+		return tijd_opvraag(h);
 	}
 
-	//zet string om naar integer wanneer integer vorm heeft
-	std::string::size_type sz;   // alias of size_t
-	int aantal = std::stoi(input, &sz);
+	//check char per char of input van de vorm double is
+	for (size_t i = 0; i < input.length(); i++)
+	{
 
-	return aantal;
+		if (input[i] == '.') {
+			punten += 1;
+		}
+		else if (!isdigit(input[i]))
+		{
+			integer = 0;
+			break;
+		}
+		//er mag ook niet meer dan 1 punt zijn
+		if (punten > 1) {
+			integer = 0;
+			break;
+		}
+	}
+
+	//kijkt dus of de functie succesvol was
+	if (!integer) {
+		cout << "Geen positieve double, probeer opnieuw." << endl;
+		return tijd_opvraag(h);
+	}
+
+	//maakt van de string een double
+	std::string::size_type sz;     // alias of size_t
+	double tijd = std::stof(input, &sz);
+
+	//extra check op 0.00 bvb, alsook of waarde groter of gelijk aan h is
+	if (!tijd) {
+		cout << "Geen positieve double, probeer opnieuw." << endl;
+		return tijd_opvraag(h);
+	}
+
+	//integratietijd mag ook niet kleiner zijn dan de tijdstap
+	if (tijd < h) {
+		cout << "integratietijd mag niet kleiner zijn dan tijdstap, probeer opnieuw." << endl;
+		return tijd_opvraag(h);
+	}
+
+	return tijd;
 }
 
 int type_integratie_cijfer() {
@@ -264,46 +310,46 @@ bool random_genereren() {
 
 }
 
-void alle_posities(vector<double> m, vector<Vec>r, vector<Vec> v, int N, int iter, double h, int methode, string naam, bool gebruiken_var_h) {
+void alle_posities(vector<double> m, vector<Vec>r, vector<Vec> v, int N, double integratietijd, double h, int methode, string naam, bool gebruiken_var_h) {
 
 	//RK4
 	if (methode == 1) {
-		RK4(m, r, v, N, iter, h, naam, gebruiken_var_h);
+		RK4(m, r, v, N, integratietijd, h, naam, gebruiken_var_h);
 	}
 
 	//ingebedde RK
 	if (methode == 2) {
-		RKF45(m, r, v, N, iter, h, naam, gebruiken_var_h);
+		RKF45(m, r, v, N, integratietijd, h, naam, gebruiken_var_h);
 	}
 
 	//Verlet
 	if (methode == 3) {
-		Verlet(m, r, v, N, iter, h, naam, gebruiken_var_h);
+		Verlet(m, r, v, N, integratietijd, h, naam, gebruiken_var_h);
 	}
 
 	//Forest-Ruth
 	if (methode == 4) {
-		ForestRuth(m, r, v, N, iter, h, naam, gebruiken_var_h);
+		ForestRuth(m, r, v, N, integratietijd, h, naam, gebruiken_var_h);
 	}
 
 	//Leapfrog
 	if (methode == 5) {
-		Leapfrog(m, r, v, N, iter, h, naam, gebruiken_var_h);
+		Leapfrog(m, r, v, N, integratietijd, h, naam, gebruiken_var_h);
 	}
 
 	//PEFRL
 	if (methode == 6) {
-		PEFRL(m, r, v, N, iter, h, naam, gebruiken_var_h);
+		PEFRL(m, r, v, N, integratietijd, h, naam, gebruiken_var_h);
 	}
 
 	//alles
 	if (methode == 7) {
-		RK4(m, r, v, N, iter, h, naam, gebruiken_var_h);
-		RKF45(m, r, v, N, iter, h, naam, gebruiken_var_h);
-		Verlet(m, r, v, N, iter, h, naam, gebruiken_var_h);
-		ForestRuth(m, r, v, N, iter, h, naam, gebruiken_var_h);
-		Leapfrog(m, r, v, N, iter, h, naam, gebruiken_var_h);
-		PEFRL(m, r, v, N, iter, h, naam, gebruiken_var_h);
+		RK4(m, r, v, N, integratietijd, h, naam, gebruiken_var_h);
+		RKF45(m, r, v, N, integratietijd, h, naam, gebruiken_var_h);
+		Verlet(m, r, v, N, integratietijd, h, naam, gebruiken_var_h);
+		ForestRuth(m, r, v, N, integratietijd, h, naam, gebruiken_var_h);
+		Leapfrog(m, r, v, N, integratietijd, h, naam, gebruiken_var_h);
+		PEFRL(m, r, v, N, integratietijd, h, naam, gebruiken_var_h);
 	}
 
 }

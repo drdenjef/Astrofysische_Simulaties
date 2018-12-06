@@ -11,11 +11,14 @@
 using namespace std;
 
 
-void Verlet(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, int iteraties, double h, std::string naam, double gebruiken_var_h) {
+void Verlet(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, double integratietijd, double h, std::string naam, double gebruiken_var_h) {
 
 	// maak een file aan waar de posities van de deeltjes wordt bijgehouden
 	std::ofstream outfile1(naam + "_V.txt");
 	outfile1 << std::setprecision(15);
+
+	//lijst voor bijhouden van alle h's
+	std::vector<double> h_lijst;
 
 	// beginposities meegeven
 	for (int j = 0; j < N; j++) {
@@ -38,12 +41,14 @@ void Verlet(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N
 
 	// begint te itereren over het aantal iteraties die je wilt uitvoeren
 	// kan meegegeven worden aan de functie RKF45
-
-	for (int j = 0; j < iteraties; j++) {
+	double verstreken_tijd = 0;
+	while (verstreken_tijd < integratietijd) {
 
 		double h_var = h;
 		if (gebruiken_var_h)
 			double h_var = variabele_h(h, r);
+		verstreken_tijd += h_var;
+		h_lijst.push_back(h_var);
 
 		clock_t sstart = clock();
 
@@ -66,6 +71,7 @@ void Verlet(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N
 		outfile3 << error_energie(r, v, m, start_energie) << '\t' << dichtste_afstand(r) << std::endl;
 	}
 
+	std::cout << "De kost bedroeg " << kost_int_methode_varh(h_lijst, N, 3) << std::endl;
 	std::cout << "Posities werden bijgehouden in bestand " << naam << "_V.txt" << std::endl;
 	std::cout << "Energie werd bijgehouden in bestand " << naam << "_V_E.txt" << std::endl;
 	std::cout << "Relatieve energiefouten en dichtste afstanden werden bijgehouden in bestand " << naam << "_V_E_err.txt" << std::endl;

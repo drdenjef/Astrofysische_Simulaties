@@ -11,6 +11,6 @@
 
 
 // functie RKF45 die posities van deeltjes teruggeeft
-void Verlet(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v,  int N, int iteraties, double h, std::string naam, double gebruiken_var_h);
+void Verlet(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v,  int N, double integratietijd, double h, std::string naam, double gebruiken_var_h);
 
 #endif

@@ -41,6 +41,26 @@ double kost_int_methode_varh(std::vector<double> hlijst, double aantal_deeltjes,
 		kost = kost_int_varh(hlijst, 6, aantal_deeltjes);
 	}
 
+	//Verlet
+	if (methode == 3) {
+		kost = kost_int_varh(hlijst, 2, aantal_deeltjes);
+	}
+
+	//Forest-Ruth
+	if (methode == 4) {
+		kost = kost_int_varh(hlijst, 3, aantal_deeltjes);
+	}
+
+	//Leapfrog
+	if (methode == 5) {
+		kost = kost_int_varh(hlijst, 1, aantal_deeltjes);
+	}
+
+	//PEFRL
+	if (methode == 6) {
+		kost = kost_int_varh(hlijst, 4, aantal_deeltjes);
+	}
+
 	return kost;
 }
 
