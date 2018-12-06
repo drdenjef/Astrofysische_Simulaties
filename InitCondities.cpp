@@ -214,8 +214,7 @@ std::vector<std::vector<std::vector<std::string>>> lijst_begincond() {
 
 int nummer_beginconditie(int aantal) {
 
-	//min twee want slechts begincondities vanaf 2 deeltjes
-	aantal -= 2;
+	
 	//geeft user de mogelijke opties
 	cout << "Voor " << lijst_begincond_namen()[aantal][1] << ", kies 1." << endl;
 	cout << "Voor " << lijst_begincond_namen()[aantal][2] << ", kies 2." << endl;

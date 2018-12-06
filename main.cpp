@@ -54,10 +54,11 @@ int main() {
 		cout << "ja gekozen." << endl;
 
 		//vraagt naam (nummer) van voorgecodeerde begincondities op
-		int optie = nummer_beginconditie(aantal);
+		//-2 wegens pas informatie vanaf 2 deeltjes (maar start op 0de positie)
+		int optie = nummer_beginconditie(aantal-2);
 
 		//return de keuze
-		//-2 wegens pas informatie vanaf 2 deeltjes (maar starg op 0de positie)
+		//-2 wegens pas informatie vanaf 2 deeltjes (maar start op 0de positie)
 		cout << endl << "U heeft " << lijst_begincond_namen()[aantal-2][optie] << " gekozen." << endl;
 
 		//vraag de gewenste begin condities op
