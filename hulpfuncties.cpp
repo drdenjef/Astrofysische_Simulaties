@@ -17,7 +17,7 @@ double variabele_h(double h, vector<Vec> posities) {
 	for (unsigned int i = 0; i < posities.size(); i++) {
 
 		//overloop alle vectoren die na de eerste vector komt
-		for (int j = (posities.size() - 1); j > i; j--) {
+		for (unsigned int j = (posities.size() - 1); j > i; j--) {
 
 			//bekijk x afstand 
 			double x_afst_kwadr = pow(posities[i].x() - posities[j].x(), 2);
@@ -124,8 +124,8 @@ double dichtste_afstand(std::vector<Vec> poslist) {
 	else {
 
 		dichtste_nadering = 1e15;
-		for (int i = 0; i < poslist.size(); i++) {
-			for (int j = (poslist.size() - 1); j > i; j--) {
+		for (unsigned int i = 0; i < poslist.size(); i++) {
+			for (unsigned int j = (poslist.size() - 1); j > i; j--) {
 
 				double check_afstand = afstand(poslist[i], poslist[j]);
 				if (check_afstand < dichtste_nadering) {
