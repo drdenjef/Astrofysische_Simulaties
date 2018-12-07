@@ -12,7 +12,7 @@
 using namespace std;
 
 
-void Verlet(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, double integratietijd, double h, std::string naam, double gebruiken_var_h) {
+void Verlet(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, double integratietijd, double h, std::string naam, double gebruiken_var_h, int fractie) {
 
 	// maak een file aan waar de posities van de deeltjes wordt bijgehouden
 	std::ofstream outfile1(naam + "_V.txt");
@@ -40,14 +40,19 @@ void Verlet(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N
 
 	std::vector<double> tijd_iteratie;
 
-	// begint te itereren over het aantal iteraties die je wilt uitvoeren
-	// kan meegegeven worden aan de functie RKF45
+	// houd de iteraties bij
+	int iteratie = 0;
+
+	// houd de tijd bij van de simulatie
 	double verstreken_tijd = 0;
+
+	// start van de iteraties
 	while (verstreken_tijd < integratietijd) {
 
 		double h_var = h;
 		if (gebruiken_var_h)
 			double h_var = variabele_h(h, r);
+
 		verstreken_tijd += h_var;
 		h_lijst.push_back(h_var);
 
@@ -62,20 +67,24 @@ void Verlet(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N
 
 		tijd_iteratie.push_back((clock() - sstart) / (CLOCKS_PER_SEC / 1000));
 
-		for (int i = 0; i < N; i++) {
-			outfile1 << r[i].x() << ' ' << r[i].y() << ' ' << r[i].z() << '\t';
+		// bekijk of je deze iteratie wil wegschrijven
+		if (iteratie % fractie == 0) {
+			for (int i = 0; i < N; i++) {
+				outfile1 << r[i].x() << ' ' << r[i].y() << ' ' << r[i].z() << '\t';
+			}
+			outfile1 << std::endl;
+			outfile2 << Energie(r, v, m) << std::endl;
+			outfile3 << error_energie(r, v, m, start_energie) << '\t' << dichtste_afstand(r) << '\t' << verstreken_tijd << std::endl;
 		}
 
+		iteratie += 1;
 
-		outfile1 << std::endl;
-		outfile2 << Energie(r, v, m) << std::endl;
-		outfile3 << error_energie(r, v, m, start_energie) << '\t' << dichtste_afstand(r) << std::endl;
 	}
 
 	std::cout << "De kost bedroeg " << kost_int_methode_varh(h_lijst, N, 3) << std::endl;
 	std::cout << "Posities werden bijgehouden in bestand " << naam << "_V.txt" << std::endl;
 	std::cout << "Energie werd bijgehouden in bestand " << naam << "_V_E.txt" << std::endl;
-	std::cout << "Relatieve energiefouten en dichtste afstanden werden bijgehouden in bestand " << naam << "_V_E_err.txt" << std::endl;
+	std::cout << "Relatieve energiefouten, dichtste afstanden en de tijd werden bijgehouden in bestand " << naam << "_V_E_err.txt" << std::endl;
 	outfile1.close();
 	outfile2.close();
 	outfile3.close();
