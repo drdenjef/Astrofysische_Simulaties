@@ -11,7 +11,7 @@ double kost_int_varh(std::vector<double> hlijst, double aantal_drivers, double a
 	//lengte van hlijst is ook aantal iteraties
 	double teller = hlijst.size() * aantal_drivers * aantal_deeltjes;
 	double noemer = 0;
-	for (int i = 0; i < hlijst.size(); i++) {
+	for (unsigned int i = 0; i < hlijst.size(); i++) {
 		noemer += hlijst[i];
 	}
 
@@ -19,14 +19,6 @@ double kost_int_varh(std::vector<double> hlijst, double aantal_drivers, double a
 
 }
 
-double kost_int(double h, int iteraties, double aantal_drivers, double aantal_deeltjes) {
-	//lengte van hlijst is ook aantal iteraties
-	double teller = iteraties * aantal_drivers * aantal_deeltjes;
-	double noemer = h*iteraties;
-
-	return teller / noemer;
-
-}
 
 double kost_int_methode_varh(std::vector<double> hlijst, double aantal_deeltjes, int methode) {
 
@@ -59,33 +51,6 @@ double kost_int_methode_varh(std::vector<double> hlijst, double aantal_deeltjes,
 	//PEFRL
 	if (methode == 6) {
 		kost = kost_int_varh(hlijst, 4, aantal_deeltjes);
-	}
-
-	return kost;
-}
-
-double kost_int_methode(double h, int iteraties, double aantal_deeltjes, int methode) {
-
-	double kost;
-	
-	//Verlet
-	if (methode == 3) {
-		kost = kost_int(h, iteraties, 2, aantal_deeltjes);
-	}
-
-	//Forest-Ruth
-	if (methode == 4) {
-		kost = kost_int(h, iteraties, 3, aantal_deeltjes);
-	}
-
-	//Leapfrog
-	if (methode == 5) {
-		kost = kost_int(h, iteraties, 1, aantal_deeltjes);
-	}
-
-	//PEFRL
-	if (methode == 6) {
-		kost = kost_int(h, iteraties, 4, aantal_deeltjes);
 	}
 
 	return kost;

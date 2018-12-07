@@ -48,6 +48,39 @@ bool input_is_integer(const string &s) {
 	return integer;
 }
 
+bool input_is_double(const std::string &s) {
+	//controleren of dit effectief een double is, dus allemaal digits en 1 punt
+	//variabele die false is wanneer er non-integer char gevonden is
+	int integer = 1;
+	//houdt aantal punten bij
+	int punten = 0;
+
+	//extra check als input een lege string is of als h = 0 opgegeven was
+	if (s.length() == 0 || s == "0") {
+		return false ;
+	}
+
+	//check char per char of input van de vorm double is
+	for (size_t i = 0; i < s.length(); i++)
+	{
+
+		if (s[i] == '.') {
+			punten += 1;
+		}
+		else if (!isdigit(s[i]))
+		{
+			integer = 0;
+			break;
+		}
+		//er mag ook niet meer dan 1 punt zijn
+		if (punten > 1) {
+			integer = 0;
+			break;
+		}
+	}
+	return integer;
+}
+
 
 int aantal_objecten() {
 
@@ -83,39 +116,11 @@ double tijdstap_opvraag() {
 	cout << "Voer gewenste tijdstap in: ";
 	string input = lees_input();
 
-	//controleren of dit effectief een double is, dus allemaal digits en 1 punt
-	//variabele die false is wanneer er non-integer char gevonden is
-	int integer = 1;
-	//houdt aantal punten bij
-	int punten = 0;
-
-	//extra check als input een lege string is of als h = 0 opgegeven was
-	if (input.length() == 0 || input =="0") {
-		cout << "Geen nietnegatieve double, probeer opnieuw." << endl;
-		return tijdstap_opvraag();
-	}
-
-	//check char per char of input van de vorm double is
-	for (size_t i = 0; i < input.length(); i++)
-	{
-		
-		if (input[i] == '.') {
-			punten += 1;
-		}
-		else if (!isdigit(input[i]))
-		{
-			integer = 0;
-			break;
-		}
-		//er mag ook niet meer dan 1 punt zijn
-		if (punten > 1) {
-			integer = 0;
-			break;
-		}
-	}
+	//check of input van vorm double is
+	bool doubl = input_is_double(input);
 
 	//kijkt dus of de functie succesvol was
-	if (!integer) {
+	if (!doubl) {
 		cout << "Geen nietnegatieve double, probeer opnieuw." << endl;
 		return tijdstap_opvraag();
 	}
@@ -156,44 +161,16 @@ bool gebruik_var_h() {
 
 }
 
-int tijd_opvraag(double h) {
+double tijd_opvraag(double h) {
 	//vraagt input op en leest in
 	cout << "Voer gewenste integratietijd in: ";
 	string input = lees_input();
 
-	//controleren of dit effectief een double is, dus allemaal digits en 1 punt
-	//variabele die false is wanneer er non-integer char gevonden is
-	int integer = 1;
-	//houdt aantal punten bij
-	int punten = 0;
-
-	//extra check als input een lege string is of als tijd = 0 opgegeven was
-	if (input.length() == 0 || input == "0") {
-		cout << "Geen positieve double, probeer opnieuw." << endl;
-		return tijd_opvraag(h);
-	}
-
-	//check char per char of input van de vorm double is
-	for (size_t i = 0; i < input.length(); i++)
-	{
-
-		if (input[i] == '.') {
-			punten += 1;
-		}
-		else if (!isdigit(input[i]))
-		{
-			integer = 0;
-			break;
-		}
-		//er mag ook niet meer dan 1 punt zijn
-		if (punten > 1) {
-			integer = 0;
-			break;
-		}
-	}
+	//check of input van vorm double is
+	bool doubl = input_is_double(input);
 
 	//kijkt dus of de functie succesvol was
-	if (!integer) {
+	if (!doubl) {
 		cout << "Geen positieve double, probeer opnieuw." << endl;
 		return tijd_opvraag(h);
 	}
@@ -215,6 +192,42 @@ int tijd_opvraag(double h) {
 	}
 
 	return tijd;
+}
+
+int fractie_opvraag(double integratietijd, double h) {
+	//vraagt input op en leest in
+	cout << "Na hoeveel integraties wilt u telkens de posities wegschrijven? Dit is handig wanneer u heel lang en/of precies wilt integreren.";
+	string aantal_input = lees_input();
+
+	//check als input van de vorm integer is
+	int fractie = input_is_integer(aantal_input);
+
+	//herbegin functie wanneer integer check gefaald is
+	if (!fractie) {
+		cout << "Error, dit is geen positief geheel getal" << endl;
+		return fractie_opvraag( integratietijd,  h);
+	}
+
+	//zet string om naar integer wanneer integer vorm heeft
+	std::string::size_type sz;   // alias of size_t
+	int aantal = std::stoi(aantal_input, &sz);
+
+	//controleer op groter dan 0 is
+	if (aantal == 0) {
+		cout << "Error, dit is geen positief geheel getal" << endl;
+		return fractie_opvraag( integratietijd,  h);
+	}
+
+	double stappen = ceil(integratietijd / h);
+	//controleer of er uberhaupt wel iets weggeschreven kan worden
+	if ((double)aantal> stappen) {
+		cout << "Error, op deze manier gaat u helemaal niks wegschrijven" << endl;
+		return fractie_opvraag( integratietijd,  h);
+	}
+
+	//geef aantal deeltjes terug
+	return aantal;
+
 }
 
 int type_integratie_cijfer() {
@@ -291,7 +304,7 @@ bool aanwezige_begincondities() {
 
 bool random_genereren() {
 	//vraagt input op en leest in
-	cout << "Wilt u random gebonden toestand genereren (anders moet u er zelf invoeren)? J (Ja) of N (Neen): ";
+	cout << "Wilt u random (gecentreerde en herschaalde) toestand genereren (anders moet u er zelf invoeren)? J (Ja) of N (Neen): ";
 	string JaNee = lees_input();
 
 
@@ -310,46 +323,46 @@ bool random_genereren() {
 
 }
 
-void alle_posities(vector<double> m, vector<Vec>r, vector<Vec> v, int N, double integratietijd, double h, int methode, string naam, bool gebruiken_var_h) {
+void alle_posities(vector<double> m, vector<Vec>r, vector<Vec> v, int N, double integratietijd, double h, int methode, string naam, bool gebruiken_var_h, int fractie) {
 
 	//RK4
 	if (methode == 1) {
-		RK4(m, r, v, N, integratietijd, h, naam, gebruiken_var_h);
+		RK4(m, r, v, N, integratietijd, h, naam, gebruiken_var_h, fractie);
 	}
 
 	//ingebedde RK
 	if (methode == 2) {
-		RKF45(m, r, v, N, integratietijd, h, naam, gebruiken_var_h);
+		RKF45(m, r, v, N, integratietijd, h, naam, gebruiken_var_h, fractie);
 	}
 
 	//Verlet
 	if (methode == 3) {
-		Verlet(m, r, v, N, integratietijd, h, naam, gebruiken_var_h);
+		Verlet(m, r, v, N, integratietijd, h, naam, gebruiken_var_h, fractie);
 	}
 
 	//Forest-Ruth
 	if (methode == 4) {
-		ForestRuth(m, r, v, N, integratietijd, h, naam, gebruiken_var_h);
+		ForestRuth(m, r, v, N, integratietijd, h, naam, gebruiken_var_h, fractie);
 	}
 
 	//Leapfrog
 	if (methode == 5) {
-		Leapfrog(m, r, v, N, integratietijd, h, naam, gebruiken_var_h);
+		Leapfrog(m, r, v, N, integratietijd, h, naam, gebruiken_var_h, fractie);
 	}
 
 	//PEFRL
 	if (methode == 6) {
-		PEFRL(m, r, v, N, integratietijd, h, naam, gebruiken_var_h);
+		PEFRL(m, r, v, N, integratietijd, h, naam, gebruiken_var_h, fractie);
 	}
 
 	//alles
 	if (methode == 7) {
-		RK4(m, r, v, N, integratietijd, h, naam, gebruiken_var_h);
-		RKF45(m, r, v, N, integratietijd, h, naam, gebruiken_var_h);
-		Verlet(m, r, v, N, integratietijd, h, naam, gebruiken_var_h);
-		ForestRuth(m, r, v, N, integratietijd, h, naam, gebruiken_var_h);
-		Leapfrog(m, r, v, N, integratietijd, h, naam, gebruiken_var_h);
-		PEFRL(m, r, v, N, integratietijd, h, naam, gebruiken_var_h);
+		RK4(m, r, v, N, integratietijd, h, naam, gebruiken_var_h, fractie);
+		RKF45(m, r, v, N, integratietijd, h, naam, gebruiken_var_h, fractie);
+		Verlet(m, r, v, N, integratietijd, h, naam, gebruiken_var_h, fractie);
+		ForestRuth(m, r, v, N, integratietijd, h, naam, gebruiken_var_h, fractie);
+		Leapfrog(m, r, v, N, integratietijd, h, naam, gebruiken_var_h, fractie);
+		PEFRL(m, r, v, N, integratietijd, h, naam, gebruiken_var_h, fractie);
 	}
 
 }

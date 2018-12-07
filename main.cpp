@@ -25,21 +25,26 @@ int main() {
 	//vraagt tijdstap aan gebruiker
 	double h = tijdstap_opvraag();
 	//zeg gebruiker wat hij/zij/het gekozen heeft van h
-	cout << endl << "De gekozen tijdstap is " << h << ' ' << endl;
+	cout << endl << "De gekozen tijdstap is " << h << ' ' << endl << endl;
 
 	//vraagt of gebruiker een variabele tijdstap wilt
 	bool gebruiken_var_h = gebruik_var_h();
 	//confirmeer keuze aan gebruiker
 	cout << endl << "U heeft ";
 	if (gebruiken_var_h)
-		cout << "ja gekozen" << endl;
+		cout << "ja gekozen" << endl << endl;
 	else
-		cout << "neen gekozen" << endl;
+		cout << "neen gekozen" << endl << endl;
 
-	//vraagt aantal iteraties aan gebruiker;
+	//vraagt integratietijd aan gebruiker
 	double integratietijd = tijd_opvraag(h);
-	//zeg gebruiker wat hij/zij/het gekozen heeft van iteraties;
-	cout << endl << "De gekozen integratietijd is " << integratietijd << ' ' << endl;
+	//zeg gebruiker wat hij/zij/het gekozen heeft van integratietijd
+	cout << endl << "De gekozen integratietijd is " << integratietijd << ' ' << endl << endl;
+
+	//vraagt hoe vaak positie weggeschreven moet worden
+	int fractie = fractie_opvraag(integratietijd, h);
+	//zeg gebruiker wat hij/zij/het gekozen heeft
+	cout << endl << "Men zal om de " << fractie << " integraties de posities wegschrijven." << endl << endl;
 	
 	//vraag de gebruiker of hij/zij/het initiele begincondities wilt gebruiken (of er zelf in wilt voeren)
 	bool load_init_cond = aanwezige_begincondities();
@@ -51,7 +56,7 @@ int main() {
 	vector<Vec> begin_snelheden;
 	vector<double> begin_massas;
 	if (load_init_cond == 1) {
-		cout << "ja gekozen." << endl;
+		cout << "ja gekozen." << endl << endl;
 
 		//vraagt naam (nummer) van voorgecodeerde begincondities op
 		//-2 wegens pas informatie vanaf 2 deeltjes (maar start op 0de positie)
@@ -59,7 +64,7 @@ int main() {
 
 		//return de keuze
 		//-2 wegens pas informatie vanaf 2 deeltjes (maar start op 0de positie)
-		cout << endl << "U heeft " << lijst_begincond_namen()[aantal-2][optie] << " gekozen." << endl;
+		cout << endl << "U heeft " << lijst_begincond_namen()[aantal-2][optie] << " gekozen." << endl << endl;
 
 		//vraag de gewenste begin condities op
 		begin_posities = posities(aantal, optie);
@@ -69,7 +74,7 @@ int main() {
 	
 	}
 	else {
-		cout << "neen gekozen." << endl;
+		cout << "neen gekozen." << endl << endl;
 
 		//vraagt of gebruiker random wilt genereren
 		bool random = random_genereren();
@@ -77,7 +82,7 @@ int main() {
 		cout << endl << "U heeft ";
 
 		if (random) {
-			cout << " ja gekozen." << endl;
+			cout << " ja gekozen." << endl << endl;
 
 			//laat random gebonden toestand genereren
 			begin_massas = massrescaling(randommass(aantal));
@@ -88,7 +93,7 @@ int main() {
 
 		else {
 
-			cout << " neen gekozen." << endl;
+			cout << " neen gekozen." << endl << endl;
 			//vraag de gewenste begin condities op
 			begin_posities = vraag_posities(aantal);
 			begin_snelheden = vraag_snelheden(aantal);
@@ -97,7 +102,7 @@ int main() {
 	}
 	
 	//schrijft beginposities uit
-	cout << "Dit zijn de startposities" << endl;
+	cout << "Dit zijn de startposities" << endl ;
 	print_posities(begin_posities);
 
 	//schrijft beginsnelheden uit
@@ -111,14 +116,14 @@ int main() {
 	//vraagt naam bestand voor wegschrijven op
 	cout << "Geef naam naar waar de posities weggeschreven wordt op: ";
 	string bestand_naam = lees_input();
-	cout << '\n' << "De gekozen naam is: " << bestand_naam << endl;
+	cout << '\n' << "De gekozen naam is: " << bestand_naam << endl << endl;
 
 	//nu derigeren naar juiste methode, dit geeft een vector van vector van Vec's terug, eerste lengte is aantal iteraties, tweede is aantal deeltjes, derde zijn de posities
 	//dit komt achteraf buiten deze if, maar moet nu nog binnen
 
 	//berekent tijd hoe lang dit duurde
 	clock_t tStart = clock();
-	alle_posities(begin_massas, begin_posities, begin_snelheden, aantal, integratietijd, h, integratie, bestand_naam, gebruiken_var_h);
+	alle_posities(begin_massas, begin_posities, begin_snelheden, aantal, integratietijd, h, integratie, bestand_naam, gebruiken_var_h, fractie);
 	printf("Time taken: %.2fs\n", (double)(clock() - tStart) / CLOCKS_PER_SEC);
 
 

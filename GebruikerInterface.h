@@ -13,13 +13,17 @@ std::string lees_input();
 
 bool input_is_integer(const std::string &s);
 
+bool input_is_double(const std::string &s);
+
 int aantal_objecten();
 
 double tijdstap_opvraag();
 
 bool gebruik_var_h();
 
-int tijd_opvraag(double h);
+double tijd_opvraag(double h);
+
+int fractie_opvraag(double integratietijd, double h);
 
 int type_integratie_cijfer();
 
@@ -29,7 +33,7 @@ bool aanwezige_begincondities();
 
 bool random_genereren();
 
-void alle_posities(std::vector<double> m, std::vector<Vec>r, std::vector<Vec> v, int N, double integratietijd, double h, int methode, std::string naam, bool gebruiken_var_h);
+void alle_posities(std::vector<double> m, std::vector<Vec>r, std::vector<Vec> v, int N, double integratietijd, double h, int methode, std::string naam, bool gebruiken_var_h, int fractie);
 
 #endif
 

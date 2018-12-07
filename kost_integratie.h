@@ -13,10 +13,6 @@
 //aantal_deeltjes is aantal deeltjes, laat aantal driver evaluations per integratie linear schalen
 double kost_int_varh(std::vector<double> hlijst, double aantal_drivers, double aantal_deeltjes);
 
-double kost_int(double h, int iteraties, double aantal_drivers, double aantal_deeltjes);
-
 double kost_int_methode_varh(std::vector<double> hlijst, double aantal_deeltjes, int methode);
-
-double kost_int_methode(double h, int iteraties, double aantal_deeltjes, int methode);
 
 #endif

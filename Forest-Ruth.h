@@ -13,6 +13,6 @@
 
 
 // functie ForestRuth die posities + snelheden van deeltjes teruggeeft
-void ForestRuth(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, double integratietijd, double h,  std::string naam, double gebruiken_var_h);
+void ForestRuth(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, double integratietijd, double h,  std::string naam, double gebruiken_var_h, int fractie);
 
 #endif
