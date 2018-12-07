@@ -14,7 +14,7 @@ double variabele_h(double h, vector<Vec> posities) {
 	//zo normaal gezien computationele tijd inkorten
 	double variabele_h_weger = 1;
 	//overloop alle vectoren
-	for (int i = 0; i < posities.size(); i++) {
+	for (unsigned int i = 0; i < posities.size(); i++) {
 
 		//overloop alle vectoren die na de eerste vector komt
 		for (int j = (posities.size() - 1); j > i; j--) {
@@ -57,10 +57,10 @@ double variabele_h_traag(double h, vector<Vec> posities) {
 
 	double variabele_h_weger = 1;
 	//overloop alle vectoren
-	for (int i = 0; i < posities.size(); i++) {
+	for (unsigned int i = 0; i < posities.size(); i++) {
 
 		//overloop alle vectoren die na de eerste vector komt
-		for (int j = (posities.size() - 1); j > i; j--) {
+		for (unsigned int j = (posities.size() - 1); j > i; j--) {
 			double afstand = (posities[i] - posities[j]).norm();
 			if (variabele_h_weger > afstand) {
 				variabele_h_weger = afstand;

@@ -105,7 +105,7 @@ void RK4(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, d
 
 		outfile1 << std::endl;
 		outfile2 << Energie(r, v, m) << std::endl;
-		outfile3 << error_energie(r, v, m, start_energie) << '\t' << dichtste_afstand(r) << std::endl;
+		outfile3 << error_energie(r, v, m, start_energie) << '\t' << dichtste_afstand(r) << '\t' << verstreken_tijd << std::endl;
 
 	}
 

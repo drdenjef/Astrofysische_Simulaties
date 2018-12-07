@@ -19,7 +19,7 @@ double tijdstap_opvraag();
 
 bool gebruik_var_h();
 
-int tijd_opvraag(double h);
+double tijd_opvraag(double h);
 
 int type_integratie_cijfer();
 

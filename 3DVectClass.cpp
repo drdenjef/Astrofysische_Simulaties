@@ -107,22 +107,15 @@ Vec operator*(Vec a, Vec b) {
 
 std::vector<Vec> operator+(std::vector<Vec> a, std::vector<Vec> b) {
 	std::vector<Vec> result;
-	for (int i = 0; i < a.size(); i++) {
+	for (unsigned int i = 0; i < a.size(); i++) {
 		result.push_back(a[i] + b[i]);
 	}
 	return result;
 }
 
-std::vector<Vec> operator+(std::vector<Vec> a, Vec b) {
-	for (int i = 0; i < a.size(); i++) {
-		a[i] += b;
-	}
-	return a;
-}
-
 std::vector<Vec> operator-(std::vector<Vec> a, std::vector<Vec> b) {
 	std::vector<Vec> result;
-	for (int i = 0; i < a.size(); i++) {
+	for (unsigned int i = 0; i < a.size(); i++) {
 		result.push_back(a[i] - b[i]);
 	}
 	return result;
@@ -130,20 +123,10 @@ std::vector<Vec> operator-(std::vector<Vec> a, std::vector<Vec> b) {
 
 std::vector<Vec> operator*(double a, std::vector<Vec> b) {
 	std::vector<Vec> result;
-	for (int i = 0; i < b.size(); i++) {
+	for (unsigned int i = 0; i < b.size(); i++) {
 		result.push_back(a * b[i]);
 	}
 	return result;
-}
-
-
-std::vector<Vec> operator/(std::vector<Vec> b, double a) {
-	std::vector<Vec> result;
-	for (int i = 0; i < b.size(); i++) {
-		result.push_back(b[i] / a);
-	}
-	return result;
-
 }
 
 
@@ -151,4 +134,3 @@ std::vector<Vec> operator/(std::vector<Vec> b, double a) {
 void print(Vec a) {
 	std::cout << a.x() << ' ' << a.y() << ' ' << a.z() << '\n';
 }
-

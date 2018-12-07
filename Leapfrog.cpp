@@ -74,14 +74,14 @@ void Leapfrog(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int
 
 
 		//bereken gemiddelde positie vector (zit dan op zelfde "hoogte" als snelheid)
-		for (int k = 0; k < rnhalf.size(); k++) {
+		for (unsigned int k = 0; k < rnhalf.size(); k++) {
 			r[k] = 0.5*(rhalf[k] + rnhalf[k]);
 			outfile1 << r[k].x() << ' ' << r[k].y() << ' ' << r[k].z() << '\t';
 		}
 
 		outfile1 << std::endl;
 		outfile2 << Energie(r, vn, m) << std::endl;
-		outfile3 << error_energie(r, vn, m, start_energie) << '\t' << dichtste_afstand(r) << std::endl;
+		outfile3 << error_energie(r, v, m, start_energie) << '\t' << dichtste_afstand(r) << '\t' << verstreken_tijd << std::endl;
 
 		rhalf = rnhalf;
 		v = vn;

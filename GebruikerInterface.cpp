@@ -156,7 +156,7 @@ bool gebruik_var_h() {
 
 }
 
-int tijd_opvraag(double h) {
+double tijd_opvraag(double h) {
 	//vraagt input op en leest in
 	cout << "Voer gewenste integratietijd in: ";
 	string input = lees_input();
