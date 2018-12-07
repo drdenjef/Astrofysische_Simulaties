@@ -14,30 +14,30 @@ double variabele_h(double h, vector<Vec> posities) {
 	//zo normaal gezien computationele tijd inkorten
 	double variabele_h_weger = 1;
 	//overloop alle vectoren
-	for (int i = 0; i < posities.size(); i++) {
+	for (unsigned int i = 0; i < posities.size() - 1; i++) {
 
 		//overloop alle vectoren die na de eerste vector komt
-		for (int j = (posities.size() - 1); j > i; j--) {
+		for (unsigned int j = (posities.size() - 1); j > i; j--) {
 
 			//bekijk x afstand 
 			double x_afst_kwadr = pow(posities[i].x() - posities[j].x(), 2);
 			//moeten geen wortel nemen, is extra berekening en als het nu al groter of gelijk is aan 1, gaat wortel niks wijzigen
 			if (x_afst_kwadr >= 1) {
-				break;
+				continue;
 			}
 
 			double y_afst_kwadr = pow(posities[i].y() - posities[j].y(), 2);
 
 			//weer zelfde opmerking over wortel
 			if ((x_afst_kwadr + y_afst_kwadr) >= 1) {
-				break;
+				continue;
 			}
 
 			double z_afst_kwadr = pow(posities[i].z() - posities[j].z(), 2);
 
 			//zelfde uitleg voor waarom hier geen wortel
 			if ((x_afst_kwadr + y_afst_kwadr + z_afst_kwadr) >= 1) {
-				break;
+				continue;
 			}
 
 			//aanmaken mogelijke h(want moet anders 2 keer berekenen)
@@ -57,10 +57,10 @@ double variabele_h_traag(double h, vector<Vec> posities) {
 
 	double variabele_h_weger = 1;
 	//overloop alle vectoren
-	for (int i = 0; i < posities.size(); i++) {
+	for (unsigned int i = 0; i < posities.size(); i++) {
 
 		//overloop alle vectoren die na de eerste vector komt
-		for (int j = (posities.size() - 1); j > i; j--) {
+		for (unsigned int j = (posities.size() - 1); j > i; j--) {
 			double afstand = (posities[i] - posities[j]).norm();
 			if (variabele_h_weger > afstand) {
 				variabele_h_weger = afstand;
@@ -124,8 +124,8 @@ double dichtste_afstand(std::vector<Vec> poslist) {
 	else {
 
 		dichtste_nadering = 1e15;
-		for (int i = 0; i < poslist.size(); i++) {
-			for (int j = (poslist.size() - 1); j > i; j--) {
+		for (unsigned int i = 0; i < poslist.size(); i++) {
+			for (unsigned int j = (poslist.size() - 1); j > i; j--) {
 
 				double check_afstand = afstand(poslist[i], poslist[j]);
 				if (check_afstand < dichtste_nadering) {
