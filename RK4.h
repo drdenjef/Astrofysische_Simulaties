@@ -1,5 +1,5 @@
-#ifndef RKF45_H
-#define RKF45_H
+#ifndef RK4_H
+#define RK4_H
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <fstream>
@@ -11,6 +11,6 @@
 
 
 // functie RKF45 die posities van deeltjes teruggeeft
-void RKF45(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, double integratietijd, double h, std::string naam, double gebruiken_var_h, int fractie);
+void RK4(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, double integratietijd, double h, std::string naam, double gebruiken_var_h, int fractie);
 
 #endif
