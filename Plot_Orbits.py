@@ -4,15 +4,16 @@ from mpl_toolkits.mplot3d import Axes3D
 
 
 Dimensions = 2
-aanvulling = "burrau_PEFrl"
+
+aanvulling = "x_RK4"
+
 bestand = "{}.txt".format(aanvulling)
 posities = np.loadtxt("C:\\Users\\Joren\\source\\repos\\AS_Project\\AS_Project\\" + bestand, unpack=True)
 N = int(len(posities)/3)
 
+plt.rc('axes', axisbelow=True)   # zet de grid op de achtergrond
 
 if Dimensions == 2:    
-    
-    
     plt.figure(figsize=(6, 6))
     plt.grid()
     plt.xlabel("x")
@@ -20,6 +21,9 @@ if Dimensions == 2:
     if "burrau" in aanvulling:
         plt.xlim(-4.5, 4.5)
         plt.ylim(-4.5, 4.5)
+        plt.scatter(1, 3, c = 'black')
+        plt.scatter(1, -1, c = 'black')
+        plt.scatter(-2, -1, c = 'black')
     
     x1 = np.loadtxt("C:\\Users\\Joren\\source\\repos\\AS_Project\\AS_Project\\" + bestand, unpack=True)[0]
     y1 = np.loadtxt("C:\\Users\\Joren\\source\\repos\\AS_Project\\AS_Project\\" + bestand, unpack=True)[1]
@@ -113,13 +117,12 @@ plt.show()
 
 
 bestand = "{}_E_err.txt".format(aanvulling)
-x_err = np.loadtxt("C:\\Users\\Joren\\source\\repos\\AS_Project\\AS_Project\\" + bestand, unpack=True)[0]
-afstand = np.loadtxt("C:\\Users\\Joren\\source\\repos\\AS_Project\\AS_Project\\" + bestand, unpack=True)[1]
+x_err, afstand, verstreken_tijd = np.loadtxt("C:\\Users\\Joren\\source\\repos\\AS_Project\\AS_Project\\" + bestand, unpack=True)
 
 plt.figure()
 
 plt.subplot(211)
-plt.plot(x_err, color = 'steelblue')
+plt.plot(verstreken_tijd, x_err, color = 'steelblue')
 plt.xlabel("Tijd")
 plt.ylabel(r"$\Delta$ Energie")
 plt.grid()
@@ -127,12 +130,11 @@ plt.yscale('log')
 
 
 plt.subplot(212)
-plt.plot(afstand, color = 'steelblue')
+plt.plot(verstreken_tijd, afstand, color = 'steelblue')
 plt.gca().invert_yaxis()
 plt.xlabel("Tijd")
 plt.ylabel("Dichtste nadering")
 plt.grid()
-plt.yscale('log')
 
 plt.show()
 
