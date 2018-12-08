@@ -62,7 +62,7 @@ void Leapfrog(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int
 
 		double h_var = h;
 		if (gebruiken_var_h)
-			double h_var = variabele_h(h, r);
+			h_var = variabele_h(h, r);
 
 		verstreken_tijd += h_var;
 		h_lijst.push_back(h_var);
