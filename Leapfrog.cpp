@@ -83,7 +83,7 @@ void Leapfrog(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int
 		// bekijk of je deze iteratie wil wegschrijven
 		if (iteratie % fractie == 0) {
 			//bereken gemiddelde positie vector (zit dan op zelfde "hoogte" als snelheid)
-			for (int k = 0; k < rnhalf.size(); k++) {
+			for (unsigned int k = 0; k < rnhalf.size(); k++) {
 				r[k] = 0.5*(rhalf[k] + rnhalf[k]);
 				outfile1 << r[k].x() << ' ' << r[k].y() << ' ' << r[k].z() << '\t';
 			}
