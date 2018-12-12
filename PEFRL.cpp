@@ -128,14 +128,23 @@ void PEFRL(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 
 
 
-	std::cout << "De kost bedroeg " << kost_int_methode_varh(h_lijst, N, 6, integratietijd) << std::endl;
+	
 	std::cout << "Posities werden bijgehouden in bestand " << naam << "_PEFRL.txt" << std::endl;
 	std::cout << "Relatieve energiefouten, dichtste afstanden en de tijd werden bijgehouden in bestand " << naam << "_PEFRL_E_err.txt" << std::endl;
+	std::cout << "De kost en de gemiddelde iteratieduur werden bijgehouden in bestand " << naam << "kost_duur.txt" << std::endl;
 	outfile1.close();
 	outfile2.close();
 
 	double tijd_gemiddelde = accumulate(tijd_iteratie.begin(), tijd_iteratie.end(), 0.0) / tijd_iteratie.size();
 
 	std::cout << tijd_gemiddelde << ' ' << "milliseconden per iteratie" << std::endl;
+	std::cout << "De kost bedroeg " << kost_int_methode_varh(h_lijst, N, 6, integratietijd) << std::endl;
+	std::cout << std::endl;
+
+	// maak een file aan waar de kost en de duur van de simulatie wordt bijgehouden
+	std::ofstream outfile3(naam + "_PEFRL_kost_duur_" + std::to_string(h) + ".txt");
+	outfile3 << std::setprecision(15);
+	outfile3 << kost_int_methode_varh(h_lijst, N, 6, integratietijd) << '\t' << tijd_gemiddelde << std::endl;
+	outfile3.close();
 
 }

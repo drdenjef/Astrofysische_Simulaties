@@ -126,14 +126,24 @@ void ForestRuth(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, i
 
 
 
-	std::cout << "De kost bedroeg " << kost_int_methode_varh(h_lijst, N, 4, integratietijd) << std::endl;
+	
 	std::cout << "Posities werden bijgehouden in bestand " << naam << "_FR.txt" << std::endl;
 	std::cout << "Relatieve energiefouten, dichtste afstanden en de tijd werden bijgehouden in bestand " << naam << "_FR_E_err.txt" << std::endl;
+	std::cout << "De kost bedroeg " << kost_int_methode_varh(h_lijst, N, 4, integratietijd) << std::endl;
+	std::cout << "De kost en de gemiddelde iteratieduur werden bijgehouden in bestand " << naam << "_kost_duur.txt" << std::endl;
 	outfile1.close();
 	outfile2.close();
 
 	double tijd_gemiddelde = accumulate(tijd_iteratie.begin(), tijd_iteratie.end(), 0.0) / tijd_iteratie.size();
 
+	std::cout << "De kost bedroeg " << kost_int_methode_varh(h_lijst, N, 4, integratietijd) << std::endl;
 	std::cout << tijd_gemiddelde << ' ' << "milliseconden per iteratie" << std::endl;
+	std::cout << std::endl;
+
+	// maak een file aan waar de kost en de duur van de simulatie wordt bijgehouden
+	std::ofstream outfile3(naam + "_FR_kost_duur_" + std::to_string(h) + ".txt");
+	outfile3 << std::setprecision(15);
+	outfile3 << kost_int_methode_varh(h_lijst, N, 4, integratietijd) << '\t' << tijd_gemiddelde << std::endl;
+	outfile3.close();
 
 }
