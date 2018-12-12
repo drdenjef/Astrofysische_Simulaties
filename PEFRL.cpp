@@ -12,11 +12,11 @@
 
 using namespace std;
 
-/*******************************************************
-*										               *
-*  Position Extended Forest-Ruth Like (PEFRL) Method   *
-*										               *
-*******************************************************/
+/****************************************************************************************
+*																						*
+*				Position Extended Forest-Ruth Like (PEFRL) Method						*
+*																						*
+****************************************************************************************/
 
 void PEFRL(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, double integratietijd, double h, std::string naam, double gebruiken_var_h, int fractie) {
 
@@ -33,13 +33,9 @@ void PEFRL(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 	}
 	outfile1 << std::endl;
 
-	// maak een file aan waar de energieën worden bijgehouden
-	std::ofstream outfile2(naam + "_PEFRL_E.txt");
-	outfile2 << std::setprecision(15);
-
 	// maak een file aan waar de relatieve fouten van de energieën worden bijgehouden
-	std::ofstream outfile3(naam + "_PEFRL_E_err.txt");
-	outfile3 << std::setprecision(15);
+	std::ofstream outfile2(naam + "_PEFRL_E_err.txt");
+	outfile2 << std::setprecision(15);
 
 	// hou de startenergie van het systeem bij
 	double start_energie = Energie(r, v, m);
@@ -123,8 +119,7 @@ void PEFRL(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 				outfile1 << r[i].x() << ' ' << r[i].y() << ' ' << r[i].z() << '\t';
 			}
 			outfile1 << std::endl;
-			outfile2 << Energie(r, v, m) << std::endl;
-			outfile3 << error_energie(r, v, m, start_energie) << '\t' << dichtste_afstand(r) << '\t' << verstreken_tijd << std::endl;
+			outfile2 << error_energie(r, v, m, start_energie) << '\t' << dichtste_afstand(r) << '\t' << verstreken_tijd << std::endl;
 		}
 
 		iteratie += 1;
@@ -139,7 +134,6 @@ void PEFRL(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 	std::cout << "Relatieve energiefouten, dichtste afstanden en de tijd werden bijgehouden in bestand " << naam << "_PEFRL_E_err.txt" << std::endl;
 	outfile1.close();
 	outfile2.close();
-	outfile3.close();
 
 	double tijd_gemiddelde = accumulate(tijd_iteratie.begin(), tijd_iteratie.end(), 0.0) / tijd_iteratie.size();
 

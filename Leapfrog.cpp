@@ -10,6 +10,12 @@
 #include "hulpfuncties.h"
 #include "kost_integratie.h"
 
+/****************************************************************************************
+*																						*
+*								Leapfrog Method											*
+*																						*
+****************************************************************************************/
+
 void Leapfrog(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, double integratietijd, double h, std::string naam, double gebruiken_var_h, int fractie) {
 
 	// maak een file aan waar de posities van de deeltjes wordt bijgehouden
@@ -25,13 +31,9 @@ void Leapfrog(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int
 	}
 	outfile1 << std::endl;
 
-	// maak een file aan waar de energieën worden bijgehouden
-	std::ofstream outfile2(naam + "_LF_E.txt");
-	outfile2 << std::setprecision(15);
-
 	// maak een file aan waar de relatieve fouten van de energieën worden bijgehouden
-	std::ofstream outfile3(naam + "_LF_E_err.txt");
-	outfile3 << std::setprecision(15);
+	std::ofstream outfile2(naam + "_LF_E_err.txt");
+	outfile2 << std::setprecision(15);
 
 	// hou de startenergie van het systeem bij
 	double start_energie = Energie(r, v, m);
@@ -88,8 +90,7 @@ void Leapfrog(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int
 				outfile1 << r[k].x() << ' ' << r[k].y() << ' ' << r[k].z() << '\t';
 			}
 			outfile1 << std::endl;
-			outfile2 << Energie(r, vn, m) << std::endl;
-			outfile3 << error_energie(r, vn, m, start_energie) << '\t' << dichtste_afstand(r) << '\t' << verstreken_tijd << std::endl;
+			outfile2 << error_energie(r, vn, m, start_energie) << '\t' << dichtste_afstand(r) << '\t' << verstreken_tijd << std::endl;
 		}
 
 		rhalf = rnhalf;
@@ -101,11 +102,9 @@ void Leapfrog(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int
 
 	std::cout << "De kost bedroeg " << kost_int_methode_varh(h_lijst, N, 5) << std::endl;;
 	std::cout << "Posities werden bijgehouden in bestand " << naam << "_LF.txt" << std::endl;
-	std::cout << "Energie werd bijgehouden in bestand " << naam << "_LF_E.txt" << std::endl;
 	std::cout << "Relatieve energiefouten, dichtste afstanden en de tijd werden bijgehouden in bestand " << naam << "_LF_E_err.txt" << std::endl;
 	outfile1.close();
 	outfile2.close();
-	outfile3.close();
 
 	double tijd_gemiddelde = accumulate(tijd_iteratie.begin(), tijd_iteratie.end(), 0.0) / tijd_iteratie.size();
 
