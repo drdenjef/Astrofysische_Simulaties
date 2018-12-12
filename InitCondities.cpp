@@ -74,11 +74,11 @@ std::vector<std::map<int, std::string>> lijst_begincond_namen() {
 	map3[2] = "Sitnikov_probleem";
 	map3[3] = "3deeltjes_3";
 
-	map4[1] = "4deeltjes_1";
-	map4[2] = "4deeltjes_2";
-	map4[3] = "4deeltjes_3";
+	map4[1] = "Sitnikov_4";
+	map4[2] = "klavertje";
+	map4[3] = "dubbeldubbelster";
 
-	map5[1] = "5deeltjes_1";
+	map5[1] = "klavertje_steel";
 	map5[2] = "5deeltjes_2";
 	map5[3] = "5deeltjes_3";
 	
@@ -86,7 +86,7 @@ std::vector<std::map<int, std::string>> lijst_begincond_namen() {
 	map6[2] = "6deeltjes_2";
 	map6[3] = "6deeltjes_3";
 
-	map7[1] = "7deeltjes_1";
+	map7[1] = "zon+binnen+jupiter+saturnus";
 	map7[2] = "7deeltjes_2";
 	map7[3] = "7deeltjes_3";
 
@@ -160,21 +160,21 @@ std::vector<std::vector<std::vector<std::string>>> lijst_begincond() {
 	bestanden_beginposities[1][2][1] = "3_3_snel.txt";
 	bestanden_beginposities[1][2][2] = "3_3_mas.txt";
 
-	bestanden_beginposities[2][0][0] = "4_1_pos.txt";
-	bestanden_beginposities[2][0][1] = "4_1_snel.txt";
-	bestanden_beginposities[2][0][2] = "4_1_mas.txt";
+	bestanden_beginposities[2][0][0] = "sitnikov_4_pos.txt";
+	bestanden_beginposities[2][0][1] = "sitnikov_4_snel.txt";
+	bestanden_beginposities[2][0][2] = "sitnikov_4_mas.txt";
 
-	bestanden_beginposities[2][1][0] = "4_2_pos.txt";
-	bestanden_beginposities[2][1][1] = "4_2_snel.txt";
-	bestanden_beginposities[2][1][2] = "4_2_mas.txt";
+	bestanden_beginposities[2][1][0] = "klavertje_pos.txt";
+	bestanden_beginposities[2][1][1] = "klavertje_snel.txt";
+	bestanden_beginposities[2][1][2] = "klavertje_mas.txt";
 
-	bestanden_beginposities[2][2][0] = "4_3_pos.txt";
-	bestanden_beginposities[2][2][1] = "4_3_snel.txt";
-	bestanden_beginposities[2][2][2] = "4_3_mas.txt";
+	bestanden_beginposities[2][2][0] = "dubbeldubbelster_pos.txt";
+	bestanden_beginposities[2][2][1] = "dubbeldubbelster_snel.txt";
+	bestanden_beginposities[2][2][2] = "dubbeldubbelster_mas.txt";
 
-	bestanden_beginposities[3][0][0] = "5_1_pos.txt";
-	bestanden_beginposities[3][0][1] = "5_1_snel.txt";
-	bestanden_beginposities[3][0][2] = "5_1_mas.txt";
+	bestanden_beginposities[3][0][0] = "klavertje_steel_pos.txt";
+	bestanden_beginposities[3][0][1] = "klavertje_steel_snel.txt";
+	bestanden_beginposities[3][0][2] = "klavertje_steel_mas.txt";
 
 	bestanden_beginposities[3][1][0] = "5_2_pos.txt";
 	bestanden_beginposities[3][1][1] = "5_2_snel.txt";
@@ -196,9 +196,9 @@ std::vector<std::vector<std::vector<std::string>>> lijst_begincond() {
 	bestanden_beginposities[4][2][1] = "6_3_snel.txt";
 	bestanden_beginposities[4][2][2] = "6_3_mas.txt";
 
-	bestanden_beginposities[5][0][0] = "7_1_pos.txt";
-	bestanden_beginposities[5][0][1] = "7_1_snel.txt";
-	bestanden_beginposities[5][0][2] = "7_1_mas.txt";
+	bestanden_beginposities[5][0][0] = "solar+_pos.txt";
+	bestanden_beginposities[5][0][1] = "solar+_snel.txt";
+	bestanden_beginposities[5][0][2] = "solar+_mas.txt";
 
 	bestanden_beginposities[5][1][0] = "7_2_pos.txt";
 	bestanden_beginposities[5][1][1] = "7_2_snel.txt";
