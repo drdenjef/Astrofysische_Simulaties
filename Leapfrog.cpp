@@ -100,7 +100,7 @@ void Leapfrog(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int
 
 	}
 
-	std::cout << "De kost bedroeg " << kost_int_methode_varh(h_lijst, N, 5) << std::endl;;
+	std::cout << "De kost bedroeg " << kost_int_methode_varh(h_lijst, N, 5, integratietijd) << std::endl;;
 	std::cout << "Posities werden bijgehouden in bestand " << naam << "_LF.txt" << std::endl;
 	std::cout << "Relatieve energiefouten, dichtste afstanden en de tijd werden bijgehouden in bestand " << naam << "_LF_E_err.txt" << std::endl;
 	outfile1.close();

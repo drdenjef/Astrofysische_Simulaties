@@ -151,7 +151,7 @@ void RKF45(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 
 	}
 
-	std::cout << "De kost bedroeg " << kost_int_methode_varh(h_lijst, N, 2) << std::endl;
+	std::cout << "De kost bedroeg " << kost_int_methode_varh(h_lijst, N, 2, integratietijd) << std::endl;
 	std::cout << "Posities werden bijgehouden in bestand " << naam << "_RKF45.txt" << std::endl;
 	std::cout << "Relatieve energiefouten, dichtste afstanden en de tijd werden bijgehouden in bestand " << naam << "_RKF45_E_err.txt" << std::endl;
 	outfile1.close();

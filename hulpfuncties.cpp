@@ -9,14 +9,16 @@
 
 using namespace std;
 
-double variabele_h(double h, vector<Vec> posities) {
 
+double variabele_h(double h, vector<Vec> posities) {
+	
+	//alleen variabele h gebruiken als dichtste nadering kleiner is dan 1, deze afstand is dan ook hetgene waarmee men h vermenigvuldigt
 	double variabele_h_weger = 1;
 	//overloop alle vectoren
-	for (unsigned int i = 0; i < posities.size(); i++) {
-
+	for (unsigned int i = 0; i < posities.size() - 1; i++) {
 		//overloop alle vectoren die na de eerste vector komt
 		for (unsigned int j = (posities.size() - 1); j > i; j--) {
+			//bereken afstand, en kijk of deze kleiner is dan de huidige weger
 			double afstand = (posities[i] - posities[j]).norm();
 			if (variabele_h_weger > afstand) {
 				variabele_h_weger = afstand;
@@ -27,11 +29,11 @@ double variabele_h(double h, vector<Vec> posities) {
 	return nieuwe_h;
 }
 
-
 Vec a(std::vector<double> m, std::vector<Vec> r, int i, int N) {
 
 	Vec a;
 
+	//overloop alle deeltjes, indien anders dan deeltje i, bereken de versnelling
 	for (int j = 0; j < N; j++) {
 		if (j != i) {
 			a += m[j] * (r[i] - r[j]) / (r[i] - r[j]).norm3();
@@ -42,17 +44,22 @@ Vec a(std::vector<double> m, std::vector<Vec> r, int i, int N) {
 }
 
 double Energie(vector<Vec> poslist, vector<Vec> velolist, vector<double> masslist) {
-	const int z = poslist.size();
+
+	//maak totale energie op, momenteel nog niks berekend dus nul
 	double energie_tot = 0;
-	for (int i = 0; i != z; i += 1) {
+
+	//overloop alle deeltjes
+	for (unsigned int i = 0; i < poslist.size(); i ++) {
+		//kinetische energie
 		energie_tot += 0.5*masslist[i] * velolist[i].norm2();
-		for (int j = 0; j != z; j += 1) {
+		//potentiele energie
+		for (unsigned int j = 0; j < poslist.size(); j ++) {
 			if (i != j) {
 				Vec x = poslist[i] - poslist[j];
 				energie_tot -= 0.5* masslist[i] * masslist[j] / x.norm();
-			};
-		};
-	};
+			}
+		}
+	}
 	return energie_tot;
 }
 
@@ -71,28 +78,29 @@ double error_energie(std::vector<Vec> poslist, std::vector<Vec> velolist, std::v
 double afstand(Vec a, Vec b) {
 	return sqrt(pow(a.x() - b.x(), 2) + pow(a.y() - b.y(), 2) + pow(a.z() - b.z(), 2));
 }
-// functie die toelaat de dichtste afstand van 2 deeltjes te berekenen
+
+// functie die toelaat de dichtste afstand tussen alle deeltjes
 double dichtste_afstand(std::vector<Vec> poslist) {
+
 	double dichtste_nadering;
-	int const N = poslist.size();
-	if (N == 2) {
+	
+	if (poslist.size() == 2) {
 		return afstand(poslist[0], poslist[1]);
 	}
 	else {
-
+		//neem absurd groot getal dat zeker niet kleiner dan de echtste dichtste nadering gaat zijn
 		dichtste_nadering = 1e15;
-		for (unsigned int i = 0; i < poslist.size(); i++) {
+		//overloop alle vectoren
+		for (unsigned int i = 0; i < poslist.size() - 1; i++) {
+			//overloop alle vectoren die na de eerste vector komt
 			for (unsigned int j = (poslist.size() - 1); j > i; j--) {
-
+				//als deze afstand kleiner is dan de vorige kleinste afstand, pas deze dan aan
 				double check_afstand = afstand(poslist[i], poslist[j]);
 				if (check_afstand < dichtste_nadering) {
 					dichtste_nadering = check_afstand;
-					
 				}
 			}
 		}
 		return dichtste_nadering;
 	}
-
-
 }

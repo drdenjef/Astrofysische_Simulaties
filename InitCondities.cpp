@@ -5,59 +5,12 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "3DVectClass.h"
 #include "GebruikerInterface.h"
 
 using namespace std;
 
-bool is_double(std::string input, int nietneg) {
-	//controleren of dit effectief een double is, dus allemaal digits en 1 punt
-	//variabele die false is wanneer er non-integer char gevonden is
-	int integer = 1;
-	//houdt aantal punten bij
-	int punten = 0;
-	//houdt aantal mintekens bij
-	int minteken = 0;
-
-	//extra check als input een lege string is of als h = 0 opgegeven was
-	if (input.length() == 0) {
-		return 0;
-	}
-
-	//check char per char of input van de vorm double is
-	for (size_t i = 0; i < input.length(); i++)
-	{
-		//extra variabele, zodat else if niet getriggered wordt op punt
-		int punt_gezien = 0;
-		if (input[i] == '.') {
-			punt_gezien = 1;
-			punten += 1;
-		}
-		if (input[i] == '-' && !nietneg) {
-			minteken += 1;
-		}
-		else if (!isdigit(input[i]) and !punt_gezien)
-		{
-			integer = 0;
-			break;
-		}
-		//er mag ook niet meer dan 1 punt zijn
-		if (punten > 1) {
-			integer = 0;
-			break;
-		}
-		//er mag ook niet meer dan 1 minteken zijn
-		if (minteken > 1) {
-			integer = 0;
-			break;
-		}
-	}
-	return integer;
-}
-
-
 std::vector<std::map<int, std::string>> lijst_begincond_namen() {
-	//maak een map aan voor elke dimentie
+	//maak een map aan voor elk aantal deeltjes
 	std::map<int, std::string> map2;
 	std::map<int, std::string> map3;
 	std::map<int, std::string> map4;
@@ -65,7 +18,7 @@ std::vector<std::map<int, std::string>> lijst_begincond_namen() {
 	std::map<int, std::string> map6;
 	std::map<int, std::string> map7;
 
-	//voor elke dimentie, definieer wat namen voor initiele begincondities
+	//voor elke aantal, definieer wat namen voor initiele begincondities
 	map2[1] = "dubbelster";
 	map2[2] = "zon_aarde";
 	map2[3] = "2deeltjes_3";
@@ -90,7 +43,7 @@ std::vector<std::map<int, std::string>> lijst_begincond_namen() {
 	map7[2] = "7deeltjes_2";
 	map7[3] = "7deeltjes_3";
 
-	//voeg deze mappen toe aan een vector voor alle dimenties
+	//voeg deze mappen toe aan een vector voor alle aantal deeltjes
 	std::vector<std::map<int, std::string>> lijst_begincondities;
 	lijst_begincondities.push_back(map2);
 	lijst_begincondities.push_back(map3);
@@ -252,7 +205,7 @@ std::vector<Vec> posities(int aantal_deeltjes, int beginconditie) {
 
 	//opzoeken gewenste begin condities
 	//-2 wegens maar info vanaf 2 deeltjes
-	//zelfde voor optie (vraag vanaf 1 maar index vanaf 0)
+	//zelfde voor optie (vraag vanaf optie 1,  maar index begint op 0)
 	string positie = lijst_begincond()[aantal_deeltjes-2][beginconditie-1][0];
 
 	//maak de stream klaar
@@ -284,7 +237,7 @@ std::vector<Vec> snelheden(int aantal_deeltjes, int beginconditie) {
 
 	//opzoeken gewenste begin condities
 	//-2 wegens maar info vanaf 2 deeltjes
-	//zelfde voor optie (vraag vanaf 1 maar index vanaf 0)
+	//zelfde voor optie (vraag vanaf optie 1,  maar index begint op 0)
 	string snelheid = lijst_begincond()[aantal_deeltjes-2][beginconditie-1][1];
 
 	//maak de stream klaar
@@ -315,7 +268,7 @@ std::vector<double> massas(int aantal_deeltjes, int beginconditie) {
 
 	//opzoeken gewenste begin condities
 	//-2 wegens maar info vanaf 2 deeltjes
-	//zelfde voor optie (vraag vanaf 1 maar index vanaf 0)
+	//zelfde voor optie (vraag vanaf optie 1,  maar index begint op 0)
 	string massa = lijst_begincond()[aantal_deeltjes-2][beginconditie-1][2];
 
 	//maak de stream klaar
@@ -350,7 +303,7 @@ double x_pos_snel(int deeltje, bool positie) {
 	string input = lees_input();
 
 	//checkt of dit vorm double is
-	if (!is_double(input, 0)) {
+	if (!input_is_double(input, 0)) {
 		cout << "Geen double, probeer opnieuw" << endl;
 		return x_pos_snel(deeltje, positie);
 	}
@@ -379,7 +332,7 @@ double y_pos_snel(int deeltje, bool positie) {
 	string input = lees_input();
 
 	//checkt of dit vorm double is
-	if (!is_double(input, 0)) {
+	if (!input_is_double(input, 0)) {
 		cout << "Geen double, probeer opnieuw" << endl;
 		return y_pos_snel(deeltje, positie);
 	}
@@ -408,7 +361,7 @@ double z_pos_snel(int deeltje, bool positie) {
 	string input = lees_input();
 
 	//checkt of dit vorm double is
-	if (!is_double(input, 0)) {
+	if (!input_is_double(input, 0)) {
 		cout << "Geen double, probeer opnieuw" << endl;
 		return z_pos_snel(deeltje, positie);
 	}
@@ -428,7 +381,7 @@ double opvraag_massa(int deeltje) {
 	string input = lees_input();
 
 	//checkt of dit vorm double is
-	if (!is_double(input, 1)) {
+	if (!input_is_double(input, 1)) {
 		cout << "Geen nietnegatieve double, probeer opnieuw" << endl;
 		return opvraag_massa(deeltje);
 	}
@@ -496,7 +449,7 @@ vector<double> vraag_massas(int aantal_deeltjes) {
 	return massas;
 }
 
-
+//functie voor tonen alle beginposities aan user (ter controle)
 void print_posities(std::vector<Vec> begin_posities) {
 	for (vector<Vec>::const_iterator i = begin_posities.begin(); i != begin_posities.end(); i++) {
 		print(*i);
@@ -504,7 +457,7 @@ void print_posities(std::vector<Vec> begin_posities) {
 	cout << endl;
 }
 
-
+//functie voor tonen alle beginsnelheden aan user (ter controle)
 void print_snelheden(std::vector<Vec> begin_snelheden) {
 	for (vector<Vec>::const_iterator j = begin_snelheden.begin(); j != begin_snelheden.end(); j++) {
 		print(*j);
@@ -512,7 +465,7 @@ void print_snelheden(std::vector<Vec> begin_snelheden) {
 	cout << endl;
 }
 
-
+//functie voor tonen alle beginmassas aan user (ter controle)
 void print_massas(std::vector<double> begin_massas) {
 	for (vector<double>::const_iterator k = begin_massas.begin(); k != begin_massas.end(); k++) {
 		cout << *k << endl;

@@ -1,8 +1,6 @@
 #ifndef VECTCLASS_H
 #define VECTCLASS_H
-#define _USE_MATH_DEFINES
 #include <cmath>
-#include <fstream>
 #include <iomanip>
 #include <vector>
 #include <iostream>
@@ -31,7 +29,7 @@ public:
 	// vectorobject en scalair delen
 	Vec& operator/=(double s);
 
-	// getters: x en y elementen van vectorobject opvragen
+	// getters: x,y en z elementen van vectorobject opvragen
 	double x();
 	double y();
 	double z();
@@ -44,7 +42,7 @@ public:
 	double norm3() const;
 
 
-	//definieren van enkele extra nodige functies die buiten de klasse werken, maar wel toegang nodig hebben, dus als friend functions
+	//definieren van enkele extra nodige functies die buiten de klasse werken, maar wel toegang nodig hebben tot private variabelen, dus als friend definiëren
 
 	//functies voor diverse bewerkingen tussen scalairen en vectoren
 	friend Vec operator+(Vec a, Vec b);

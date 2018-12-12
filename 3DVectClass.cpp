@@ -1,8 +1,7 @@
 #include "3DVectClass.h"
-#include <vector>
 
 Vec::Vec() {
-	// standaardgegevens als er niets wordt meegegeven aan Vec
+	// standaardinitialisatie als er niets wordt meegegeven aan Vec
 	_x = 0;
 	_y = 0;
 	_z = 0;
@@ -51,7 +50,7 @@ Vec& Vec::operator/=(double s) {
 	return *this;
 }
 
-// getters: x,y,z elementen van vectorobject opvragen
+// getters: x,y en z elementen van vectorobject geven
 double Vec::x() {
 	return _x;
 }
@@ -77,7 +76,7 @@ double Vec::norm2() const {
 double Vec::norm3() const {
 	//geeft derdemacht van norm terug
 	double r = sqrt(_x * _x + _y * _y + _z * _z);
-	return r * r*r;
+	return r * r * r;
 }
 
 //functies voor diverse bewerkingen tussen scalairen en vectoren

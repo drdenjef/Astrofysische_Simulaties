@@ -1,10 +1,8 @@
-#include <typeinfo>
 #include <iostream>
 #include <string>
 #include <cmath>
 #include <map> 
 #include <vector>
-#include "3DVectClass.h"
 #include "RKF45.H"
 #include "Forest-Ruth.h"
 #include "RK4.h"
@@ -12,14 +10,12 @@
 #include "PEFRL.h"
 #include "Leapfrog.h"
 
-
-
 using namespace std;
 
 std::string lees_input() {
 
-	//vraagt input op en leest in
 	string input;
+	//vraagt input op en leest in
 	getline(cin, input);
 	return input;
 }
@@ -48,26 +44,33 @@ bool input_is_integer(const string &s) {
 	return integer;
 }
 
-bool input_is_double(const std::string &s) {
+bool input_is_double(std::string input, int nietneg) {
 	//controleren of dit effectief een double is, dus allemaal digits en 1 punt
 	//variabele die false is wanneer er non-integer char gevonden is
 	int integer = 1;
 	//houdt aantal punten bij
 	int punten = 0;
+	//houdt aantal mintekens bij
+	int minteken = 0;
 
 	//extra check als input een lege string is of als h = 0 opgegeven was
-	if (s.length() == 0 || s == "0") {
-		return false ;
+	if (input.length() == 0) {
+		return 0;
 	}
 
 	//check char per char of input van de vorm double is
-	for (size_t i = 0; i < s.length(); i++)
+	for (size_t i = 0; i < input.length(); i++)
 	{
-
-		if (s[i] == '.') {
+		//extra variabele, zodat else if niet getriggered wordt op punt
+		int punt_gezien = 0;
+		if (input[i] == '.') {
+			punt_gezien = 1;
 			punten += 1;
 		}
-		else if (!isdigit(s[i]))
+		if (input[i] == '-' && !nietneg) {
+			minteken += 1;
+		}
+		else if (!isdigit(input[i]) and !punt_gezien)
 		{
 			integer = 0;
 			break;
@@ -77,8 +80,26 @@ bool input_is_double(const std::string &s) {
 			integer = 0;
 			break;
 		}
+		//er mag ook niet meer dan 1 minteken zijn
+		if (minteken > 1) {
+			integer = 0;
+			break;
+		}
 	}
 	return integer;
+}
+
+int input_is_janee(const std::string &JaNee) {
+
+	//mogelijke antwoorden (rekening gehouden met dat users soms lastig kunnen doen en niet helemaal correct inputten)
+	if (JaNee == "J" || JaNee == "j" || JaNee == "Ja" || JaNee == "ja" || JaNee == "JA ") {
+		return 1;
+	}
+	else if (JaNee == "N" || JaNee == "n" || JaNee == "nee" || JaNee == "neen" || JaNee == "Neen" || JaNee == "Nee" || JaNee == "NEE" || JaNee == "NEEN") {
+		return 0;
+	}
+	else
+		return 2;
 }
 
 
@@ -98,7 +119,7 @@ int aantal_objecten() {
 	}
 
 	//zet string om naar integer wanneer integer vorm heeft
-	std::string::size_type sz;   // alias of size_t
+	std::string::size_type sz;   // alias van size_t
 	int aantal = std::stoi(aantal_input, &sz);
 
 	//controleer op triviale aantallen van deeltjes
@@ -117,11 +138,11 @@ double tijdstap_opvraag() {
 	string input = lees_input();
 
 	//check of input van vorm double is
-	bool doubl = input_is_double(input);
+	bool doubl = input_is_double(input, 1);
 
 	//kijkt dus of de functie succesvol was
 	if (!doubl) {
-		cout << "Geen nietnegatieve double, probeer opnieuw." << endl;
+		cout << "Geen positieve double, probeer opnieuw." << endl;
 		return tijdstap_opvraag();
 	}
 
@@ -129,7 +150,7 @@ double tijdstap_opvraag() {
 	std::string::size_type sz;     // alias of size_t
 	double h = std::stof(input, &sz);
 
-	//extra check op 0.00 bvb
+	//extra check op 0.00 bvb (in input_is_double checken is onnodig langer maken, zo is sneller)
 	if (!h) {
 		cout << "Geen nietnegatieve double, probeer opnieuw." << endl;
 		return tijdstap_opvraag();
@@ -145,20 +166,16 @@ bool gebruik_var_h() {
 	cout << "Wilt u een variabele tijdstap gebruiken? J (Ja) of N (Neen). Opgelet, bij gebruik hiervan is simpliciteit niet te garanderen: ";
 	string JaNee = lees_input();
 
+	//check of correcte vorm, returnwaarde geeft de info (1 is ja, 0 is neen, 2 is compleet foute input)
+	int janee = input_is_janee(JaNee);
 
-	//mogelijke ja antwoorden (rekening gehouden met dat users soms lastig kunnen doen en niet helemaal correct inputten)
-	if (JaNee == "J" || JaNee == "j" || JaNee == "Ja" || JaNee == "ja" || JaNee == "JA ") {
-		return 1;
-	}
-	else if (JaNee == "N" || JaNee == "n" || JaNee == "nee" || JaNee == "neen" || JaNee == "Neen" || JaNee == "Nee" || JaNee == "NEE" || JaNee == "NEEN") {
-		return 0;
-	}
 	//als de input echt compleet er naast zat, error en opnieuw
-	else {
+	if (janee == 2) {
 		cout << "Error, geen geldige input" << endl;
 		return gebruik_var_h();
 	}
-
+	else
+		return janee;
 }
 
 double tijd_opvraag(double h) {
@@ -167,7 +184,7 @@ double tijd_opvraag(double h) {
 	string input = lees_input();
 
 	//check of input van vorm double is
-	bool doubl = input_is_double(input);
+	bool doubl = input_is_double(input, 1);
 
 	//kijkt dus of de functie succesvol was
 	if (!doubl) {
@@ -179,7 +196,7 @@ double tijd_opvraag(double h) {
 	std::string::size_type sz;     // alias of size_t
 	double tijd = std::stof(input, &sz);
 
-	//extra check op 0.00 bvb, alsook of waarde groter of gelijk aan h is
+	//extra check op 0.00 bvb, (in input_is_double checken is onnodig langer maken, zo is sneller)
 	if (!tijd) {
 		cout << "Geen positieve double, probeer opnieuw." << endl;
 		return tijd_opvraag(h);
@@ -212,7 +229,7 @@ int fractie_opvraag(double integratietijd, double h) {
 	std::string::size_type sz;   // alias of size_t
 	int aantal = std::stoi(aantal_input, &sz);
 
-	//controleer op groter dan 0 is
+	//controleer of groter dan 0 is
 	if (aantal == 0) {
 		cout << "Error, dit is geen positief geheel getal" << endl;
 		return fractie_opvraag( integratietijd,  h);
@@ -245,6 +262,7 @@ int type_integratie_cijfer() {
 	//kijkt of input een integer is
 	bool is_int = input_is_integer(methode);
 
+	//indien integer check faalt, opnieuw opvragen
 	if (!is_int) {
 		cout << "Error, geen geldige input" << endl;
 		return type_integratie_cijfer();
@@ -267,6 +285,8 @@ int type_integratie_cijfer() {
 }
 
 std::string type_integratie_naam(int i) {
+
+	//mapje die methodecijfer koppelt met naam
 	map <int, string> integrators;
 	integrators[1] = "RK4.";
 	integrators[2] = "RKF45.";
@@ -286,19 +306,16 @@ bool aanwezige_begincondities() {
 	cout << "Wilt u voorgeselecteerde begincondities gebruiken? J (Ja) of N (Neen): ";
 	string JaNee = lees_input();
 
-	
-	//mogelijke ja antwoorden (rekening gehouden met dat users soms lastig kunnen doen en niet helemaal correct inputten)
-	if (JaNee == "J" || JaNee == "j" || JaNee == "Ja" || JaNee == "ja" || JaNee == "JA ") {
-		return 1;
-	}
-	else if(JaNee == "N" || JaNee == "n" || JaNee == "nee" || JaNee == "neen" || JaNee == "Neen" || JaNee == "Nee" || JaNee == "NEE" || JaNee == "NEEN") {
-		return 0;
-	}
+	//check of correcte vorm, returnwaarde geeft de info (1 is ja, 0 is neen, 2 is compleet foute input)
+	int janee = input_is_janee(JaNee);
+
 	//als de input echt compleet er naast zat, error en opnieuw
-	else {
+	if (janee == 2) {
 		cout << "Error, geen geldige input" << endl;
-		return aanwezige_begincondities();
+		return gebruik_var_h();
 	}
+	else
+		return janee;
 
 }
 
@@ -307,55 +324,51 @@ bool random_genereren() {
 	cout << "Wilt u random (gecentreerde en herschaalde) toestand genereren (anders moet u er zelf invoeren)? J (Ja) of N (Neen): ";
 	string JaNee = lees_input();
 
+	//check of correcte vorm, returnwaarde geeft de info (1 is ja, 0 is neen, 2 is compleet foute input)
+	int janee = input_is_janee(JaNee);
 
-	//mogelijke ja antwoorden (rekening gehouden met dat users soms lastig kunnen doen en niet helemaal correct inputten)
-	if (JaNee == "J" || JaNee == "j" || JaNee == "Ja" || JaNee == "ja" || JaNee == "JA ") {
-		return 1;
-	}
-	else if (JaNee == "N" || JaNee == "n" || JaNee == "nee" || JaNee == "neen" || JaNee == "Neen" || JaNee == "Nee" || JaNee == "NEE" || JaNee == "NEEN") {
-		return 0;
-	}
 	//als de input echt compleet er naast zat, error en opnieuw
-	else {
+	if (janee == 2) {
 		cout << "Error, geen geldige input" << endl;
-		return random_genereren();
+		return gebruik_var_h();
 	}
-
+	else
+		return janee;
 }
 
 void alle_posities(vector<double> m, vector<Vec>r, vector<Vec> v, int N, double integratietijd, double h, int methode, string naam, bool gebruiken_var_h, int fractie) {
 
-	//RK4
+	//roept integrator en wegschrijven data via RK4 op
 	if (methode == 1) {
 		RK4(m, r, v, N, integratietijd, h, naam, gebruiken_var_h, fractie);
 	}
 
-	//ingebedde RK
+	//roept integrator en wegschrijven data via RKF45 op
 	if (methode == 2) {
 		RKF45(m, r, v, N, integratietijd, h, naam, gebruiken_var_h, fractie);
 	}
 
-	//Verlet
+	//roept integrator en wegschrijven data via Verlet op
 	if (methode == 3) {
 		Verlet(m, r, v, N, integratietijd, h, naam, gebruiken_var_h, fractie);
 	}
 
-	//Forest-Ruth
+	//roept integrator en wegschrijven data via Forest-Ruth op
 	if (methode == 4) {
 		ForestRuth(m, r, v, N, integratietijd, h, naam, gebruiken_var_h, fractie);
 	}
 
-	//Leapfrog
+	//roept integrator en wegschrijven data via Leapfrog op
 	if (methode == 5) {
 		Leapfrog(m, r, v, N, integratietijd, h, naam, gebruiken_var_h, fractie);
 	}
 
-	//PEFRL
+	//roept integrator en wegschrijven data via PEFRL op
 	if (methode == 6) {
 		PEFRL(m, r, v, N, integratietijd, h, naam, gebruiken_var_h, fractie);
 	}
 
-	//alles
+	//roept integrator en wegschrijven data via alle methodes op
 	if (methode == 7) {
 		RK4(m, r, v, N, integratietijd, h, naam, gebruiken_var_h, fractie);
 		RKF45(m, r, v, N, integratietijd, h, naam, gebruiken_var_h, fractie);

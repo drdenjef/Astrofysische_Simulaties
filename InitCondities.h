@@ -1,17 +1,10 @@
 #ifndef INITCONDITIES_H
 #define INITCONDITIES_H
-#define _USE_MATH_DEFINES
-#include <cmath>
-#include <fstream>
-#include <iomanip>
-#include <iostream>
 #include <string>
 #include <vector>
 #include <map>
 #include "3DVectClass.h"
-
-//functie om te kijken of iets van de vorm double is, extra variabele als iets niet neg mag zijn
-bool is_double(std::string input, int nietneg);
+#include "GebruikerInterface.h"
 
 //functie voor lijst met namen van de begincondities
 std::vector<std::map<int, std::string>> lijst_begincond_namen();
@@ -22,34 +15,34 @@ std::vector<std::vector<std::vector<std::string>>> lijst_begincond();
 //functie voor teruggeven nummer van gekozen beginconditie
 int nummer_beginconditie(int aantal);
 
-//functie voor teruggeven alle startposities
+//functie voor teruggeven alle startposities van een zekere beginconditie
 std::vector<Vec> posities(int aantal_deeltjes, int beginconditie);
 
-//functie voor teruggeven alle startsnelheden
+//functie voor teruggeven alle startsnelheden van een zekere beginconditie
 std::vector<Vec> snelheden(int aantal_deeltjes, int beginconditie);
 
-//functie voor teruggeven alle massas, al genormeerd
+//functie voor teruggeven alle massas van een zekere beginconditie
 std::vector<double> massas(int aantal_deeltjes, int beginconditie);
 
-//functie voor opvragen x positie/snelheid
+//functie voor opvragen x positie/snelheid (at runtime invoeren)
 double x_pos_snel(int deeltje, bool positie);
 
-//functie voor opvragen y positie/snelheid
+//functie voor opvragen y positie/snelheid (at runtime invoeren)
 double y_pos_snel(int deeltje, bool positie);
 
-//functie voor opvragen z positie/snelheid
+//functie voor opvragen z positie/snelheid (at runtime invoeren)
 double z_pos_snel(int deeltje, bool positie);
 
-//functie voor opvragen massa
+//functie voor opvragen massa (at runtime invoeren)
 double opvraag_massa(int deeltje);
 
-//functie voor opvragen alle startposities
+//functie voor opvragen alle startposities (at runtime invoeren)
 std::vector<Vec> vraag_posities(int aantal_deeltjes);
 
-//functie voor opvragen alle startsnelheden
+//functie voor opvragen alle startsnelheden (at runtime invoeren)
 std::vector<Vec> vraag_snelheden(int aantal_deeltjes);
 
-//functie voor opvragen alle massas, al genormeerd
+//functie voor opvragen alle massas, al genormeerd (at runtime invoeren)
 std::vector<double> vraag_massas(int aantal_deeltjes);
 
 //schrijft posities naar scherm

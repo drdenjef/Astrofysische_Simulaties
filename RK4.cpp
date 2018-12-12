@@ -113,7 +113,7 @@ void RK4(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, d
 
 	}
 
-	std::cout << "De kost bedroeg " << kost_int_methode_varh(h_lijst, N, 1) << std::endl;
+	std::cout << "De kost bedroeg " << kost_int_methode_varh(h_lijst, N, 1, integratietijd) << std::endl;
 	std::cout << "Posities werden bijgehouden in bestand " << naam << "_RK4.txt" << std::endl;
 	std::cout << "Relatieve energiefouten, dichtste afstanden en de tijd werden bijgehouden in bestand " << naam << "_RK4_E_err.txt" << std::endl;
 	outfile1.close();
