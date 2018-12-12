@@ -12,11 +12,11 @@
 
 using namespace std;
 
-/****************************************************************************************
-*																						*
-*								 Forest-Ruth Method										*
-*																						*
-****************************************************************************************/
+/*****************************************
+*										 *
+*          Forest-Ruth Method            *
+*										 *
+*****************************************/
 
 void ForestRuth(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, double integratietijd, double h, std::string naam, double gebruiken_var_h, int fractie) {
 
@@ -128,7 +128,6 @@ void ForestRuth(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, i
 
 	std::cout << "De kost bedroeg " << kost_int_methode_varh(h_lijst, N, 4) << std::endl;
 	std::cout << "Posities werden bijgehouden in bestand " << naam << "_FR.txt" << std::endl;
-	std::cout << "Energie werd bijgehouden in bestand " << naam << "_FR_E.txt" << std::endl;
 	std::cout << "Relatieve energiefouten, dichtste afstanden en de tijd werden bijgehouden in bestand " << naam << "_FR_E_err.txt" << std::endl;
 	outfile1.close();
 	outfile2.close();

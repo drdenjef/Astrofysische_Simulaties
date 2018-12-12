@@ -122,4 +122,3 @@ void RK4(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N, d
 	double tijd_gemiddelde = accumulate(tijd_iteratie.begin(), tijd_iteratie.end(), 0.0) / tijd_iteratie.size();
 
 	std::cout << tijd_gemiddelde << ' ' << "milliseconden per iteratie" << std::endl;
-}

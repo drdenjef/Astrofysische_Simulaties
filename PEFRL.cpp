@@ -130,7 +130,6 @@ void PEFRL(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 
 	std::cout << "De kost bedroeg " << kost_int_methode_varh(h_lijst, N, 6) << std::endl;
 	std::cout << "Posities werden bijgehouden in bestand " << naam << "_PEFRL.txt" << std::endl;
-	std::cout << "Energie werd bijgehouden in bestand " << naam << "_PEFRL_E.txt" << std::endl;
 	std::cout << "Relatieve energiefouten, dichtste afstanden en de tijd werden bijgehouden in bestand " << naam << "_PEFRL_E_err.txt" << std::endl;
 	outfile1.close();
 	outfile2.close();
