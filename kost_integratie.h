@@ -2,7 +2,6 @@
 #define COSTINTEGRATION_H
 #include <cmath>
 #include <vector>
-#include "hulpfuncties.h"
 //hlijst is een lijst van alle h's (want er kunnen variabele h_s berekend zijn/worden)
 //aantal_drivers is aantal keer versnelling berekent per integratiestap
 //aantal_deeltjes is aantal deeltjes, laat aantal driver evaluations per integratie linear schalen

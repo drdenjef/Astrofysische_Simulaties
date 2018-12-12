@@ -1,19 +1,15 @@
 #include "3DVectClass.h"
 #include "GebruikerInterface.h"
 #include "InitCondities.h"
-#include <time.h>
-#include <string>
-#include <random>
 #include "random_init.h"
 
-
-
-//de main function
+//de main functie
 int main() {
 	using namespace std;
 	
 	//vraag aantal objecten aan gebruiker
 	int aantal = aantal_objecten();
+	//zeg gebruiker wat hij/zij/het heeft gekozen
 	cout << endl <<"Aantal deeltjes is " << aantal << "." << endl << endl;
 
 	//vraag type integratie aan gebruiker
@@ -66,7 +62,7 @@ int main() {
 		//-2 wegens pas informatie vanaf 2 deeltjes (maar start op 0de positie)
 		cout << endl << "U heeft " << lijst_begincond_namen()[aantal-2][optie] << " gekozen." << endl << endl;
 
-		//vraag de gewenste begin condities op
+		//slaat de gewenste begin condities op
 		begin_posities = posities(aantal, optie);
 		begin_snelheden = snelheden(aantal, optie);
 		begin_massas = massas(aantal, optie);
@@ -84,7 +80,7 @@ int main() {
 		if (random) {
 			cout << " ja gekozen." << endl << endl;
 
-			//laat random gebonden toestand genereren
+			//slaat random gebonden toestand genereren
 			begin_massas = massrescaling(randommass(aantal));
 			begin_posities = posrescaling(begin_massas, randomVec(aantal));
 			begin_snelheden = velrescaling(begin_massas, randomVec(aantal));
@@ -94,7 +90,7 @@ int main() {
 		else {
 
 			cout << " neen gekozen." << endl << endl;
-			//vraag de gewenste begin condities op
+			//vraag de gewenste begin condities op (via gebruiker) en slaat ze op
 			begin_posities = vraag_posities(aantal);
 			begin_snelheden = vraag_snelheden(aantal);
 			begin_massas = vraag_massas(aantal);
@@ -114,19 +110,15 @@ int main() {
 	print_massas(begin_massas);
 
 	//vraagt naam bestand voor wegschrijven op
-	cout << "Geef naam naar waar de posities weggeschreven wordt op: ";
+	cout << "Geef naam naar waar de data weggeschreven wordt op: ";
 	string bestand_naam = lees_input();
 	cout << '\n' << "De gekozen naam is: " << bestand_naam << endl << endl;
 
-	//nu derigeren naar juiste methode, dit geeft een vector van vector van Vec's terug, eerste lengte is aantal iteraties, tweede is aantal deeltjes, derde zijn de posities
-	//dit komt achteraf buiten deze if, maar moet nu nog binnen
-
-	//berekent tijd hoe lang dit duurde
-	clock_t tStart = clock();
+	//nu derigeren naar juiste methode
 	alle_posities(begin_massas, begin_posities, begin_snelheden, aantal, integratietijd, h, integratie, bestand_naam, gebruiken_var_h, fractie);
-	printf("Time taken: %.2fs\n", (double)(clock() - tStart) / CLOCKS_PER_SEC);
 
-
+	//vraagt char op zodat het niet meteen afsluit, maar gebruiker zelf kan kiezen
+	cout << "Druk op eenderwelke toets om af te sluiten.";
 	getchar(); 
 
 	return 0;

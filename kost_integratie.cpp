@@ -1,11 +1,7 @@
-#include <cmath>
-#include <fstream>
-#include <iomanip>
-#include <iostream>
 #include <vector>
 #include "3DVectClass.h"
 #include "hulpfuncties.h"
-#include <numeric>
+
 
 double kost_int_varh(std::vector<double> hlijst, double aantal_drivers, double aantal_deeltjes, double integratietijd) {
 	//lengte van hlijst is ook aantal iteraties
