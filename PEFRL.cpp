@@ -1,6 +1,3 @@
-#define _USE_MATH_DEFINES
-#include <cmath>
-#include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <vector>
@@ -40,13 +37,16 @@ void PEFRL(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 	// hou de startenergie van het systeem bij
 	double start_energie = Energie(r, v, m);
 
+	//enkele nodige constanten voor integratieschema
 	double lambda = -0.2123418310626054;
 	double xi = 0.1786178958448091;
 	double chi = -0.06626458266981849;
 
+	//maak enkele nodige objecten aan
 	std::vector<Vec> acc;
 	std::vector<double> tijd_iteratie;
 
+	//vul deze op, zodat ze achteraf simpelweg gewijzigd kan worden
 	for (int j = 0; j < N; j++) {
 		acc.push_back(Vec(0., 0., 0.));
 	}
@@ -60,10 +60,12 @@ void PEFRL(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 	// start van de iteraties
 	while (verstreken_tijd < integratietijd) {
 
+		//check of variabele h nodig is
 		double h_var = h;
 		if (gebruiken_var_h)
 			h_var = variabele_h(h, r);
 
+		//voeg de huidige h toe aan verstreken tijd
 		verstreken_tijd += h_var;
 		h_lijst.push_back(h_var);
 
@@ -126,25 +128,24 @@ void PEFRL(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N,
 
 	}
 
-
-
-
-	std::cout << "Posities werden bijgehouden in bestand " << naam << "_PEFRL.txt" << std::endl;
-	std::cout << "Relatieve energiefouten, dichtste afstanden en de tijd werden bijgehouden in bestand " << naam << "_PEFRL_E_err.txt" << std::endl;
-	std::cout << "De kost en de gemiddelde iteratieduur werden bijgehouden in bestand " << naam << "kost_duur.txt" << std::endl;
-	outfile1.close();
-	outfile2.close();
-
+	//bereken gemiddelde tijd per iteratie
 	double tijd_gemiddelde = accumulate(tijd_iteratie.begin(), tijd_iteratie.end(), 0.0) / tijd_iteratie.size();
-
-	std::cout << tijd_gemiddelde << ' ' << "milliseconden per iteratie" << std::endl;
-	std::cout << "De kost bedroeg " << kost_int_methode_varh(h_lijst, N, 6, integratietijd) << std::endl;
-	std::cout << std::endl;
 
 	// maak een file aan waar de kost en de duur van de simulatie wordt bijgehouden
 	std::ofstream outfile3(naam + "_PEFRL_kost_duur_" + std::to_string(h) + ".txt");
 	outfile3 << std::setprecision(15);
 	outfile3 << kost_int_methode_varh(h_lijst, N, 6, integratietijd) << '\t' << tijd_gemiddelde << std::endl;
+	outfile1.close();
+	outfile2.close();
 	outfile3.close();
 
+	//zeg gebruiker naar waar alles is weggeschreven
+	std::cout << "Posities werden bijgehouden in bestand " << naam << "_PEFRL.txt" << std::endl;
+	std::cout << "Relatieve energiefouten, dichtste afstanden en de tijd werden bijgehouden in bestand " << naam << "_PEFRL_E_err.txt" << std::endl;
+	std::cout << "De kost en de gemiddelde iteratieduur werden bijgehouden in bestand " << naam << "_PEFRL_kost_duur.txt" << std::endl;
+
+	//zeg nog eens expliciet de kost en de gemiddelde tijd per iteratie
+	std::cout << "De kost bedroeg " << kost_int_methode_varh(h_lijst, N, 6, integratietijd) << std::endl;
+	std::cout << tijd_gemiddelde << ' ' << "milliseconden per iteratie" << std::endl;
+	std::cout << std::endl;
 }

@@ -1,11 +1,8 @@
-#include <cmath>
-#include <fstream>
 #include <iomanip>
 #include <iostream>
-#include <string>
 #include <vector>
-#include <map>
-#include <numeric>
+#include <string>
+#include <numeric> 
 #include "3DVectClass.h"
 #include "hulpfuncties.h"
 #include "kost_integratie.h"
@@ -39,6 +36,7 @@ void Verlet(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N
 	// hou de startenergie van het systeem bij
 	double start_energie = Energie(r, v, m);
 
+	//houdt tijden bij, om later gemiddelde te nemen
 	std::vector<double> tijd_iteratie;
 
 	// houd de iteraties bij
@@ -50,15 +48,18 @@ void Verlet(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N
 	// start van de iteraties
 	while (verstreken_tijd < integratietijd) {
 
+		//check of variabele h nodig is
 		double h_var = h;
 		if (gebruiken_var_h)
 			h_var = variabele_h(h, r);
 
+		//voeg de huidige h toe aan verstreken tijd
 		verstreken_tijd += h_var;
 		h_lijst.push_back(h_var);
 
 		clock_t sstart = clock();
 
+		//voert integratie uit
 		for (int i = 0; i < N; i++) {
 			v[i] = v[i] + 0.5 * h_var * a(m, r, i, N);
 			r[i] = r[i] + h_var * v[i];
@@ -81,22 +82,25 @@ void Verlet(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int N
 
 	}
 
-	std::cout << "Posities werden bijgehouden in bestand " << naam << "_V.txt" << std::endl;
-	std::cout << "Relatieve energiefouten, dichtste afstanden en de tijd werden bijgehouden in bestand " << naam << "_V_E_err.txt" << std::endl;
-	std::cout << "De kost en de gemiddelde iteratieduur werden bijgehouden in bestand " << naam << "kost_duur.txt" << std::endl;
-	outfile1.close();
-	outfile2.close();
-
+	//bereken gemiddelde tijd per iteratie
 	double tijd_gemiddelde = accumulate(tijd_iteratie.begin(), tijd_iteratie.end(), 0.0) / tijd_iteratie.size();
-
-	std::cout << "De kost bedroeg " << kost_int_methode_varh(h_lijst, N, 3, integratietijd) << std::endl;
-	std::cout << tijd_gemiddelde << ' ' << "milliseconden per iteratie" << std::endl;
-	std::cout << std::endl;
 
 	// maak een file aan waar de kost en de duur van de simulatie wordt bijgehouden
 	std::ofstream outfile3(naam + "_V_kost_duur_" + std::to_string(h) + ".txt");
 	outfile3 << std::setprecision(15);
 	outfile3 << kost_int_methode_varh(h_lijst, N, 3, integratietijd) << '\t' << tijd_gemiddelde << std::endl;
+	outfile1.close();
+	outfile2.close();
 	outfile3.close();
+
+	//zeg gebruiker naar waar alles is weggeschreven
+	std::cout << "Posities werden bijgehouden in bestand " << naam << "_V.txt" << std::endl;
+	std::cout << "Relatieve energiefouten, dichtste afstanden en de tijd werden bijgehouden in bestand " << naam << "_V_E_err.txt" << std::endl;
+	std::cout << "De kost en de gemiddelde iteratieduur werden bijgehouden in bestand " << naam << "_V_kost_duur.txt" << std::endl;
+
+	//zeg nog eens expliciet de kost en de gemiddelde tijd per iteratie
+	std::cout << "De kost bedroeg " << kost_int_methode_varh(h_lijst, N, 3, integratietijd) << std::endl;
+	std::cout << tijd_gemiddelde << ' ' << "milliseconden per iteratie" << std::endl;
+	std::cout << std::endl;
 
 }

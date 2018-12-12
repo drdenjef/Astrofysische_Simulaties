@@ -1,6 +1,3 @@
-#define _USE_MATH_DEFINES
-#include <cmath>
-#include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <vector>
@@ -38,7 +35,8 @@ void Leapfrog(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int
 	// hou de startenergie van het systeem bij
 	double start_energie = Energie(r, v, m);
 	double h_var = h;
-	//double h_var = variabele_h(h, r);
+	if (gebruiken_var_h)
+		h_var = variabele_h(h, r);
 
 	// Eerste aparte behandeling voor positie
 	std::vector<Vec> rhalf;
@@ -46,7 +44,7 @@ void Leapfrog(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int
 		rhalf.push_back(r[j] + (0.5*h_var * v[j]) + (0.125*h_var * h_var*a(m, r, j, N)));
 	}
 
-
+	//houdt tijden bij, om later gemiddelde te nemen
 	std::vector<double> tijd_iteratie;
 
 	// houd de iteraties bij
@@ -62,15 +60,18 @@ void Leapfrog(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int
 		std::vector<Vec> vn;
 		std::vector<Vec> rnhalf;
 
+		//check of variabele h nodig is
 		double h_var = h;
 		if (gebruiken_var_h)
 			h_var = variabele_h(h, r);
 
+		//voeg de huidige h toe aan verstreken tijd
 		verstreken_tijd += h_var;
 		h_lijst.push_back(h_var);
 
 		clock_t sstart = clock();
 
+		//voegt integratie uit
 		for (int j = 0; j < N; j++) {
 
 			Vec x = v[j] + h_var * a(m, rhalf, j, N);
@@ -100,23 +101,24 @@ void Leapfrog(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int
 
 	}
 
-
-	std::cout << "Posities werden bijgehouden in bestand " << naam << "_LF.txt" << std::endl;
-	std::cout << "Relatieve energiefouten, dichtste afstanden en de tijd werden bijgehouden in bestand " << naam << "_LF_E_err.txt" << std::endl;
-	std::cout << "De kost en de gemiddelde iteratieduur werden bijgehouden in bestand " << naam << "kost_duur.txt" << std::endl;
-	outfile1.close();
-	outfile2.close();
-
+	//bereken gemiddelde tijd per iteratie
 	double tijd_gemiddelde = accumulate(tijd_iteratie.begin(), tijd_iteratie.end(), 0.0) / tijd_iteratie.size();
-
-	std::cout << "De kost bedroeg " << kost_int_methode_varh(h_lijst, N, 5, integratietijd) << std::endl;
-	std::cout << tijd_gemiddelde << ' ' << "milliseconden per iteratie" << std::endl;
-	std::cout << std::endl;
 
 	// maak een file aan waar de kost en de duur van de simulatie wordt bijgehouden
 	std::ofstream outfile3(naam + "_LF_kost_duur_" + std::to_string(h) + ".txt");
 	outfile3 << std::setprecision(15);
 	outfile3 << kost_int_methode_varh(h_lijst, N, 5, integratietijd) << '\t' << tijd_gemiddelde << std::endl;
+	outfile1.close();
+	outfile2.close();
 	outfile3.close();
 
+	//zeg gebruiker naar waar alles is weggeschreven
+	std::cout << "Posities werden bijgehouden in bestand " << naam << "_LF.txt" << std::endl;
+	std::cout << "Relatieve energiefouten, dichtste afstanden en de tijd werden bijgehouden in bestand " << naam << "_LF_E_err.txt" << std::endl;
+	std::cout << "De kost en de gemiddelde iteratieduur werden bijgehouden in bestand " << naam << "_LF_kost_duur.txt" << std::endl;
+
+	//zeg nog eens expliciet de kost en de gemiddelde tijd per iteratie
+	std::cout << "De kost bedroeg " << kost_int_methode_varh(h_lijst, N, 5, integratietijd) << std::endl;
+	std::cout << tijd_gemiddelde << ' ' << "milliseconden per iteratie" << std::endl;
+	std::cout << std::endl;
 }
