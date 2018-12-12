@@ -234,7 +234,7 @@ int type_integratie_cijfer() {
 	//vraagt input op en leest in
 	cout << "Voer type integratie in " << endl;
 	cout << "Typ 1 voor RK4" << endl;
-	cout << "Typ 2 voor ingebedde RK" << endl;
+	cout << "Typ 2 voor RKF45" << endl;
 	cout << "Typ 3 voor Verlet" << endl;
 	cout << "Typ 4 voor Forest-Ruth" << endl;
 	cout << "Typ 5 voor Leapfrog" << endl;
@@ -269,7 +269,7 @@ int type_integratie_cijfer() {
 std::string type_integratie_naam(int i) {
 	map <int, string> integrators;
 	integrators[1] = "RK4.";
-	integrators[2] = "ingebedde RK.";
+	integrators[2] = "RKF45.";
 	integrators[3] = "Verlet.";
 	integrators[4] = "Forest-Ruth.";
 	integrators[5] = "Leapfrog.";
