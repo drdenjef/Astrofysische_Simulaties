@@ -8,12 +8,15 @@ matplotlib.use("Agg")
 
 #text files inlezen, leest 1 punt om de 50 in
 # (gewoon om de code wat sneller te laten gaan, veel invloed gaat dit niet hebben op de plot zolang er genoeg punten zijn)
-x1 = np.loadtxt("C:\\Users\\Osman\\Downloads\\Burrau_RK4.txt", unpack=True)[0][::50]
-y1 = np.loadtxt("C:\\Users\\Osman\\Downloads\\Burrau_RK4.txt", unpack=True)[1][::50]
-x2 = np.loadtxt("C:\\Users\\Osman\\Downloads\\Burrau_RK4.txt", unpack=True)[3][::50]
-y2 = np.loadtxt("C:\\Users\\Osman\\Downloads\\Burrau_RK4.txt", unpack=True)[4][::50]
-x3 = np.loadtxt("C:\\Users\\Osman\\Downloads\\Burrau_RK4.txt", unpack=True)[6][::50]
-y3 = np.loadtxt("C:\\Users\\Osman\\Downloads\\Burrau_RK4.txt", unpack=True)[7][::50]
+x1 = np.loadtxt("C:\\Users\\Osman\\Downloads\\burrau_FR.txt", unpack=True)[0][::100]
+y1 = np.loadtxt("C:\\Users\\Osman\\Downloads\\burrau_FR.txt", unpack=True)[1][::100]
+x2 = np.loadtxt("C:\\Users\\Osman\\Downloads\\burrau_FR.txt", unpack=True)[3][::100]
+y2 = np.loadtxt("C:\\Users\\Osman\\Downloads\\burrau_FR.txt", unpack=True)[4][::100]
+x3 = np.loadtxt("C:\\Users\\Osman\\Downloads\\burrau_FR.txt", unpack=True)[6][::100]
+y3 = np.loadtxt("C:\\Users\\Osman\\Downloads\\burrau_FR.txt", unpack=True)[7][::100]
+
+time = np.loadtxt("C:\\Users\\Osman\\Downloads\\burrau_FR_E_err.txt", unpack=True)[2][::100]
+
 
 
 # Geen enkel idee hoe dit werkt, voor de zekerheid niet aangekomen.
@@ -21,24 +24,36 @@ y3 = np.loadtxt("C:\\Users\\Osman\\Downloads\\Burrau_RK4.txt", unpack=True)[7][:
 FFMpegWriter = manimation.writers['ffmpeg']
 metadata = dict(title='Movie Test', artist='Matplotlib',
                 comment='Movie support!')
-writer = FFMpegWriter(fps=30, metadata=metadata)
+writer = FFMpegWriter(fps=40, metadata=metadata)
 
 
 fig = plt.figure()
+ax1 = plt.subplot2grid((1,21),(0,0), rowspan = 1, colspan = 19)
+ax1.set_xlim(-5,5)
+ax1.set_ylim(-5,5)
+ax1.set_xlabel("x")
+ax1.set_ylabel("y")
+
+ax2 = plt.subplot2grid((1,21),(0,20),rowspan = 1, colspan = 1)
+ax2.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
+ax2.tick_params(axis='y', which='both', left=False, right=True, labelleft = False, labelright = True)
+ax2.set_ylim(0,time[-1])
+ax2.set_ylabel('t')
+ax2.yaxis.set_label_position("right")
+
 
 # de plots voor de trails
-l1, = plt.plot([], [], color = 'black')
-l2, = plt.plot([], [], color = 'red')
-l3, = plt.plot([], [], color = 'yellow')
+l1, = ax1.plot([], [], color = 'black')
+l2, = ax1.plot([], [], color = 'red')
+l3, = ax1.plot([], [], color = 'yellow')
 
 # de plots voor de sterretjes :D
-k1, = plt.plot([], [], color = 'black' , marker = '*')
-k2, = plt.plot([], [], color = 'red' , marker = '*')
-k3, = plt.plot([], [], color = 'yellow' , marker = '*')
+k1, = ax1.plot([], [], color = 'black' , marker = '*')
+k2, = ax1.plot([], [], color = 'red' , marker = '*')
+k3, = ax1.plot([], [], color = 'yellow' , marker = '*')
+bar, = ax2.bar(0,0)
 
 
-plt.xlim(-5, 5)
-plt.ylim(-5, 5)
 
 # definieer de lijsten waar de punten voor de lijnplots in moeten
 x1_, y1_ = [], []
@@ -48,8 +63,7 @@ x3_, y3_ = [], []
 
 with writer.saving(fig, "burrau_2d.mp4", dpi = 100):
     for i in range(len(x1)):
-
-        # steekt in de sterretjesplot de huidige posities
+        # steekt in de sterretjesplot de huidege posities
         k1.set_data(x1[i], y1[i])
         k2.set_data(x2[i], y2[i])
         k3.set_data(x3[i], y3[i])
@@ -62,8 +76,6 @@ with writer.saving(fig, "burrau_2d.mp4", dpi = 100):
         x3_.append(x3[i])
         y3_.append(y3[i])
 
-
-        # dit is basically voor de trials te krijgen, het nummer kan zonder problemen naar wens aangepast worden
         if i >= 50:
             l1.set_data(x1_[i-50:i], y1_[i-50:i])
             l2.set_data(x2_[i-50:i], y2_[i-50:i])
@@ -72,8 +84,6 @@ with writer.saving(fig, "burrau_2d.mp4", dpi = 100):
             l1.set_data(x1_, y1_)
             l2.set_data(x2_, y2_)
             l3.set_data(x3_, y3_)
-
-        # de figuur wordt als frame in de video gestopt
-        # hierna wordt de figuur ge-reset
+        ###
+        bar.set_height(time[i])
         writer.grab_frame()
-
