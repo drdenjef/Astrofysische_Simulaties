@@ -32,7 +32,7 @@ std::vector<std::map<int, std::string>> lijst_begincond_namen() {
 	map4[3] = "dubbeldubbelster";
 
 	map5[1] = "klavertje_steel";
-	map5[2] = "5deeltjes_2";
+	map5[2] = "solar_binnen";
 	map5[3] = "5deeltjes_3";
 	
 	map6[1] = "zon+binnen+jupiter";
@@ -129,9 +129,9 @@ std::vector<std::vector<std::vector<std::string>>> lijst_begincond() {
 	bestanden_beginposities[3][0][1] = "klavertje_steel_snel.txt";
 	bestanden_beginposities[3][0][2] = "klavertje_steel_mas.txt";
 
-	bestanden_beginposities[3][1][0] = "5_2_pos.txt";
-	bestanden_beginposities[3][1][1] = "5_2_snel.txt";
-	bestanden_beginposities[3][1][2] = "5_2_mas.txt";
+	bestanden_beginposities[3][1][0] = "solar_binnen_pos.txt";
+	bestanden_beginposities[3][1][1] = "solar_binnen_snel.txt";
+	bestanden_beginposities[3][1][2] = "solar_binnen_mas.txt";
 
 	bestanden_beginposities[3][2][0] = "5_3_pos.txt";
 	bestanden_beginposities[3][2][1] = "5_3_snel.txt";
