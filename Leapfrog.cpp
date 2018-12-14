@@ -39,10 +39,11 @@ void Leapfrog(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int
 		h_var = variabele_h(h, r);
 
 	// Eerste aparte behandeling voor positie
-	std::vector<Vec> rhalf;
+	std::vector<Vec> r0;
 	for (int j = 0; j < N; j++) {
-		rhalf.push_back(r[j] + (0.5*h_var * v[j]) + (0.125*h_var * h_var*a(m, r, j, N)));
+		r0.push_back(r[j] + (0.5*h_var * v[j]) + (0.125*h_var * h_var*a(m, r, j, N)));
 	}
+	r = r0;
 
 	//houdt tijden bij, om later gemiddelde te nemen
 	std::vector<double> tijd_iteratie;
@@ -53,12 +54,14 @@ void Leapfrog(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int
 	// houd de tijd bij van de simulatie
 	double verstreken_tijd = 0;
 
+	//voor onthouden vorige posities, en alvast met iets opvullen
+	std::vector<Vec> r_volg = r;
+
+	//voor juiste niveau te kunnen uitschrijven vorige posities, en alvast met iets opvullen
+	std::vector<Vec> r_half = r;
+
 	// start van de iteraties
 	while (verstreken_tijd < integratietijd) {
-
-		//voor onthouden vorige posities
-		std::vector<Vec> vn;
-		std::vector<Vec> rnhalf;
 
 		//check of variabele h nodig is
 		double h_var = h;
@@ -74,9 +77,8 @@ void Leapfrog(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int
 		//voegt integratie uit
 		for (int j = 0; j < N; j++) {
 
-			Vec x = v[j] + h_var * a(m, rhalf, j, N);
-			vn.push_back(x);
-			rnhalf.push_back(rhalf[j] + h_var * x);
+			v[j] = v[j] + h_var * a(m, r, j, N);
+			r_volg[j] = r[j] + h_var * v[j];
 
 		}
 
@@ -86,16 +88,15 @@ void Leapfrog(std::vector<double> m, std::vector<Vec> r, std::vector<Vec> v, int
 		// bekijk of je deze iteratie wil wegschrijven
 		if (iteratie % fractie == 0) {
 			//bereken gemiddelde positie vector (zit dan op zelfde "hoogte" als snelheid)
-			for (unsigned int k = 0; k < rnhalf.size(); k++) {
-				r[k] = 0.5*(rhalf[k] + rnhalf[k]);
-				outfile1 << r[k].x() << ' ' << r[k].y() << ' ' << r[k].z() << '\t';
+			for (unsigned int k = 0; k < r.size(); k++) {
+				r_half[k] = 0.5*(r[k] + r_volg[k]);
+				outfile1 << r_half[k].x() << ' ' << r_half[k].y() << ' ' << r_half[k].z() << '\t';
 			}
 			outfile1 << std::endl;
-			outfile2 << error_energie(r, vn, m, start_energie) << '\t' << dichtste_afstand(r) << '\t' << verstreken_tijd << std::endl;
+			outfile2 << error_energie(r_half, v, m, start_energie) << '\t' << dichtste_afstand(r_half) << '\t' << verstreken_tijd << std::endl;
 		}
 
-		rhalf = rnhalf;
-		v = vn;
+		r = r_volg;
 
 		iteratie += 1;
 
