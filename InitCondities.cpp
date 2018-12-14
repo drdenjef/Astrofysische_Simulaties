@@ -20,7 +20,7 @@ std::vector<std::map<int, std::string>> lijst_begincond_namen() {
 
 	//voor elke aantal, definieer wat namen voor initiele begincondities
 	map2[1] = "dubbelster";
-	map2[2] = "zon_aarde";
+	map2[2] = "zon_halley";
 	map2[3] = "zon_pluto";
 
 	map3[1] = "Burrau's_probleem";
@@ -93,9 +93,9 @@ std::vector<std::vector<std::vector<std::string>>> lijst_begincond() {
 	bestanden_beginposities[0][0][1] = "dubbelster_snel.txt";
 	bestanden_beginposities[0][0][2] = "dubbelster_mas.txt";
 
-	bestanden_beginposities[0][1][0] = "zon_aarde_pos.txt";
-	bestanden_beginposities[0][1][1] = "zon_aarde_snel.txt";
-	bestanden_beginposities[0][1][2] = "zon_aarde_mas.txt";
+	bestanden_beginposities[0][1][0] = "zon_halley_pos.txt";
+	bestanden_beginposities[0][1][1] = "zon_halley_snel.txt";
+	bestanden_beginposities[0][1][2] = "zon_halley_mas.txt";
 
 	bestanden_beginposities[0][2][0] = "zon_pluto_pos.txt";
 	bestanden_beginposities[0][2][1] = "zon_pluto_snel.txt";
