@@ -20,12 +20,12 @@ std::vector<std::map<int, std::string>> lijst_begincond_namen() {
 
 	//voor elke aantal, definieer wat namen voor initiele begincondities
 	map2[1] = "dubbelster";
-	map2[2] = "zon_halley";
-	map2[3] = "zon_pluto";
+	map2[2] = "zon_halley_3D";
+	map2[3] = "zon_pluto_3D";
 
 	map3[1] = "Burrau's_probleem";
 	map3[2] = "Sitnikov_probleem";
-	map3[3] = "3deeltjes_3";
+	map3[3] = "3_3";
 
 	map4[1] = "Sitnikov_4";
 	map4[2] = "klavertje";
@@ -33,7 +33,7 @@ std::vector<std::map<int, std::string>> lijst_begincond_namen() {
 
 	map5[1] = "klavertje_steel";
 	map5[2] = "solar_binnen";
-	map5[3] = "5deeltjes_3";
+	map5[3] = "lagrange";
 	
 	map6[1] = "zon+binnen+jupiter";
 	map6[2] = "6deeltjes_2";
@@ -93,13 +93,13 @@ std::vector<std::vector<std::vector<std::string>>> lijst_begincond() {
 	bestanden_beginposities[0][0][1] = "dubbelster_snel.txt";
 	bestanden_beginposities[0][0][2] = "dubbelster_mas.txt";
 
-	bestanden_beginposities[0][1][0] = "zon_halley_pos.txt";
-	bestanden_beginposities[0][1][1] = "zon_halley_snel.txt";
-	bestanden_beginposities[0][1][2] = "zon_halley_mas.txt";
+	bestanden_beginposities[0][1][0] = "zon_halley_3D_pos.txt";
+	bestanden_beginposities[0][1][1] = "zon_halley_3D_snel.txt";
+	bestanden_beginposities[0][1][2] = "zon_halley_3D_mas.txt";
 
-	bestanden_beginposities[0][2][0] = "zon_pluto_pos.txt";
-	bestanden_beginposities[0][2][1] = "zon_pluto_snel.txt";
-	bestanden_beginposities[0][2][2] = "zon_pluto_mas.txt";
+	bestanden_beginposities[0][2][0] = "zon_pluto_3D_pos.txt";
+	bestanden_beginposities[0][2][1] = "zon_pluto_3D_snel.txt";
+	bestanden_beginposities[0][2][2] = "zon_pluto_3D_mas.txt";
 
 	bestanden_beginposities[1][0][0] = "Burrau's_probleem_pos.txt";
 	bestanden_beginposities[1][0][1] = "Burrau's_probleem_snel.txt";
@@ -133,9 +133,9 @@ std::vector<std::vector<std::vector<std::string>>> lijst_begincond() {
 	bestanden_beginposities[3][1][1] = "solar_binnen_snel.txt";
 	bestanden_beginposities[3][1][2] = "solar_binnen_mas.txt";
 
-	bestanden_beginposities[3][2][0] = "5_3_pos.txt";
-	bestanden_beginposities[3][2][1] = "5_3_snel.txt";
-	bestanden_beginposities[3][2][2] = "5_3_mas.txt";
+	bestanden_beginposities[3][2][0] = "lagrange_pos.txt";
+	bestanden_beginposities[3][2][1] = "lagrange_snel.txt";
+	bestanden_beginposities[3][2][2] = "lagrange_mas.txt";
 
 	bestanden_beginposities[4][0][0] = "solar_pos.txt";
 	bestanden_beginposities[4][0][1] = "solar_snel.txt";
