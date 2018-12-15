@@ -34,6 +34,21 @@ ax1.set_ylim(-5,5)
 ax1.set_xlabel("x")
 ax1.set_ylabel("y")
 
+#
+#de text
+#
+
+punt_1 = ax1.text(0,0,'text', bbox = dict(boxstyle='round', facecolor='black', alpha=0.5))
+punt_1.set_animated(True)
+punt_2 = ax1.text(0,0,'text', bbox = dict(boxstyle='round', facecolor='red', alpha=0.5))
+punt_2.set_animated(True)
+punt_3 = ax1.text(0,0,'text', bbox = dict(boxstyle='round', facecolor='yellow', alpha=0.5))
+punt_3.set_animated(True)
+
+#
+#
+#
+
 ax2 = plt.subplot2grid((1,21),(0,20),rowspan = 1, colspan = 1)
 ax2.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
 ax2.tick_params(axis='y', which='both', left=False, right=True, labelleft = False, labelright = True)
@@ -85,5 +100,15 @@ with writer.saving(fig, "burrau_2d.mp4", dpi = 100):
             l2.set_data(x2_, y2_)
             l3.set_data(x3_, y3_)
         ###
+        #
+        # verandering textpositie
+        #
+        punt_1.set_position((x1[i]+0.2,y1[i]+0.2))
+        punt_2.set_position((x2[i]+0.2,y2[i]+0.2))
+        punt_3.set_position((x3[i]+0.2,y3[i]+0.2))
+        #
+        #
+        #
         bar.set_height(time[i])
         writer.grab_frame()
+
