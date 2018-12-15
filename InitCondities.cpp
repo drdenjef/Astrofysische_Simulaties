@@ -37,7 +37,7 @@ std::vector<std::map<int, std::string>> lijst_begincond_namen() {
 	
 	map6[1] = "zon + binnenplaneten + jupiter, starten op 1 lijn, 2D";
 	map6[2] = "zon + binnenplaneten + jupiter, 2018/12/15, 3D";
-	map6[3] = "zon  +buitenplaneten + pluto, 2018/12/15, 3D";
+	map6[3] = "zon + buitenplaneten + pluto, 2018/12/15, 3D";
 	
 	map7[1] = "zon + binnenplaneten + jupiter saturnus, starten op 1 lijn, 2D";
 	map7[2] = "zon + binnenplaneten + jupiter saturnus, 2018/12/15, 3D";
@@ -150,16 +150,16 @@ std::vector<std::vector<std::vector<std::string>>> lijst_begincond() {
 	bestanden_beginposities[4][2][2] = "zon+buitenplaneten+pluto_3D_mas.txt";
 
 	bestanden_beginposities[5][0][0] = "zon+binnenplaneten+jupiter+saturnus_1lijn_2D_pos.txt";
-	bestanden_beginposities[5][0][1] = "zon+binnenplaneten+jupiter+saturnus_1lijn_2D_pos.txt";
-	bestanden_beginposities[5][0][2] = "zon+binnenplaneten+jupiter+saturnus_1lijn_2D_pos.txt";
+	bestanden_beginposities[5][0][1] = "zon+binnenplaneten+jupiter+saturnus_1lijn_2D_snel.txt";
+	bestanden_beginposities[5][0][2] = "zon+binnenplaneten+jupiter+saturnus_1lijn_2D_mas.txt";
 
 	bestanden_beginposities[5][1][0] = "zon+binnenplaneten+jupiter+saturnus_3D_pos.txt";
-	bestanden_beginposities[5][1][1] = "zon+binnenplaneten+jupiter+saturnus_3D_pos.txt";
-	bestanden_beginposities[5][1][2] = "zon+binnenplaneten+jupiter+saturnus_3D_pos.txt";
+	bestanden_beginposities[5][1][1] = "zon+binnenplaneten+jupiter+saturnus_3D_snel.txt";
+	bestanden_beginposities[5][1][2] = "zon+binnenplaneten+jupiter+saturnus_3D_mas.txt";
 
 	bestanden_beginposities[5][2][0] = "zon+buitenplaneten+pluto+halley_3D_pos.txt";
-	bestanden_beginposities[5][2][1] = "zon+buitenplaneten+pluto+halley_3D_pos.txt";
-	bestanden_beginposities[5][2][2] = "zon+buitenplaneten+pluto+halley_3D_pos.txt";
+	bestanden_beginposities[5][2][1] = "zon+buitenplaneten+pluto+halley_3D_snel.txt";
+	bestanden_beginposities[5][2][2] = "zon+buitenplaneten+pluto+halley_3D_mas.txt";
 
 	return bestanden_beginposities;
 }
