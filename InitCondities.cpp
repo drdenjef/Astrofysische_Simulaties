@@ -19,29 +19,29 @@ std::vector<std::map<int, std::string>> lijst_begincond_namen() {
 	std::map<int, std::string> map7;
 
 	//voor elke aantal, definieer wat namen voor initiele begincondities
-	map2[1] = "dubbelster";
-	map2[2] = "zon_halley_3D";
-	map2[3] = "zon_pluto_3D";
+	map2[1] = "dubbelstersysteem";
+	map2[2] = "zon + halley, 2018/12/15, 3D";
+	map2[3] = "zon + pluto, 2018/12/15, 3D";
 
-	map3[1] = "Burrau's_probleem";
-	map3[2] = "Sitnikov_probleem";
-	map3[3] = "3_3";
+	map3[1] = "Burrau's probleem";
+	map3[2] = "Sitnikov probleem";
+	map3[3] = "gelijkbenige driehoek";
 
-	map4[1] = "Sitnikov_4";
+	map4[1] = "Sitnikov 4 deeltjes";
 	map4[2] = "klavertje";
 	map4[3] = "dubbeldubbelster";
 
-	map5[1] = "klavertje_steel";
-	map5[2] = "solar_binnen";
-	map5[3] = "lagrange";
+	map5[1] = "klavertje met steel";
+	map5[2] = "zon + binnenplaneten, 2018/12/15, 3D";
+	map5[3] = "zon + buitenplaneten, 2018/12/15, 3D";
 	
-	map6[1] = "zon+binnen+jupiter";
-	map6[2] = "6deeltjes_2";
-	map6[3] = "6deeltjes_3";
-
-	map7[1] = "zon+binnen+jupiter+saturnus";
-	map7[2] = "7deeltjes_2";
-	map7[3] = "7deeltjes_3";
+	map6[1] = "zon + binnenplaneten + jupiter, starten op 1 lijn, 2D";
+	map6[2] = "zon + binnenplaneten + jupiter, 2018/12/15, 3D";
+	map6[3] = "zon  +buitenplaneten + pluto, 2018/12/15, 3D";
+	
+	map7[1] = "zon + binnenplaneten + jupiter saturnus, starten op 1 lijn, 2D";
+	map7[2] = "zon + binnenplaneten + jupiter saturnus, 2018/12/15, 3D";
+	map7[3] = "zon + buitenplaneten + pluto + halley, 2018/12/15, 3D";
 
 	//voeg deze mappen toe aan een vector voor alle aantal deeltjes
 	std::vector<std::map<int, std::string>> lijst_begincondities;
@@ -109,9 +109,9 @@ std::vector<std::vector<std::vector<std::string>>> lijst_begincond() {
 	bestanden_beginposities[1][1][1] = "sitnikov_snel.txt";
 	bestanden_beginposities[1][1][2] = "sitnikov_mas.txt";
 
-	bestanden_beginposities[1][2][0] = "3_3_pos.txt";
-	bestanden_beginposities[1][2][1] = "3_3_snel.txt";
-	bestanden_beginposities[1][2][2] = "3_3_mas.txt";
+	bestanden_beginposities[1][2][0] = "gelijkbenige_driehoek_pos.txt";
+	bestanden_beginposities[1][2][1] = "gelijkbenige_driehoek_snel.txt";
+	bestanden_beginposities[1][2][2] = "gelijkbenige_driehoek_mas.txt";
 
 	bestanden_beginposities[2][0][0] = "sitnikov_4_pos.txt";
 	bestanden_beginposities[2][0][1] = "sitnikov_4_snel.txt";
@@ -129,37 +129,37 @@ std::vector<std::vector<std::vector<std::string>>> lijst_begincond() {
 	bestanden_beginposities[3][0][1] = "klavertje_steel_snel.txt";
 	bestanden_beginposities[3][0][2] = "klavertje_steel_mas.txt";
 
-	bestanden_beginposities[3][1][0] = "solar_binnen_pos.txt";
-	bestanden_beginposities[3][1][1] = "solar_binnen_snel.txt";
-	bestanden_beginposities[3][1][2] = "solar_binnen_mas.txt";
+	bestanden_beginposities[3][1][0] = "zon+binnenplaneten_3D_pos.txt";
+	bestanden_beginposities[3][1][1] = "zon+binnenplaneten_3D_snel.txt";
+	bestanden_beginposities[3][1][2] = "zon+binnenplaneten_3D_mas.txt";
 
-	bestanden_beginposities[3][2][0] = "lagrange_pos.txt";
-	bestanden_beginposities[3][2][1] = "lagrange_snel.txt";
-	bestanden_beginposities[3][2][2] = "lagrange_mas.txt";
+	bestanden_beginposities[3][2][0] = "zon+buitenplaneten_3D_pos.txt";
+	bestanden_beginposities[3][2][1] = "zon+buitenplaneten_3D_snel.txt";
+	bestanden_beginposities[3][2][2] = "zon+buitenplaneten_3D_mas.txt";
 
-	bestanden_beginposities[4][0][0] = "solar_pos.txt";
-	bestanden_beginposities[4][0][1] = "solar_snel.txt";
-	bestanden_beginposities[4][0][2] = "solar_mas.txt";
+	bestanden_beginposities[4][0][0] = "zon+binnenplaneten+jupiter_1lijn_2D_pos.txt";
+	bestanden_beginposities[4][0][1] = "zon+binnenplaneten+jupiter_1lijn_2D_snel.txt";
+	bestanden_beginposities[4][0][2] = "zon+binnenplaneten+jupiter_1lijn_2D_mas.txt";
 
-	bestanden_beginposities[4][1][0] = "6_2_pos.txt";
-	bestanden_beginposities[4][1][1] = "6_2_snel.txt";
-	bestanden_beginposities[4][1][2] = "6_2_mas.txt";
+	bestanden_beginposities[4][1][0] = "zon+binnenplaneten+jupiter_3D_pos.txt";
+	bestanden_beginposities[4][1][1] = "zon+binnenplaneten+jupiter_3D_snel.txt";
+	bestanden_beginposities[4][1][2] = "zon+binnenplaneten+jupiter_3D_mas.txt";
 
-	bestanden_beginposities[4][2][0] = "6_3_pos.txt";
-	bestanden_beginposities[4][2][1] = "6_3_snel.txt";
-	bestanden_beginposities[4][2][2] = "6_3_mas.txt";
+	bestanden_beginposities[4][2][0] = "zon+buitenplaneten+pluto_3D_pos.txt";
+	bestanden_beginposities[4][2][1] = "zon+buitenplaneten+pluto_3D_snel.txt";
+	bestanden_beginposities[4][2][2] = "zon+buitenplaneten+pluto_3D_mas.txt";
 
-	bestanden_beginposities[5][0][0] = "solar+_pos.txt";
-	bestanden_beginposities[5][0][1] = "solar+_snel.txt";
-	bestanden_beginposities[5][0][2] = "solar+_mas.txt";
+	bestanden_beginposities[5][0][0] = "zon+binnenplaneten+jupiter+saturnus_1lijn_2D_pos.txt";
+	bestanden_beginposities[5][0][1] = "zon+binnenplaneten+jupiter+saturnus_1lijn_2D_pos.txt";
+	bestanden_beginposities[5][0][2] = "zon+binnenplaneten+jupiter+saturnus_1lijn_2D_pos.txt";
 
-	bestanden_beginposities[5][1][0] = "7_2_pos.txt";
-	bestanden_beginposities[5][1][1] = "7_2_snel.txt";
-	bestanden_beginposities[5][1][2] = "7_2_mas.txt";
+	bestanden_beginposities[5][1][0] = "zon+binnenplaneten+jupiter+saturnus_3D_pos.txt";
+	bestanden_beginposities[5][1][1] = "zon+binnenplaneten+jupiter+saturnus_3D_pos.txt";
+	bestanden_beginposities[5][1][2] = "zon+binnenplaneten+jupiter+saturnus_3D_pos.txt";
 
-	bestanden_beginposities[5][2][0] = "7_3_pos.txt";
-	bestanden_beginposities[5][2][1] = "7_3_snel.txt";
-	bestanden_beginposities[5][2][2] = "7_3_mas.txt";
+	bestanden_beginposities[5][2][0] = "zon+buitenplaneten+pluto+halley_3D_pos.txt";
+	bestanden_beginposities[5][2][1] = "zon+buitenplaneten+pluto+halley_3D_pos.txt";
+	bestanden_beginposities[5][2][2] = "zon+buitenplaneten+pluto+halley_3D_pos.txt";
 
 	return bestanden_beginposities;
 }
